@@ -5,7 +5,7 @@ export default function inventoryCode(list, inventario, fonteEmissao, sigla, old
     const CodeExists = list.find(elem => elem.fonteEmissao === fonteEmissao)
     const CodeInventoryList = inventario.find(elem => elem.fonteEmissao === fonteEmissao)
 
-    // console.log(list, inventario, fonteEmissao, sigla, oldCode, CodeExists)
+    console.log(list, inventario, fonteEmissao, sigla, oldCode, CodeExists)
 
     if (CodeExists && !oldCode) {
         // console.log('111', CodeExists)

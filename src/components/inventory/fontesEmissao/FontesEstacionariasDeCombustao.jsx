@@ -3,23 +3,19 @@ import $ from "jquery"
 import { calc } from '../../../../utils/equations/fontesEstacionariasDeCombustao'
 import CombustiveisList from "../combustiveis/CombustiveisFontesEstacionarias"
 import XLSX from 'xlsx'
-// import table from '../../../public/FONTES_ESTACIONARIAS_DE_COMBUSTAO.xlsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCheck,
     faComment,
     faDownload,
     faEraser,
-    faEye,
     faPenToSquare,
     faSave,
     faTimes,
-    faTrash,
     faTrashAlt,
     faUpload,
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
-
 import { useSelector, useDispatch } from "react-redux";
 import { add, addMany, update, remove, removeMany } from '../../../../store/InventoryList/InventoryList.actions'
 import inventoryCode from "../../../../utils/inventoryCode"
@@ -31,6 +27,8 @@ export default function FontesEstacionariasDeCombustao(props) {
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
+    const inventory = useSelector(state => state.inventoryDB)
+    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const token = jwt.decode(Cookie.get('auth'))
 
     //List Items
@@ -63,7 +61,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
     useEffect(() => {
         handleCode()
-    }, [, list, props.inventario])
+    }, [, list, inventory])
 
     useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
@@ -88,7 +86,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
 
     const handleCode = (oldCode) => {
-        const code = inventoryCode(list, props.inventario, states.fonteEmissao, "FEC", oldCode)
+        const code = inventoryCode(list, inventory, states.fonteEmissao, "FEC", oldCode)
         setCode(code)
         return code
     }
@@ -105,7 +103,7 @@ export default function FontesEstacionariasDeCombustao(props) {
         const isValid = validate()
 
         if (isValid) {
-            const emissoes = calc(combustivel, qtd, states.unidSetorPrimario, states.fonteEmissao, props.fatoresEmissao)
+            const emissoes = calc(combustivel, qtd, states.unidSetorPrimario, states.fonteEmissao, fatoresEmissao)
 
             const data = {
                 company_id: token.company_id,
@@ -152,7 +150,6 @@ export default function FontesEstacionariasDeCombustao(props) {
     }
 
     const validate = () => {
-
         if (descricaoFonte && combustivel && qtd > 0) {
             return true
         } else {
@@ -234,7 +231,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
         if (isValid) {
 
-            const emissoes = calc(editCombustivel, editQtd, states.unidSetorPrimario, states.fonteEmissao, props.fatoresEmissao)
+            const emissoes = calc(editCombustivel, editQtd, states.unidSetorPrimario, states.fonteEmissao, fatoresEmissao)
 
             const newList = list
 
@@ -310,7 +307,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                             const combustivelItem = `G${i}` in wb.Sheets.FEC ? multiplosValoresTable(eval(`wb.Sheets.FEC.G${i}.v`)) : ''
                             const comentarioItem = `F${i}` in wb.Sheets.FEC ? eval(`wb.Sheets.FEC.F${i}.v`) : ''
 
-                            const emissoes = calc(combustivelItem[0], qtdItem, states.unidSetorPrimario, states.fonteEmissao, props.fatoresEmissao)
+                            const emissoes = calc(combustivelItem[0], qtdItem, states.unidSetorPrimario, states.fonteEmissao, fatoresEmissao)
 
                             const data = {
                                 company_id: token.company_id,

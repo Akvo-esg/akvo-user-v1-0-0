@@ -12,9 +12,9 @@ export function initialValues() {
     }
 }
 
-export function inventoryGet(data) {
+export function getInventory(data) {
     return {
-        type: 'INVENTORY_GET',
+        type: 'GET_INVENTORY',
         payload: data
     }
 }

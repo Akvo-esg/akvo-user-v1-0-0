@@ -1,8 +1,7 @@
-export default function inventoryDBReducer(state = [], action) {
+export default function inventoryStatesReducer(state = [], action) {
     switch (action.type) {
-        case 'GET_INVENTORY':
+        case 'GET_VALUES':
             return action.payload
-
         default: return state
     }
 }
