@@ -1,0 +1,76 @@
+.menuArea {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-white);
+    position: fixed;
+    left: calc(var(--aside-width) - var(--aside-fixed-width));
+    top: var(--header-height);
+    height: 100vh;
+    width: var(--aside-fixed-width);
+}
+
+.menuArea ul {
+    padding: 0;
+}
+
+.menuArea ul span {
+    font-weight: 500;
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 50px;
+    font-size: 15px;
+    color: var(--bg-dark);
+    padding-left: 20px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: var(--gray);
+    transition: 0.4s;
+}
+.menuArea ul li:hover span {
+    color: var(--dark);
+    font-weight: 525;
+}
+
+
+.menuArea ul a {
+    font-weight: 475;
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 50px;
+    font-size: 14px;
+    color: var(--bg-dark);
+    padding-left: 55px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: var(--gray);
+    transition: 0.4s;
+    
+}
+
+.menuArea ul li a:hover {
+    color: var(--dark);
+    font-weight: 510;
+}
+
+.img {
+    height: 75px;
+    border-radius: 50px;
+}
+
+.userName {
+    font-size: 17px;
+    font-weight: 550;
+    color: var(--header-color);
+}
+
+.userStatus {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--gray);
+}
+
+.navItemsPosition {
+    height: 63vh;
+  }

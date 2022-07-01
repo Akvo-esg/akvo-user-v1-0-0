@@ -1,0 +1,17 @@
+.logo {
+    background-color: var(--header-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-area: logo;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--aside-width);
+    height: var(--header-height);
+}
+
+.logo img {
+    padding: 0px 15px;
+    height: calc(var(--header-height) * 0.5);
+}

@@ -1,0 +1,25 @@
+.headerPosition {
+    background-color: var(--header-color);
+    position: fixed !important;
+    top: 0;
+    left: var(--aside-width);
+    height: var(--header-height);
+    width: calc(100vw - var(--aside-width));
+    z-index: 1001;
+}
+
+.sidebarToggle {
+    color: var(--gray-light);
+    transition: color 0.1s ease-out;
+}
+
+.sidebarToggle:hover {
+    color: var(--white);
+}
+
+
+
+.logo{
+    padding: 0px 15px;
+    height: calc(var(--header-height) * 0.5);
+}

@@ -1,0 +1,84 @@
+.headerBox {
+    font-family: "Open Sans", sans-serif !important;
+    position: relative;
+    height: 200px;
+    background-color: var(--header-color);
+}
+
+.headerContent {
+    position: relative;
+    top: 70px;
+    left: 75px;
+}
+
+.headerTitle {
+    font-size: 1.64063rem;
+    font-weight: 550;
+    color: #fff;
+    margin-bottom: 5px;
+}
+.headerSubtitle {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: #fff;
+}
+.backButton {
+    position: absolute;
+    right: 135px;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--gray-light);
+    transition: 0.3s ease;
+}
+
+.backButton:hover {
+    color: #fff;
+    font-weight: 400;
+}
+
+@media screen and (max-width: 991px) {
+
+    .headerBox {
+        font-family: "Open Sans", sans-serif !important;
+        position: relative;
+        height: 150px;
+        background-color: var(--header-color);
+        margin-bottom: 3rem;
+    }
+    
+    .headerContent {
+        position: relative;
+        top: 45px;
+        left: 45px;
+    }
+    
+    .headerTitle {
+        font-size: 1rem;
+        font-weight: 450;
+        margin-bottom: 5px;
+    }
+    .headerSubtitle {
+        font-size: 0.7rem;
+        font-weight: 375;
+        color: #fff;
+    }
+    .backButton {
+        margin-top: 10px;
+        position: absolute;
+        right: 60px;
+        font-size: 0.5rem;
+        font-weight: 300;
+        color: var(--gray-light);
+        transition: 0.3s ease;
+    }
+
+    .backButton:hover {
+        color: #fff;
+        font-weight: 400;
+    }
+
+
+
+
+
+}
