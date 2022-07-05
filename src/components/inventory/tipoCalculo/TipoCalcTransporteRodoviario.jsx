@@ -22,6 +22,7 @@ import { add, addMany, update, remove, removeMany } from '../../../../store/Inve
 import inventoryCode from "../../../../utils/inventoryCode"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
+import { tipoCalculoStore } from "../../../../store/InventoryStates/InventoryStates.actions";
 
 
 export default function TransporteRodoviario(props) {
@@ -467,21 +468,21 @@ export default function TransporteRodoviario(props) {
                             className="transporteRodoviario btn btn-outline-escopo1 invetoryBtnFont"
                             id="Por tipo e ano de fabricacao"
                             value="Por tipo e ano de fabricacao"
-                            onClick={e => { props.setTipoCalculo(e.target.value); scrollDown("passo5") }}>
+                            onClick={e => { dispatch(tipoCalculoStore(e.target.value)); scrollDown("passo5") }}>
                             Cálculo de emissões por tipo e ano de fabricação da frota de veículos no ano de {states.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por tipo e ano de fabricacao")}</span>
                         </button>
                         <button type="button"
                             className="transporteRodoviario btn btn-outline-escopo1 invetoryBtnFont"
                             id="Por tipo de combustivel"
                             value="Por tipo de combustivel"
-                            onClick={e => { props.setTipoCalculo(e.target.value); scrollDown("passo5") }}>
+                            onClick={e => { dispatch(tipoCalculoStore(e.target.value)); scrollDown("passo5") }}>
                             Cálculo de emissões por tipo de combustível no ano de {states.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por tipo de combustivel")}</span>
                         </button>
                         <button type="button"
                             className="transporteRodoviario btn btn-outline-escopo1 invetoryBtnFont"
                             id="Por distancia e peso da carga"
                             value="Por distancia e peso da carga"
-                            onClick={e => { props.setTipoCalculo(e.target.value); scrollDown("passo5") }}>
+                            onClick={e => { dispatch(tipoCalculoStore(e.target.value)); scrollDown("passo5") }}>
                             Cálculo de emissões por distância percorrida no ano de {states.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por distancia")}</span>
                         </button>
 
