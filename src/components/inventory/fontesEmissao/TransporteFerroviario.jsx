@@ -17,7 +17,6 @@ import {
 	faUpload,
 	faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-
 import { useSelector, useDispatch } from "react-redux";
 import {
 	add,

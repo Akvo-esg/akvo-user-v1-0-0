@@ -35,7 +35,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
         handleToolTip();
     });
 
-
     //Edit Data Base Itens
     const [deleteElemCodeDB, setDeleteElemCodeDB] = useState(null)
     const [editCodeDB, setEditCodeDB] = useState(null)

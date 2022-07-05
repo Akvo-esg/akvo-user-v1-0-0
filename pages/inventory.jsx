@@ -228,7 +228,7 @@ export default function Inventory() {
                                         <UnitsList unidList={unidList} yearSelect />
                                     </InventoryCards>
 
-                                    <ShoppingCart save={() => save(list, company_id)} saveLoading={saveLoading} />
+                                    <ShoppingCart save={() => save(list, company_id)} saveLoading={saveLoading}/>
 
                                     {states.unid_id && states.anoInventario && (
                                         <InventoryCards>
@@ -271,7 +271,7 @@ export default function Inventory() {
                                                 </>
                                             )}
 
-                                            {fonteEmissao === "Transportes" && (
+                                            {states.fonteEmissao === "Transportes" && (
                                                 <>
                                                     <InventoryCards>
                                                         <h5 className='h5_title mb-0' id='passo4'>Passo 4</h5>
@@ -291,7 +291,7 @@ export default function Inventory() {
                                                         )}
                                                     </InventoryCards>
 
-                                                    {tipoEmissao === "Transporte Ferroviário" && (
+                                                    {states.tipoEmissao === "Transporte Ferroviário" && (
                                                         <>
                                                             <InventoryCards>
                                                                 <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
