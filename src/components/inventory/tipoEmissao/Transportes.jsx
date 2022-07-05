@@ -1,14 +1,19 @@
 import { useEffect } from "react"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 export default function TransporteTranspDist(props) {
-
+    
+    const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
+    const states = useSelector(state => state.inventoryStates)
+
 
     useEffect(() => {
         activeButtons()
 
-    }, [props.tipoEmissao,])
+    }, [states.tipoEmissao,])
 
     const activeButtons = () => {
         const elements = document.getElementsByClassName("transportes")
@@ -19,13 +24,13 @@ export default function TransporteTranspDist(props) {
             }
         }
 
-        if (props.tipoEmissao === "Transporte Rodoviário" ||
-            props.tipoEmissao === "Transporte Ferroviário" ||
-            props.tipoEmissao === "Transporte Hidroviário" ||
-            props.tipoEmissao === "Transporte Aéreo") {
+        if (states.tipoEmissao === "Transporte Rodoviário" ||
+            states.tipoEmissao === "Transporte Ferroviário" ||
+            states.tipoEmissao === "Transporte Hidroviário" ||
+            states.tipoEmissao === "Transporte Aéreo") {
             // console.log("tipoEmissao", props.tipoEmissao)
 
-            document.getElementById(`${props.tipoEmissao}`).classList.add("active")
+            document.getElementById(`${states.tipoEmissao}`).classList.add("active")
         } else {
 
             return
@@ -35,9 +40,9 @@ export default function TransporteTranspDist(props) {
     const showQtd = (value) => {
 
         let transporteQtd = list.filter(elem => elem.tipoEmissao === value)
-            .filter(elem => elem.unid_id === props.unid_id)
-            .filter(elem => elem.anoInventario === props.anoInventario)
-            .filter(elem => elem.fonteEmissao === props.fonteEmissao)
+            .filter(elem => elem.unid_id === states.unid_id)
+            .filter(elem => elem.anoInventario === states.anoInventario)
+            .filter(elem => elem.fonteEmissao === states.fonteEmissao)
 
         return transporteQtd.length > 0 ? transporteQtd.length : ''
 

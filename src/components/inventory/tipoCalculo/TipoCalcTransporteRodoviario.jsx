@@ -20,12 +20,17 @@ if (typeof window !== "undefined") {
 import { useSelector, useDispatch } from "react-redux";
 import { add, addMany, update, remove, removeMany } from '../../../../store/InventoryList/InventoryList.actions'
 import inventoryCode from "../../../../utils/inventoryCode"
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 
 export default function TransporteRodoviario(props) {
 
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
+    const states = useSelector(state => state.inventoryStates)
+    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+    const token = jwt.decode(Cookie.get('auth'))
 
     //List items
     const [code, setCode] = useState('')
@@ -35,16 +40,16 @@ export default function TransporteRodoviario(props) {
 
     useEffect(() => {
         handleCode()
-    }, [, list, props.inventario])
+    }, [, list, states.inventario])
 
     useEffect(() => {
         activeButtons()
-    }, [props.transporte])
+    }, [states.transporte])
     useEffect(() => {
 
         activeTipoButtons()
 
-    }, [props.tipoCalculo])
+    }, [states.tipoCalculo])
 
     const activeButtons = () => {
 
@@ -56,8 +61,8 @@ export default function TransporteRodoviario(props) {
             }
         }
 
-        if (props.tipoEmissao) {
-            document.getElementById(`${props.tipoEmissao}`).classList.add("active")
+        if (states.tipoEmissao) {
+            document.getElementById(`${states.tipoEmissao}`).classList.add("active")
         } else {
             return
         }
@@ -73,10 +78,10 @@ export default function TransporteRodoviario(props) {
             }
         }
 
-        if (props.tipoCalculo === "Por tipo e ano de fabricacao" ||
-            props.tipoCalculo === "Por tipo de combustivel" ||
-            props.tipoCalculo === "Por distancia") {
-            document.getElementById(`${props.tipoCalculo}`).classList.add("active")
+        if (states.tipoCalculo === "Por tipo e ano de fabricacao" ||
+            states.tipoCalculo === "Por tipo de combustivel" ||
+            states.tipoCalculo === "Por distancia") {
+            document.getElementById(`${states.tipoCalculo}`).classList.add("active")
         } else {
             return
         }
@@ -88,9 +93,9 @@ export default function TransporteRodoviario(props) {
 
         transporteQtd = list.filter(elem => elem.tipoCalculo === value && elem.fonteEmissao === "Transportes")
 
-        transporteQtd = transporteQtd.filter(elem => elem.anoInventario === props.anoInventario)
+        transporteQtd = transporteQtd.filter(elem => elem.anoInventario === states.anoInventario)
 
-        transporteQtd = transporteQtd.filter(elem => elem.unid_id === props.unid_id)
+        transporteQtd = transporteQtd.filter(elem => elem.unid_id === states.unid_id)
 
         return transporteQtd.length > 0 ? transporteQtd.length : ''
     }
@@ -101,9 +106,9 @@ export default function TransporteRodoviario(props) {
 
         transporteQtd = list.filter(elem => elem.transporte === 'Transporte rodoviário')
 
-        transporteQtd = transporteQtd.filter(elem => elem.anoInventario === props.anoInventario)
+        transporteQtd = transporteQtd.filter(elem => elem.anoInventario === states.anoInventario)
 
-        transporteQtd = transporteQtd.filter(elem => elem.unid_id === props.unid_id)
+        transporteQtd = transporteQtd.filter(elem => elem.unid_id === states.unid_id)
 
         transporteQtd = transporteQtd.filter(elem => elem.tipoCalculo === value)
 
@@ -112,7 +117,7 @@ export default function TransporteRodoviario(props) {
 
 
     const handleCode = (oldCode) => {
-        const code = inventoryCode(list, props.inventario, props.data.fonteEmissao, "TRN", oldCode)
+        const code = inventoryCode(list, states.inventario, states.fonteEmissao, "TRN", oldCode)
         setCode(code)
         return code
     }
@@ -164,17 +169,17 @@ export default function TransporteRodoviario(props) {
                             const anoFrotaItem = `D${i}` in wb.Sheets.porTipo ? eval(`wb.Sheets.porTipo.D${i}.v`) : ''
                             const comentarioItem = `R${i}` in wb.Sheets.porTipo ? eval(`wb.Sheets.porTipo.R${i}.v`) : ''
 
-                            const emissoes = calcPorTipo(frotaItem[0], anoFrotaItem, qtdItem, props.data.fonteEmissao, props.fatoresEmissao, 'Por tipo e ano de fabricacao')
+                            const emissoes = calcPorTipo(frotaItem[0], anoFrotaItem, qtdItem, states.fonteEmissao, fatoresEmissao, 'Por tipo e ano de fabricacao')
 
                             const data = {
-                                company_id: props.data.company_id,
-                                unid_id: props.data.unid_id,
-                                unidSetorPrimario: props.data.unidSetorPrimario,
-                                unidName: props.data.unidName,
-                                anoInventario: props.data.anoInventario,
-                                escopo: props.data.escopo,
-                                fonteEmissao: props.data.fonteEmissao,
-                                transporte: props.transporte,
+                                company_id: token.company_id,
+                                unid_id: states.unid_id,
+                                unidSetorPrimario: states.unidSetorPrimario,
+                                unidName: states.unidName,
+                                anoInventario: states.anoInventario,
+                                escopo: states.escopo,
+                                fonteEmissao: states.fonteEmissao,
+                                transporte: states.transporte,
                                 tipoCalculo: "Por tipo e ano de fabricacao",
                                 comentario: comentarioItem,
                                 code: newCode,
@@ -251,17 +256,17 @@ export default function TransporteRodoviario(props) {
                             const combustivelItem = `R${i}` in wb.Sheets.porCombustivel ? multiplosValoresTable(eval(`wb.Sheets.porCombustivel.R${i}.v`)) : ''
                             const comentarioItem = `Q${i}` in wb.Sheets.porCombustivel ? eval(`wb.Sheets.porCombustivel.Q${i}.v`) : ''
 
-                            const emissoes = calcPorCombustivel(combustivelItem[0], qtdItem2, props.data.fonteEmissao, props.fatoresEmissao, 'Por tipo de combustivel')
+                            const emissoes = calcPorCombustivel(combustivelItem[0], qtdItem2, states.fonteEmissao, states.fatoresEmissao, 'Por tipo de combustivel')
 
                             const data = {
-                                company_id: props.data.company_id,
-                                unid_id: props.data.unid_id,
-                                unidSetorPrimario: props.data.unidSetorPrimario,
-                                unidName: props.data.unidName,
-                                anoInventario: props.data.anoInventario,
-                                escopo: props.data.escopo,
-                                fonteEmissao: props.data.fonteEmissao,
-                                transporte: props.transporte,
+                                company_id: token.company_id,
+                                unid_id: states.unid_id,
+                                unidSetorPrimario: states.unidSetorPrimario,
+                                unidName: states.unidName,
+                                anoInventario: states.anoInventario,
+                                escopo: states.escopo,
+                                fonteEmissao: states.fonteEmissao,
+                                transporte: states.transporte,
                                 tipoCalculo: 'Por tipo de combustivel',
                                 comentario: comentarioItem,
                                 code: newCode,
@@ -338,17 +343,17 @@ export default function TransporteRodoviario(props) {
                             const anoFrotaItem = `D${i}` in wb.Sheets.porDistancia ? eval(`wb.Sheets.porDistancia.D${i}.w`) : ''
                             const comentarioItem = `R${i}` in wb.Sheets.porDistancia ? eval(`wb.Sheets.porDistancia.R${i}.v`) : ''
 
-                            const emissoes = calcPorDistancia(tipoFrotaItem[0], anoFrotaItem, qtdItem3, props.data.fonteEmissao, props.fatoresEmissao, 'Por distancia')
+                            const emissoes = calcPorDistancia(tipoFrotaItem[0], anoFrotaItem, qtdItem3, states.fonteEmissao, fatoresEmissao, 'Por distancia')
 
                             const data = {
-                                company_id: props.data.company_id,
-                                unid_id: props.data.unid_id,
-                                unidSetorPrimario: props.data.unidSetorPrimario,
-                                unidName: props.data.unidName,
-                                anoInventario: props.data.anoInventario,
-                                escopo: props.data.escopo,
-                                fonteEmissao: props.data.fonteEmissao,
-                                transporte: props.transporte,
+                                company_id: token.company_id,
+                                unid_id: states.unid_id,
+                                unidSetorPrimario: states.unidSetorPrimario,
+                                unidName: states.unidName,
+                                anoInventario: states.anoInventario,
+                                escopo: states.escopo,
+                                fonteEmissao: states.fonteEmissao,
+                                transporte: states.transporte,
                                 tipoCalculo: 'Por distancia',
                                 comentario: comentarioItem,
                                 code: newCode,
@@ -463,21 +468,21 @@ export default function TransporteRodoviario(props) {
                             id="Por tipo e ano de fabricacao"
                             value="Por tipo e ano de fabricacao"
                             onClick={e => { props.setTipoCalculo(e.target.value); scrollDown("passo5") }}>
-                            Cálculo de emissões por tipo e ano de fabricação da frota de veículos no ano de {props.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por tipo e ano de fabricacao")}</span>
+                            Cálculo de emissões por tipo e ano de fabricação da frota de veículos no ano de {states.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por tipo e ano de fabricacao")}</span>
                         </button>
                         <button type="button"
                             className="transporteRodoviario btn btn-outline-escopo1 invetoryBtnFont"
                             id="Por tipo de combustivel"
                             value="Por tipo de combustivel"
                             onClick={e => { props.setTipoCalculo(e.target.value); scrollDown("passo5") }}>
-                            Cálculo de emissões por tipo de combustível no ano de {props.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por tipo de combustivel")}</span>
+                            Cálculo de emissões por tipo de combustível no ano de {states.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por tipo de combustivel")}</span>
                         </button>
                         <button type="button"
                             className="transporteRodoviario btn btn-outline-escopo1 invetoryBtnFont"
                             id="Por distancia e peso da carga"
                             value="Por distancia e peso da carga"
                             onClick={e => { props.setTipoCalculo(e.target.value); scrollDown("passo5") }}>
-                            Cálculo de emissões por distância percorrida no ano de {props.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por distancia")}</span>
+                            Cálculo de emissões por distância percorrida no ano de {states.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por distancia")}</span>
                         </button>
 
                     </div>
