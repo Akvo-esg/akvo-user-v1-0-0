@@ -1,10 +1,8 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import Cookie from 'js-cookie'
-import jwt from 'jsonwebtoken'
-import { tipoCalculoStore } from "../../../../store/InventoryStates/InventoryStates.actions";
+import { tipoEmissaoStore } from "../../../../store/InventoryStates/InventoryStates.actions";
 
-export default function Transporte() {
+export default function Transportes() {
     
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
@@ -63,28 +61,28 @@ export default function Transporte() {
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Rodoviário"
                             value="Transporte Rodoviário"
-                            onClick={e => { dispatch(tipoCalculoStore(e.target.value)) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Rodoviário <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Rodoviário")}</span>
                         </button>
                         <button type="button"
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Ferroviário"
                             value="Transporte Ferroviário"
-                            onClick={e => { dispatch(tipoCalculoStore(e.target.value)) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Ferroviário <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Ferroviário")}</span>
                         </button>
                         <button type="button"
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Hidroviário"
                             value="Transporte Hidroviário"
-                            onClick={e => { dispatch(tipoCalculoStore(e.target.value)) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Hidroviário <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Hidroviário")}</span>
                         </button>
                         <button type="button"
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Aéreo"
                             value="Transporte Aéreo"
-                            onClick={e => { dispatch(tipoCalculoStore(e.target.value)) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Aéreo <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Aéreo")}</span>
                         </button>
                     </div>

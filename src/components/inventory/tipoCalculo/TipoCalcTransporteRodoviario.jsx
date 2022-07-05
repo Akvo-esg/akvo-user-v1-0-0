@@ -32,6 +32,10 @@ export default function TransporteRodoviario(props) {
     const states = useSelector(state => state.inventoryStates)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const token = jwt.decode(Cookie.get('auth'))
+    console.log(list)
+    console.log(states)
+    console.log(fatoresEmissao);
+    
 
     //List items
     const [code, setCode] = useState('')

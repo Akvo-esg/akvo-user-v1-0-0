@@ -42,6 +42,7 @@ import { getValues } from '../store/FatoresEmissao/FatoresEmissao.actions';
 export default function Inventory() {
 
     // Redux variables // inventory list
+    //TODO: Fix list, não ta chamando a função expecífica da lista.
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const dispatch = useDispatch()
@@ -275,9 +276,8 @@ export default function Inventory() {
                                                 <>
                                                     <InventoryCards>
                                                         <h5 className='h5_title mb-0' id='passo4'>Passo 4</h5>
-                                                        <Transportes
-                                                            setTipoEmissao={(value) => { setTipoEmissao(value) }}/>
-                                                        {tipoEmissao === "Transporte Rodoviário" && (
+                                                        <Transportes />
+                                                        {states.tipoEmissao === "Transporte Rodoviário" && (
                                                             <TipoCalcTransporteRodoviario data={{ userConfig }}
                                                                 setTipoCalculo={(value) => { setTipoCalculo(value) }}/>
 
