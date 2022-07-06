@@ -691,7 +691,7 @@ export default function FerroviarioTable(props) {
 
     return (
         <>
-            {renderInventoryTable(inventario)}
+            {renderInventoryTable(inventory)}
         </>
     )
 }

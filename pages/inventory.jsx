@@ -264,7 +264,6 @@ export default function Inventory() {
                                                     </InventoryCards>
                                                     <InventoryCards>
                                                         <FontesEstacionariasDeCombustaoTable data={{  userConfig }}
-                                                            fatoresEmissao={fatoresEmissao} inventario={inventario} title
                                                             save={() => save(list, company_id)}
                                                             forceUpdate={() => setForceUpdate(forceUpdate + 1)}
                                                             updateList={() => dataFunction(company_id)} />

@@ -128,7 +128,7 @@ export default function TransporteFerriavio(props) {
 	const handleCode = (oldCode) => {
 		const code = inventoryCode(
 			list,
-			states.inventario,
+			inventory,
 			states.fonteEmissao,
 			"TRN",
 			oldCode
