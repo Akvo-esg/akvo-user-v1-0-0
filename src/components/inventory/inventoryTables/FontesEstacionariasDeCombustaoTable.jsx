@@ -23,18 +23,17 @@ import jwt from 'jsonwebtoken'
 import { useSelector, useDispatch } from "react-redux";
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
-
+    
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const token = jwt.decode(Cookie.get('auth'))
-
+    
     useEffect(() => {
         handleToolTip();
     });
-
 
     //Edit Data Base Itens
     const [deleteElemCodeDB, setDeleteElemCodeDB] = useState(null)

@@ -1,14 +1,18 @@
 import { useEffect } from "react"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { tipoEmissaoStore } from "../../../../store/InventoryStates/InventoryStates.actions";
 
-export default function TransporteTranspDist(props) {
-
+export default function Transportes() {
+    
+    const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
+    const states = useSelector(state => state.inventoryStates)
+
 
     useEffect(() => {
         activeButtons()
 
-    }, [props.tipoEmissao,])
+    }, [states.tipoEmissao,])
 
     const activeButtons = () => {
         const elements = document.getElementsByClassName("transportes")
@@ -19,13 +23,12 @@ export default function TransporteTranspDist(props) {
             }
         }
 
-        if (props.tipoEmissao === "Transporte Rodoviário" ||
-            props.tipoEmissao === "Transporte Ferroviário" ||
-            props.tipoEmissao === "Transporte Hidroviário" ||
-            props.tipoEmissao === "Transporte Aéreo") {
-            // console.log("tipoEmissao", props.tipoEmissao)
+        if (states.tipoEmissao === "Transporte Rodoviário" ||
+            states.tipoEmissao === "Transporte Ferroviário" ||
+            states.tipoEmissao === "Transporte Hidroviário" ||
+            states.tipoEmissao === "Transporte Aéreo") {
 
-            document.getElementById(`${props.tipoEmissao}`).classList.add("active")
+            document.getElementById(`${states.tipoEmissao}`).classList.add("active")
         } else {
 
             return
@@ -35,9 +38,9 @@ export default function TransporteTranspDist(props) {
     const showQtd = (value) => {
 
         let transporteQtd = list.filter(elem => elem.tipoEmissao === value)
-            .filter(elem => elem.unid_id === props.unid_id)
-            .filter(elem => elem.anoInventario === props.anoInventario)
-            .filter(elem => elem.fonteEmissao === props.fonteEmissao)
+            .filter(elem => elem.unid_id === states.unid_id)
+            .filter(elem => elem.anoInventario === states.anoInventario)
+            .filter(elem => elem.fonteEmissao === states.fonteEmissao)
 
         return transporteQtd.length > 0 ? transporteQtd.length : ''
 
@@ -58,28 +61,28 @@ export default function TransporteTranspDist(props) {
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Rodoviário"
                             value="Transporte Rodoviário"
-                            onClick={e => { props.setTipoEmissao(e.target.value) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Rodoviário <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Rodoviário")}</span>
                         </button>
                         <button type="button"
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Ferroviário"
                             value="Transporte Ferroviário"
-                            onClick={e => { props.setTipoEmissao(e.target.value) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Ferroviário <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Ferroviário")}</span>
                         </button>
                         <button type="button"
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Hidroviário"
                             value="Transporte Hidroviário"
-                            onClick={e => { props.setTipoEmissao(e.target.value) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Hidroviário <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Hidroviário")}</span>
                         </button>
                         <button type="button"
                             className="transportes btn btn-outline-escopo1 invetoryBtnFont"
                             id="Transporte Aéreo"
                             value="Transporte Aéreo"
-                            onClick={e => { props.setTipoEmissao(e.target.value) }}>
+                            onClick={e => { dispatch(tipoEmissaoStore(e.target.value)) }}>
                             Transporte Aéreo <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Transporte Aéreo")}</span>
                         </button>
                     </div>

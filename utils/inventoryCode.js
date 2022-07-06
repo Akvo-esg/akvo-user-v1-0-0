@@ -2,10 +2,14 @@
 
 
 export default function inventoryCode(list, inventario, fonteEmissao, sigla, oldCode) {
+    // TODO: list, inventario, fonteEmissao tao chegando undefined, arrumar.
+    console.log('list',list)
+    console.log('inventario', inventario)
+    console.log('fonteEmissao', fonteEmissao)
+    console.log(sigla, oldCode)
     const CodeExists = list.find(elem => elem.fonteEmissao === fonteEmissao)
     const CodeInventoryList = inventario.find(elem => elem.fonteEmissao === fonteEmissao)
 
-    console.log(list, inventario, fonteEmissao, sigla, oldCode, CodeExists)
 
     if (CodeExists && !oldCode) {
         // console.log('111', CodeExists)

@@ -1,9 +1,16 @@
 import { useEffect } from "react"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 export default function TransporteRodoviarioTranspDist(props) {
 
+    const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
+    const states = useSelector(state => state.inventoryStates)
+    const inventory = useSelector(state => state.inventoryDB)
+    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+    const token = jwt.decode(Cookie.get('auth'))
 
     useEffect(() => {
         activeButtons()
