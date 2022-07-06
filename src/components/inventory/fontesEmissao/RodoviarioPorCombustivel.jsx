@@ -151,7 +151,7 @@ export default function RodoviarioPorCombustivel() {
         const isValid = validate()
 
         if (isValid) {
-            const emissoes = calc(combustivelId, consumoAnual, states.fonteEmissao, states.fatoresEmissao, states.tipoCalculo)
+            const emissoes = calc(combustivelId, consumoAnual, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
             const data = {
                 company_id: token.company_id,
@@ -323,7 +323,7 @@ export default function RodoviarioPorCombustivel() {
 
     const handleEdit = (index) => {
 
-        const emissoes = calc(editCombustivelId, editConsumoAnual, states.fonteEmissao, states.fatoresEmissao, states.tipoCalculo)
+        const emissoes = calc(editCombustivelId, editConsumoAnual, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
         const newList = list
 

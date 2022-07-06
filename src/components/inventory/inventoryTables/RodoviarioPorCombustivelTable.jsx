@@ -30,9 +30,16 @@ if (typeof window !== "undefined") {
 }
 import { idCompare } from "../../../../utils/permission"
 import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useSelector } from "react-redux"
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 
 export default function FontesEstacionariasDeCombustao(props) {
+    const states = useSelector(state => state.inventoryStates)
+    const inventory = useSelector(state => state.inventoryDB)
+    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+    const token = jwt.decode(Cookie.get('auth'))
 
     useEffect(() => {
         handleToolTip();
@@ -162,17 +169,17 @@ export default function FontesEstacionariasDeCombustao(props) {
 
         if (isValid) {
 
-            const emissoes = calc(editCombustivelIdDB, editConsumoAnualDB, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+            const emissoes = calc(editCombustivelIdDB, editConsumoAnualDB, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
             const data = {
-                unid_id: props.data.unid_id,
-                unidSetorPrimario: props.data.unidSetorPrimario,
-                unidName: props.data.unidName,
-                anoInventario: props.data.anoInventario,
-                escopo: props.data.escopo,
-                fonteEmissao: props.data.fonteEmissao,
-                tipoEmissao: props.tipoEmissao,
-                tipoCalculo: props.tipoCalculo,
+                unid_id: token.unid_id,
+                unidSetorPrimario: states.unidSetorPrimario,
+                unidName: states.unidName,
+                anoInventario: states.anoInventario,
+                escopo: states.escopo,
+                fonteEmissao: states.fonteEmissao,
+                tipoEmissao: states.tipoEmissao,
+                tipoCalculo: states.tipoCalculo,
                 code: editCodeDB,
                 identificador: editIdentificadorDB,
                 descricaoFrota: editdescricaoFrotaDB,
@@ -202,13 +209,13 @@ export default function FontesEstacionariasDeCombustao(props) {
                 emissoesN2O_B: emissoes.emissoesN2O_B,
                 emissoesTotais: emissoes.emissoesTotais,
                 emissoesBiogenicas: emissoes.emissoesBiogenicas,
-                userName: `${props.data.userName} ${props.data.userLastName}`,
-                user_id: props.data.user_id,
+                userName: `${states.userName} ${states.userLastName}`,
+                user_id: states.user_id,
                 dateAdded: editDateAddedDB,
                 dateUpdated: new Date()
             }
 
-            await axios.patch(`${baseUrl()}/api/editInventory/${props.data.company_id}`, data)
+            await axios.patch(`${baseUrl()}/api/editInventory/${states.company_id}`, data)
                 .then(setLoadingEditDB(true))
                 .then(res => {
                     setLoadingEditDB(false)
@@ -229,11 +236,11 @@ export default function FontesEstacionariasDeCombustao(props) {
     const handleDeleteDB = async (code) => {
 
         const data = {
-            company_id: props.data.company_id,
+            company_id: states.company_id,
             code: code
         }
 
-        await axios.post(`${baseUrl()}/api/editInventory/${props.data.company_id}`, data)
+        await axios.post(`${baseUrl()}/api/editInventory/${states.company_id}`, data)
             .then(res => { props.updateList() })
     }
 
@@ -246,23 +253,23 @@ export default function FontesEstacionariasDeCombustao(props) {
             if (list[i].fonteEmissao === "Transportes" &&
                 list[i].tipoEmissao === "Transporte Rodoviário" &&
                 list[i].tipoCalculo === "Por tipo de combustivel" &&
-                list[i].unid_id === props.data.unid_id &&
-                list[i].anoInventario === props.data.anoInventario &&
+                list[i].unid_id === states.unid_id &&
+                list[i].anoInventario === states.anoInventario &&
                 !showMore && inventoryList.length < 5) {
                 inventoryList.push(list[i])
             } else if (list[i].fonteEmissao === "Transportes" &&
                 list[i].tipoEmissao === "Transporte Rodoviário" &&
                 list[i].tipoCalculo === "Por tipo de combustivel" &&
-                list[i].unid_id === props.data.unid_id &&
-                list[i].anoInventario === props.data.anoInventario &&
+                list[i].unid_id === states.unid_id &&
+                list[i].anoInventario === states.anoInventario &&
                 showMore) {
                 inventoryList.push(list[i])
             }
             if (list[i].fonteEmissao === "Transportes" &&
                 list[i].tipoEmissao === "Transporte Rodoviário" &&
                 list[i].tipoCalculo === "Por tipo de combustivel" &&
-                list[i].unid_id === props.data.unid_id &&
-                list[i].anoInventario === props.data.anoInventario) {
+                list[i].unid_id === states.unid_id &&
+                list[i].anoInventario === states.anoInventario) {
                 inventoryLength++
             }
         }
@@ -271,7 +278,7 @@ export default function FontesEstacionariasDeCombustao(props) {
             return (
 
                 <div className="mt-5 fadeItem">
-                    <h6 className="h5_title">Últimos dados cadastrados em {props.data.unidName} / {props.data.anoInventario}</h6>
+                    <h6 className="h5_title">Últimos dados cadastrados em {states.unidName} / {states.anoInventario}</h6>
 
                     <div className="table-responsive">
                         <small>
@@ -614,7 +621,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                             )}
                                                         </td>
                                                         <td>
-                                                            {idCompare(props.data.user_id, elem.user_id, props.data.userConfig, props.data.userStatus) && (
+                                                            {idCompare(states.user_id, elem.user_id, states.userConfig, states.userStatus) && (
                                                                 <div className="btn-group btn-group-sm" role="group">
                                                                     <span type="button" className="mx-2"
                                                                         data-bs-toggle-tooltip="true" data-bs-placement="bottom" title="Editar"
@@ -688,7 +695,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
     return (
         <>
-            {renderInventoryTable(props.inventario)}
+            {renderInventoryTable(inventory)}
         </>
     )
 }
