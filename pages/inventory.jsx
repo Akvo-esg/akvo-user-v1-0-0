@@ -321,7 +321,7 @@ export default function Inventory() {
                                                             </InventoryCards>
                                                         </>
                                                     )}
-                                                    {states.stipoCalculo === "Por tipo e ano de fabricacao" && (
+                                                    {states.tipoCalculo === "Por tipo e ano de fabricacao" && (
                                                         <>
                                                             <InventoryCards>
                                                                 <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>

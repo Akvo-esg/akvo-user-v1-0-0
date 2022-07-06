@@ -31,11 +31,12 @@ export default function TransporteRodoviario(props) {
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+    const inventory = useSelector(state => state.inventoryDB)
     const token = jwt.decode(Cookie.get('auth'))
     console.log(list)
     console.log(states)
     console.log(fatoresEmissao);
-    
+
 
     //List items
     const [code, setCode] = useState('')
@@ -45,7 +46,7 @@ export default function TransporteRodoviario(props) {
 
     useEffect(() => {
         handleCode()
-    }, [, list, states.inventario])
+    }, [, list, states.inventory])
 
     useEffect(() => {
         activeButtons()
@@ -122,7 +123,7 @@ export default function TransporteRodoviario(props) {
 
 
     const handleCode = (oldCode) => {
-        const code = inventoryCode(list, states.inventario, states.fonteEmissao, "TRN", oldCode)
+        const code = inventoryCode(list, inventory, states.fonteEmissao, "TRN", oldCode)
         setCode(code)
         return code
     }
