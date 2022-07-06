@@ -23,13 +23,19 @@ if (typeof window !== "undefined") {
 import { useSelector, useDispatch } from "react-redux";
 import { add, addMany, update, remove, removeMany } from '../../../../store/InventoryList/InventoryList.actions'
 import inventoryCode from "../../../../utils/inventoryCode"
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 
 
-export default function FontesEstacionariasDeCombustao(props) {
+export default function RodoviarioPorCombustivel() {
 
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
+    const states = useSelector(state => state.inventoryStates)
+    const inventory = useSelector(state => state.inventoryDB)
+    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+    const token = jwt.decode(Cookie.get('auth'))
 
     //List Items
     const [code, setCode] = useState('')
@@ -83,7 +89,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
     useEffect(() => {
         handleCode()
-    }, [, list, props.inventario])
+    }, [, list, inventory])
 
     useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
@@ -121,7 +127,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
 
     const handleCode = (oldCode) => {
-        const code = inventoryCode(list, props.inventario, props.data.fonteEmissao, "TRN", oldCode)
+        const code = inventoryCode(list, inventory, states.fonteEmissao, "TRN", oldCode)
         setCode(code)
         return code
     }
@@ -145,18 +151,18 @@ export default function FontesEstacionariasDeCombustao(props) {
         const isValid = validate()
 
         if (isValid) {
-            const emissoes = calc(combustivelId, consumoAnual, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+            const emissoes = calc(combustivelId, consumoAnual, states.fonteEmissao, states.fatoresEmissao, states.tipoCalculo)
 
             const data = {
-                company_id: props.data.company_id,
-                unid_id: props.data.unid_id,
-                unidSetorPrimario: props.data.unidSetorPrimario,
-                unidName: props.data.unidName,
-                anoInventario: props.data.anoInventario,
-                escopo: props.data.escopo,
-                fonteEmissao: props.data.fonteEmissao,
-                tipoEmissao: props.tipoEmissao,
-                tipoCalculo: props.tipoCalculo,
+                company_id: token.company_id,
+                unid_id: states.unid_id,
+                unidSetorPrimario: states.unidSetorPrimario,
+                unidName: states.unidName,
+                anoInventario: states.anoInventario,
+                escopo: states.escopo,
+                fonteEmissao: states.fonteEmissao,
+                tipoEmissao: states.tipoEmissao,
+                tipoCalculo: states.tipoCalculo,
                 comentario: '',
                 code,
                 descricaoFrota,
@@ -317,7 +323,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
     const handleEdit = (index) => {
 
-        const emissoes = calc(editCombustivelId, editConsumoAnual, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+        const emissoes = calc(editCombustivelId, editConsumoAnual, states.fonteEmissao, states.fatoresEmissao, states.tipoCalculo)
 
         const newList = list
 
@@ -560,8 +566,8 @@ export default function FontesEstacionariasDeCombustao(props) {
                             if (elem.fonteEmissao === "Transportes" &&
                                 elem.tipoEmissao === "Transporte Rodoviário" &&
                                 elem.tipoCalculo === "Por tipo de combustivel" &&
-                                elem.anoInventario === props.data.anoInventario &&
-                                elem.unid_id === props.data.unid_id) {
+                                elem.anoInventario === states.anoInventario &&
+                                elem.unid_id === states.unid_id) {
                                 return (
                                     <>
                                         {editElementIndex === index ?
