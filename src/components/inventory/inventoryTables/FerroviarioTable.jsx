@@ -36,7 +36,6 @@ import jwt from 'jsonwebtoken'
 
 export default function FerroviarioTable(props) {
 
-    
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
