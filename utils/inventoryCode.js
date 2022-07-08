@@ -1,16 +1,26 @@
 
 
 
-export default function inventoryCode(list, inventario, fonteEmissao, sigla, oldCode) {
+export default function inventoryCode(list, inventario, fonteEmissao, oldCode) {
     // TODO: list, inventario, fonteEmissao tao chegando undefined, arrumar.
-    console.log('list',list)
-    console.log('inventario', inventario)
-    console.log('fonteEmissao', fonteEmissao)
-    console.log(sigla, oldCode)
+
+    const sigla = siglaGenerator(fonteEmissao)
+
     const CodeExists = list.find(elem => elem.fonteEmissao === fonteEmissao)
     const CodeInventoryList = inventario.find(elem => elem.fonteEmissao === fonteEmissao)
 
-
+    if (!CodeExists && CodeInventoryList && !oldCode) {
+        // console.log('222')
+        const CODE = CodeInventoryList.code.split('-')
+        const newNumber = parseInt(CODE[1]) + 1
+        const newCode = sigla + '-' + newNumber.toString()
+        const isValid = verifyCode(newCode, list, inventario)
+        if (isValid) {
+            return newCode
+        } else {
+            inventoryCode(list, inventario, fonteEmissao, sigla, newCode)
+        }
+    }
     if (CodeExists && !oldCode) {
         // console.log('111', CodeExists)
         const CODE = CodeExists.code.split('-')
@@ -22,18 +32,8 @@ export default function inventoryCode(list, inventario, fonteEmissao, sigla, old
         } else {
             inventoryCode(list, inventario, fonteEmissao, sigla, newCode)
         }
-    } else if (!CodeExists && CodeInventoryList && !oldCode) {
-        // console.log('222')
-        const CODE = CodeInventoryList.code.split('-')
-        const newNumber = parseInt(CODE[1]) + 1
-        const newCode = sigla + '-' + newNumber.toString()
-        const isValid = verifyCode(newCode, list, inventario)
-        if (isValid) {
-            return newCode
-        } else {
-            inventoryCode(list, inventario, fonteEmissao, sigla, newCode)
-        }
-    } else if (oldCode) {
+    }
+    if (oldCode) {
         // console.log('333', oldCode)
         const CODE = oldCode.split('-')
         const newNumber = parseInt(CODE[1]) + 1
@@ -60,5 +60,15 @@ const verifyCode = (code, list, inventario) => {
         return false
     } else {
         return true
+    }
+}
+
+const siglaGenerator = (fonteEmissao) => {
+    switch (fonteEmissao) {
+        case "Fontes Estacionárias de Combustão":
+            return "FEC"
+
+        case "Transportes":
+            return "TRN"
     }
 }

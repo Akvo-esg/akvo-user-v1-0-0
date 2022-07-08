@@ -27,7 +27,7 @@ export default function inventoryStatesReducer(state = {}, action) {
         case 'TIPO_CALCULO':
             return { ...state, tipoCalculo: action.payload }
 
-        case 'RESET':
+        case 'RESET_STATES':
             return action.payload
 
         default: return state

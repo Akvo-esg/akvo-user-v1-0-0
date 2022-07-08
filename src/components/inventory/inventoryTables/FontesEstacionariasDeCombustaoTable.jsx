@@ -95,7 +95,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
 
         if (isValid) {
 
-            const emissoes = calc(editCombustivelDB, editQtdDB, states.unidSetorPrimario, states.fonteEmissao, props.fatoresEmissao)
+            const emissoes = calc(editCombustivelDB, editQtdDB, states.unidSetorPrimario, states.fonteEmissao, fatoresEmissao)
 
             const data = {
                 company_id: token.company_id,
@@ -519,7 +519,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
 
                                                                 <td>
                                                                     {idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) && (
-                                                                        <div className="btn-group btn-group-sm" role="group">
+                                                                        <div className="btn-group btn-group-sm" role="group" disabled={idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) }> 
                                                                             <span type="button" className="mx-2"
                                                                                 data-bs-toggle-tooltip="true" data-bs-placement="bottom" title="Editar"
                                                                                 onClick={() => editDB(elem)}>

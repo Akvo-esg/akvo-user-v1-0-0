@@ -6,18 +6,20 @@ import inventoryList from '../store/InventoryList/InventoryList.reducer'
 import inventoryStates from '../store/InventoryStates/InventoryStates.reducer'
 import inventoryDB from '../store/InventoryDB/InventoryDB.reducer'
 import fatoresEmissao from '../store/FatoresEmissao/FatoresEmissao.reducer'
+import userConfig from '../store/UserConfig/UserConfig.reducer'
 
 const rootReducer = combineReducers({
     inventoryList: inventoryList,
     inventoryStates: inventoryStates,
     inventoryDB: inventoryDB,
-    fatoresEmissao: fatoresEmissao
+    fatoresEmissao: fatoresEmissao,
+    userConfig: userConfig
 })
 
 const persistedReducer = persistReducer({
     key: 'root',
     storage,
-    blacklist: ['inventoryStates', 'inventoryDB', 'fatoresEmissao']
+    blacklist: ['inventoryStates', 'inventoryDB', 'fatoresEmissao', 'userConfig']
 }, rootReducer)
 
 export const store = createStore(persistedReducer)

@@ -11,11 +11,13 @@ export default function inventoryListReducer(state = [], action) {
             return updatedFilter
 
         case 'REMOVE':
-            const filtered = action.payload[0].filter(elem => elem.code !== action.payload[1])
+            const filtered = action.payload[0].filter((elem, index) => index !== action.payload[1])
             return filtered
 
         case 'REMOVE_MANY':
-            const filteredMany = action.payload[0].filter(listElem => action.payload[1].indexOf(listElem.code) === -1)
+            const deleteIndexArray = []
+            action.payload[1].map(elem => deleteIndexArray.push(elem.index))
+            const filteredMany = action.payload[0].filter((elem, index) => !deleteIndexArray.includes(index))
             return filteredMany
 
         case 'RESET':

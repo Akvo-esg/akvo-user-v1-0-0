@@ -65,9 +65,9 @@ export function tipoCalculoStore(data) {
     }
 }
 
-export function reset() {
+export function resetStates() {
     return {
-        type: 'RESET',
+        type: 'RESET_STATES',
         payload: {
             unid_id: "",
             unidName: "",

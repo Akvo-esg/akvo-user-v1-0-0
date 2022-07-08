@@ -5,14 +5,21 @@ import scrollDown from "../../../utils/scrollDown"
 import { anoInventarioStore, escopoStore, fonteEmissaoStore, unidNameStore, unid_idStore } from '../../../store/InventoryStates/InventoryStates.actions'
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
+import axios from 'axios'
+import inventoryCode from '../../../utils/inventoryCode'
+import baseUrl from '../../../utils/baseUrl'
+import { reset } from '../../../store/InventoryList/InventoryList.actions'
+import { getInventory } from '../../../store/InventoryDB/InventoryDB.actions'
 
 export default function ShoppingCart(props) {
 
     const list = useSelector(state => state.inventoryList)
+    const inventory = useSelector(state => state.inventoryDB)
     const token = jwt.decode(Cookie.get('auth'))
     const dispatch = useDispatch()
 
     const [inventarioList, setInventarioList] = useState([])
+    const [saveLoading, setSaveLoading] = useState(false)
 
     useEffect(() => {
         if (list.length > 0) {
@@ -21,6 +28,19 @@ export default function ShoppingCart(props) {
             setInventarioList([])
         }
     }, [list.length])
+
+    const dataFunction = async () => {
+
+        await axios.get(`${baseUrl()}/api/company`, {
+            params: {
+                company_id: token.company_id
+            }
+        }).then(res => {
+            dispatch(getInventory(res.data.inventory))
+            return
+        })
+
+    }
 
     const scrollToTable = (elem, item) => {
 
@@ -102,6 +122,46 @@ export default function ShoppingCart(props) {
 
     }
 
+    const inventorySave = async () => {
+
+        setSaveLoading(true)
+
+        const newList = []
+        let newCode = inventoryCode(newList, inventory, list[list.length - 1].fonteEmissao)
+
+        console.log(newCode)
+
+        for (let i = list.length - 1; i >= 0; i--) {
+            newList.unshift(
+                {
+                    ...list[i],
+                    userName: `${token.firstName} ${token.lastName}`,
+                    user_id: token.sub,
+                    dateAdded: new Date(),
+                    dateUpdated: '',
+                    code: newCode
+                }
+            )
+            newCode = inventoryCode(newList, inventory, list[i].fonteEmissao, newCode)
+        }
+
+        const data = {
+            newList,
+            company_id: token.company_id
+        }
+
+        await axios.patch(`${baseUrl()}/api/inventory`, data)
+            .then(res => {
+                dataFunction(token.company_id)
+                dispatch(reset([]))
+                setSaveLoading(false)
+                // return false
+            }).catch(e => {
+                setSaveLoading(false)
+                // return false
+            })
+    }
+
 
     return (
         <aside className="shoppingCart_content shadow fadeItem">
@@ -162,7 +222,7 @@ export default function ShoppingCart(props) {
                 <div className="col-12 d-flex align-items-end justify-content-center ms-5">
                     <div className="position-absolute">
 
-                        {props.saveLoading ?
+                        {saveLoading ?
 
 
                             <button className="btn btn-sm btn-success font-weight-bold shoppingCart_button" disabled>
@@ -172,7 +232,7 @@ export default function ShoppingCart(props) {
                             </button>
                             :
                             <button className="btn btn-sm btn-success font-weight-bold sticky-bottom" id="saveButton" disabled={list.length === 0}
-                                onClick={async () => props.save()}> SALVAR
+                                onClick={() => inventorySave()}> SALVAR
                             </button>
                         }
                     </div>

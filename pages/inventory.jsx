@@ -15,7 +15,6 @@ import ShoppingCart from '../src/components/inventory/ShoppingCart';
 import Escopo from '../src/components/inventory/Escopo';
 import InventoryCards from '../src/components/inventory/InventoryCards';
 import FontesEmissoes from '../src/components/inventory/FontesEmissoes';
-import scrollDown from '../utils/scrollDown';
 import InventoryHeader from '../src/components/inventory/InventoryHeader';
 import FontesEstacionariasDeCombustao from '../src/components/inventory/fontesEmissao/FontesEstacionariasDeCombustao';
 import FontesEstacionariasDeCombustaoTable from '../src/components/inventory/inventoryTables/FontesEstacionariasDeCombustaoTable';
@@ -52,9 +51,7 @@ export default function Inventory() {
     const [user_id, setUser_id] = useState(null)
     const [company_id, setCompany_id] = useState(null)
     const [userName, setUserName] = useState(null)
-    const [userProfilePic, setUserProfilePic] = useState(null)
     const [userLastName, setUserLastName] = useState(null)
-    const [permissions, setPermissions] = useState([])
     const [userStatus, setUserStatus] = useState('')
 
 
@@ -104,9 +101,7 @@ export default function Inventory() {
                 setUser_id(data.sub)
                 setUserName(data.firstName)
                 setUserLastName(data.lastName)
-                setUserProfilePic(data.profilePicture)
                 setCompany_id(data.company_id)
-                setPermissions(data.permissions)
                 setUserStatus(data.userStatus)
                 dataFunction(data.company_id)
             } else {
@@ -229,7 +224,7 @@ export default function Inventory() {
                                         <UnitsList unidList={unidList} yearSelect />
                                     </InventoryCards>
 
-                                    <ShoppingCart save={() => save(list, company_id)} saveLoading={saveLoading}/>
+                                    <ShoppingCart save={() => save(list, company_id)} saveLoading={saveLoading} />
 
                                     {states.unid_id && states.anoInventario && (
                                         <InventoryCards>
@@ -263,9 +258,8 @@ export default function Inventory() {
                                                         <FontesEstacionariasDeCombustao />
                                                     </InventoryCards>
                                                     <InventoryCards>
-                                                        <FontesEstacionariasDeCombustaoTable data={{  userConfig }}
-                                                            fatoresEmissao={fatoresEmissao} inventario={inventario} title
-                                                            save={() => save(list, company_id)}
+                                                        <FontesEstacionariasDeCombustaoTable data={{ userConfig }}
+                                                            title save={() => save(list, company_id)}
                                                             forceUpdate={() => setForceUpdate(forceUpdate + 1)}
                                                             updateList={() => dataFunction(company_id)} />
                                                     </InventoryCards>
@@ -279,8 +273,7 @@ export default function Inventory() {
                                                         <Transportes />
                                                         {states.tipoEmissao === "Transporte Rodoviário" && (
                                                             <TipoCalcTransporteRodoviario data={{ userConfig }}
-                                                                setTipoCalculo={(value) => { setTipoCalculo(value) }}/>
-
+                                                                setTipoCalculo={(value) => { setTipoCalculo(value) }} />
                                                         )}
                                                     </InventoryCards>
 
