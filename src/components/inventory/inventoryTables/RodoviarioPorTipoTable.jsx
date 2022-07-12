@@ -34,8 +34,6 @@ import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 
 export default function RodoviarioPorTipoTable(props) {
-    const dispatch = useDispatch()
-    const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
