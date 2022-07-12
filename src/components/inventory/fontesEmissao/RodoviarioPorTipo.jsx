@@ -129,7 +129,7 @@ export default function RodoviarioPorTipo(props) {
 
 
     const handleCode = (oldCode) => {
-        const code = inventoryCode(list, inventory, states.fonteEmissao, "TRN", oldCode)
+        const code = inventoryCode(list, inventory, states.fonteEmissao, oldCode)
         setCode(code)
         return code
     }

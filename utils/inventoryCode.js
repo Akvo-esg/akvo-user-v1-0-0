@@ -2,8 +2,7 @@
 
 
 export default function inventoryCode(list, inventario, fonteEmissao, oldCode) {
-    // TODO: list, inventario, fonteEmissao tao chegando undefined, arrumar.
-
+    
     const sigla = siglaGenerator(fonteEmissao)
 
     const CodeExists = list.find(elem => elem.fonteEmissao === fonteEmissao)
