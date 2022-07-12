@@ -25,11 +25,17 @@ if (typeof window !== "undefined") {
 import { useSelector, useDispatch } from "react-redux";
 import { add, addMany, update, remove, removeMany } from '../../../../store/InventoryList/InventoryList.actions'
 import inventoryCode from "../../../../utils/inventoryCode"
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 export default function RodoviarioPorTipo(props) {
 
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
+    const states = useSelector(state => state.inventoryStates)
+    const inventory = useSelector(state => state.inventoryDB)
+    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+    const token = jwt.decode(Cookie.get('auth'))
 
     //List Items
     const [code, setCode] = useState('')
@@ -85,7 +91,7 @@ export default function RodoviarioPorTipo(props) {
 
     useEffect(() => {
         handleCode()
-    }, [, list, props.inventario])
+    }, [, list, inventory])
 
     useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
@@ -123,7 +129,7 @@ export default function RodoviarioPorTipo(props) {
 
 
     const handleCode = (oldCode) => {
-        const code = inventoryCode(list, props.inventario, props.data.fonteEmissao, "TRN", oldCode)
+        const code = inventoryCode(list, inventory, states.fonteEmissao, "TRN", oldCode)
         setCode(code)
         return code
     }
@@ -148,18 +154,18 @@ export default function RodoviarioPorTipo(props) {
 
         if (isValid) {
 
-            const emissoes = calc(tipoFrotaId, anoFrota, consumoAnual, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+            const emissoes = calc(tipoFrotaId, anoFrota, consumoAnual, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
             const data = {
-                company_id: props.data.company_id,
-                unid_id: props.data.unid_id,
-                unidSetorPrimario: props.data.unidSetorPrimario,
-                unidName: props.data.unidName,
-                anoInventario: props.data.anoInventario,
-                escopo: props.data.escopo,
-                fonteEmissao: props.data.fonteEmissao,
-                tipoEmissao: props.tipoEmissao,
-                tipoCalculo: props.tipoCalculo,
+                company_id: token.company_id,
+                unid_id: states.unid_id,
+                unidSetorPrimario: states.unidSetorPrimario,
+                unidName: states.unidName,
+                anoInventario: states.anoInventario,
+                escopo: states.escopo,
+                fonteEmissao: states.fonteEmissao,
+                tipoEmissao: states.tipoEmissao,
+                tipoCalculo: states.tipoCalculo,
                 comentario: '',
                 code,
                 identificador,
@@ -334,7 +340,7 @@ export default function RodoviarioPorTipo(props) {
 
     const handleEdit = (index) => {
 
-        const emissoes = calc(editTipoFrotaId, editAnoFrota, editConsumoAnual, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+        const emissoes = calc(editTipoFrotaId, editAnoFrota, editConsumoAnual, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
         const newList = list
 
@@ -467,7 +473,7 @@ export default function RodoviarioPorTipo(props) {
 
                                 </div>
                             </th>
-                            <th className="text-center akvo-text-escopo1">Código</th>
+                            {/* <th className="text-center akvo-text-escopo1">Código</th> */}
                             <th className="text-center akvo-text-escopo1">Identificador</th>
                             <th className="text-center akvo-text-escopo1">Descrição da frota</th>
                             <th className="text-center akvo-text-escopo1">Tipo da frota de veículos</th>
@@ -580,8 +586,8 @@ export default function RodoviarioPorTipo(props) {
                             if (elem.fonteEmissao === "Transportes" &&
                                 elem.tipoEmissao === "Transporte Rodoviário" &&
                                 elem.tipoCalculo === "Por tipo e ano de fabricacao" &&
-                                elem.anoInventario === props.data.anoInventario &&
-                                elem.unid_id === props.data.unid_id) {
+                                elem.anoInventario === states.anoInventario &&
+                                elem.unid_id === states.unid_id) {
                                 return (
                                     <>
                                         {editElementIndex === index ?
@@ -711,9 +717,9 @@ export default function RodoviarioPorTipo(props) {
                                                         <label className="custom-control-label" htmlFor={elem.code}></label>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                     <small>{elem.code}</small>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     {elem.identificador}
                                                 </td>
@@ -769,7 +775,7 @@ export default function RodoviarioPorTipo(props) {
                                                             <div className="modal-dialog modal-dialog-centered" role="document">
                                                                 <div className="modal-content">
                                                                     <div className="modal-header">
-                                                                        <h5 className="h5_modal" id="exampleModalLabel">Comentar o registro {commentElemCode} </h5>
+                                                                        <h5 className="h5_modal" id="exampleModalLabel">Comentar o registro &#34;{commentElemCode}&#34; </h5>
                                                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setEditComentario(null)}>
                                                                         </button>
                                                                     </div>
