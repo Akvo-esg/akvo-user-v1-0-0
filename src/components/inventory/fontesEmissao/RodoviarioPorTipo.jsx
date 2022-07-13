@@ -28,7 +28,7 @@ import inventoryCode from "../../../../utils/inventoryCode"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 
-export default function RodoviarioPorTipo(props) {
+export default function RodoviarioPorTipo() {
 
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)

@@ -244,7 +244,6 @@ export default function TransporteFerriavio() {
 	};
 
 	const validate = () => {
-		console.log(descricaoFrota, combustivelId, periodoConsumo, consumoAnual);
 		if (descricaoFrota && combustivelId && periodoConsumo && consumoAnual > 0) {
 			return true;
 		} else {

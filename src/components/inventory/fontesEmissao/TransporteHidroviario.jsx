@@ -29,10 +29,16 @@ import {
 	removeMany,
 } from "../../../../store/InventoryList/InventoryList.actions";
 import inventoryCode from "../../../../utils/inventoryCode";
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 export default function TransporteHidroviario(props) {
-	const dispatch = useDispatch();
-	const list = useSelector((state) => state.inventoryList);
+	const dispatch = useDispatch()
+	const list = useSelector(state => state.inventoryList)
+	const states = useSelector(state => state.inventoryStates)
+	const inventory = useSelector(state => state.inventoryDB)
+	const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+	const token = jwt.decode(Cookie.get('auth'))
 
 	//List Items
 	const [code, setCode] = useState("");
@@ -86,7 +92,7 @@ export default function TransporteHidroviario(props) {
 
 	useEffect(() => {
 		handleCode();
-	}, [, list, props.inventario]);
+	}, [, list, inventory]);
 
 	useEffect(() => {
 		let boxes = document.getElementsByClassName("listElement");
@@ -124,8 +130,8 @@ export default function TransporteHidroviario(props) {
 	const handleCode = (oldCode) => {
 		const code = inventoryCode(
 			list,
-			props.inventario,
-			props.data.fonteEmissao,
+			inventory,
+			states.fonteEmissao,
 			"TRN",
 			oldCode
 		);
@@ -152,26 +158,24 @@ export default function TransporteHidroviario(props) {
 
 		const isValid = validate();
 
-        console.log('Handle Submit', combustivelId, consumoAnual, props.data.fonteEmissao, props.fatoresEmissao);  
-
 		if (isValid) {
 			const emissoes = calc(
 				combustivelId,
 				consumoAnual,
-				props.data.fonteEmissao,
-				props.fatoresEmissao,
+				states.fonteEmissao,
+				states.fatoresEmissao,
 				"Por tipo de combustivel"
 			);
 
 			const data = {
-				company_id: props.data.company_id,
-				unid_id: props.data.unid_id,
-				unidSetorPrimario: props.data.unidSetorPrimario,
-				unidName: props.data.unidName,
-				anoInventario: props.data.anoInventario,
-				escopo: props.data.escopo,
-				fonteEmissao: props.data.fonteEmissao,
-				tipoEmissao: props.tipoEmissao,
+				company_id: token.company_id,
+				unid_id: states.unid_id,
+				unidSetorPrimario: states.unidSetorPrimario,
+				unidName: states.unidName,
+				anoInventario: states.anoInventario,
+				escopo: states.escopo,
+				fonteEmissao: states.fonteEmissao,
+				tipoEmissao: states.tipoEmissao,
 				tipoCalculo: "Por tipo de combustivel",
 				comentario: "",
 				code,
@@ -332,9 +336,9 @@ export default function TransporteHidroviario(props) {
 		const emissoes = calc(
 			editCombustivelId,
 			editConsumoAnual,
-			props.data.fonteEmissao,
-			props.fatoresEmissao,
-			props.tipoCalculo
+			states.fonteEmissao,
+			fatoresEmissao,
+			states.tipoCalculo
 		);
 
 		const newList = list;
@@ -622,8 +626,8 @@ export default function TransporteHidroviario(props) {
 							if (
 								elem.fonteEmissao === "Transportes" &&
 								elem.tipoEmissao === "Transporte Hidroviário" &&
-								elem.anoInventario === props.data.anoInventario &&
-								elem.unid_id === props.data.unid_id
+								elem.anoInventario === states.anoInventario &&
+								elem.unid_id === states.unid_id
 							) {
 								return (
 									<>

@@ -215,7 +215,7 @@ export default function FerroviarioTable(props) {
                 dateUpdated: new Date()
             }
 
-            await axios.patch(`${baseUrl()}/api/editInventory`, data)
+            await axios.patch(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
                 .then(setLoadingEditDB(true))
                 .then(res => {
                     setLoadingEditDB(false)
@@ -240,7 +240,7 @@ export default function FerroviarioTable(props) {
             code: code
         }
 
-        await axios.post(`${baseUrl()}/api/editInventory`, data)
+        await axios.post(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
             .then(res => { props.updateList() })
     }
 
@@ -453,8 +453,6 @@ export default function FerroviarioTable(props) {
                                                                             onClick={() => {
                                                                                 setTimeout(() => {
                                                                                     handleEditDB(editCodeDB)
-                                                                                    console.log("APERTOU O BOTAO", editCodeDB, editComentarioDB )
-                                                                                    
                                                                                 }, 10)
                                                                             }}>
                                                                             <FontAwesomeIcon icon={faCheck} />

@@ -25,9 +25,6 @@ import {
     faUpload,
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
-if (typeof window !== "undefined") {
-    const bootstrap = require("bootstrap");
-}
 import { idCompare } from "../../../../utils/permission"
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import { useSelector } from "react-redux"
@@ -172,7 +169,8 @@ export default function RodoviarioPorCombustivelTable(props) {
             const emissoes = calc(editCombustivelIdDB, editConsumoAnualDB, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
             const data = {
-                unid_id: token.unid_id,
+                company_id: token.company_id,
+                unid_id: states.unid_id,
                 unidSetorPrimario: states.unidSetorPrimario,
                 unidName: states.unidName,
                 anoInventario: states.anoInventario,
@@ -366,9 +364,9 @@ export default function RodoviarioPorCombustivelTable(props) {
                                                 {editCodeDB === elem.code ?
                                                     <>
                                                         <tr className="fadeItem" key={`edit${index}`}>
-                                                            {/* <td scopo="row">
+                                                            <td scopo="row">
                                                                 <small>{elem.code}</small>
-                                                            </td> */}
+                                                            </td>
                                                             <td>
                                                                 <input className="form-control form-control-sm" type="text" value={editIdentificadorDB} onChange={e => setEditIdentificadorDB(e.target.value)} />
                                                             </td>

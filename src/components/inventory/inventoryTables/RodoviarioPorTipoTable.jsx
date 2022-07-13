@@ -219,7 +219,7 @@ export default function RodoviarioPorTipoTable(props) {
                 dateUpdated: new Date()
             }
 
-            await axios.patch(`${baseUrl()}/api/editInventory`, data)
+            await axios.patch(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
                 .then(setLoadingEditDB(true))
                 .then(res => {
                     setLoadingEditDB(false)
@@ -244,7 +244,7 @@ export default function RodoviarioPorTipoTable(props) {
             code: code
         }
 
-        await axios.post(`${baseUrl()}/api/editInventory`, data)
+        await axios.post(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
             .then(res => { props.updateList() })
 
     }
