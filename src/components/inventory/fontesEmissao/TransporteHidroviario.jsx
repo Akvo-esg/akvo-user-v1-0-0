@@ -17,9 +17,6 @@ import {
 	faUpload,
 	faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-if (typeof window !== "undefined") {
-	const bootstrap = require("bootstrap");
-}
 import { useSelector, useDispatch } from "react-redux";
 import {
 	add,
@@ -132,7 +129,6 @@ export default function TransporteHidroviario(props) {
 			list,
 			inventory,
 			states.fonteEmissao,
-			"TRN",
 			oldCode
 		);
 		setCode(code);
@@ -163,7 +159,7 @@ export default function TransporteHidroviario(props) {
 				combustivelId,
 				consumoAnual,
 				states.fonteEmissao,
-				states.fatoresEmissao,
+				fatoresEmissao,
 				"Por tipo de combustivel"
 			);
 
@@ -501,7 +497,7 @@ export default function TransporteHidroviario(props) {
 					<tbody className='escopo1_bg'>
 						<tr>
 							<td></td>
-							<td className='text-center text-light '>{code}</td>
+
 							<td>
 								<input
 									type='text'

@@ -19,9 +19,6 @@ import {
     faUpload,
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
-if (typeof window !== "undefined") {
-    const bootstrap = require("bootstrap");
-}
 import { useSelector, useDispatch } from "react-redux";
 import { add, addMany, update, remove, removeMany } from '../../../../store/InventoryList/InventoryList.actions'
 import inventoryCode from "../../../../utils/inventoryCode"
@@ -486,9 +483,6 @@ export default function RodoviarioPorTipo() {
                     <tbody className="escopo1_bg">
                         <tr>
                             <td></td>
-                            <td className="text-center text-light ">
-                                {code}
-                            </td>
                             <td>
                                 <input type="text" className="form-control form-control-sm"
                                     id="identificadorItem"
@@ -717,9 +711,9 @@ export default function RodoviarioPorTipo() {
                                                         <label className="custom-control-label" htmlFor={elem.code}></label>
                                                     </div>
                                                 </td>
-                                                {/* <td>
+                                                <td>
                                                     <small>{elem.code}</small>
-                                                </td> */}
+                                                </td>
                                                 <td>
                                                     {elem.identificador}
                                                 </td>

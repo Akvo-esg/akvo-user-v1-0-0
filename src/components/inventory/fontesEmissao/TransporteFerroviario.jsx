@@ -498,7 +498,7 @@ export default function TransporteFerriavio() {
 					<tbody className='escopo1_bg'>
 						<tr>
 							<td></td>
-							<td className='text-center text-light '>{code}</td>
+
 							<td>
 								<input
 									type='text'

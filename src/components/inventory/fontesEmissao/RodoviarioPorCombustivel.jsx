@@ -466,9 +466,6 @@ export default function RodoviarioPorCombustivel() {
                     <tbody className="escopo1_bg">
                         <tr>
                             <td></td>
-                            <td className="text-center text-light ">
-                                {code}
-                            </td>
                             <td>
                                 <input type="text" className="form-control form-control-sm"
                                     id="identificadorItem"

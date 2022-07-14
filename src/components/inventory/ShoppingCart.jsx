@@ -142,7 +142,7 @@ export default function ShoppingCart(props) {
                     code: newCode
                 }
             )
-            // newCode = inventoryCode(newList, inventory, list[i].fonteEmissao, newCode)
+            newCode = inventoryCode(newList, inventory, list[i].fonteEmissao, newCode)
         }
 
         const data = {
