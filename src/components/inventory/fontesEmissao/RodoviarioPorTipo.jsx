@@ -589,9 +589,6 @@ export default function RodoviarioPorTipo() {
                                                 <tr key={`edit${index}`}>
                                                     <td scopo="row"></td>
                                                     <td scopo="row">
-                                                        <small>{elem.code}</small>
-                                                    </td>
-                                                    <td scopo="row">
                                                         <input className="form-control form-control-sm" type="text" value={editIdentificador} onChange={e => setEditIdentificador(e.target.value)} />
                                                     </td>
                                                     <td scopo="row">
@@ -710,9 +707,6 @@ export default function RodoviarioPorTipo() {
                                                         <input type="checkbox" className="custom-control-input listElement" id={elem.code} value={elem.code} onChange={e => deleteItemSelect(e.target.checked, e.target.value)} />
                                                         <label className="custom-control-label" htmlFor={elem.code}></label>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <small>{elem.code}</small>
                                                 </td>
                                                 <td>
                                                     {elem.identificador}
