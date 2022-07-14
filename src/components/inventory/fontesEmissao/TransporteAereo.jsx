@@ -635,9 +635,6 @@ export default function TransporteAereo(props) {
                         <tr key={`edit${index}`}>
                           <td scopo="row"></td>
                           <td scopo="row">
-                            <small>{elem.code}</small>
-                          </td>
-                          <td scopo="row">
                             <input
                               className="form-control form-control-sm"
                               type="text"
@@ -803,9 +800,6 @@ export default function TransporteAereo(props) {
                               htmlFor={elem.code}
                             ></label>
                           </div>
-                        </td>
-                        <td>
-                          <small>{elem.code}</small>
                         </td>
                         <td>{elem.identificador}</td>
                         <td>{elem.descricaoFrota}</td>
