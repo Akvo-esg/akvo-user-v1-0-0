@@ -24,7 +24,6 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from '../../../../styles/Popover.module.scss'
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
-
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)

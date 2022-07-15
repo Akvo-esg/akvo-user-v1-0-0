@@ -9,6 +9,7 @@ import $ from 'jquery'
 import axios from 'axios'
 import baseUrl from '../utils/baseUrl'
 import sidebarHide from "../utils/sidebarHide";
+import { useSelector } from 'react-redux'
 
 
 if (typeof window !== "undefined") {
@@ -18,6 +19,8 @@ if (typeof window !== "undefined") {
 
 
 export default function Home() {
+
+  const token1 = jwt.decode(Cookie.get('auth'))
 
 
   const [userFirstName, setUserFirstName] = useState('')
@@ -100,6 +103,8 @@ export default function Home() {
 
     <div>
       <Title title={`Olá, ${userFirstName}!`} subtitle={'Qual sua meta de sustentabilidade para hoje?'} />
+
+      <h5>{token1.userConfig}</h5>
 
       <div className="notifications">
 
