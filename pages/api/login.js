@@ -42,6 +42,7 @@ export default async (req, res) => {
                             userStatus: person.userStatus,
                             dateLimit: person.dateLimit,
                             userConfig: userConfig,
+                            // aleatory coment
                             companyLogo: companyLogo ? companyLogo : '',
                             active: person.active
                         }
