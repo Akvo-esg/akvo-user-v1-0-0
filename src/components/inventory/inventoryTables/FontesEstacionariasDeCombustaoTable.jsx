@@ -24,8 +24,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
     
-    const dispatch = useDispatch()
-    const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)

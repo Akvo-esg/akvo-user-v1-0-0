@@ -27,9 +27,11 @@ export default function Login(props) {
     const [passwordRecovery, setPasswordRecovery] = useState(false)
     const [emailSent, setEmailSent] = useState(false)
     const [passwordSpinner, setPasswordSpinner] = useState(false)
+    const [showRecaptcha, setShowRecaptcha] = useState(false)
 
     useEffect(() => {
         dispatch(reset([]))
+        setShowRecaptcha(true)
     }, [])
 
     useEffect(() => {
@@ -195,7 +197,7 @@ export default function Login(props) {
                                 <p type='button' className={`${styles.p} text-light`} onClick={() => { setPasswordRecovery(!passwordRecovery); setLoginError('') }}>Esqueci minha senha</p>
                             </div>
                         </div>
-                        {(!login || login) && (
+                        {!showRecaptcha || showRecaptcha && (
                             < ReCAPTCHA
                                 ref={refRecaptcha}
                                 sitekey='6LdNe4UeAAAAAJzd9uyd1cKlOyM6pzpGL4hF9BVX' />

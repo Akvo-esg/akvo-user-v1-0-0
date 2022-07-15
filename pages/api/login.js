@@ -15,13 +15,21 @@ export default async (req, res) => {
 
         const person = await db.collection('users').findOne({ email })
 
+        let userConfig
+        let companyLogo
+
         if (!person) {
             res.status(400).json({ error: 'Wrong e-mail or password.' })
         } else {
 
+            if (person.company_id) {
+                const company = await db.collection('companies').findOne(ObjectID(person.company_id))
+                userConfig = company.userConfig
+                companyLogo = company.profileImageUrl
+            }
+
             bcrypt.compare(password, person.password, async function (err, result) {
                 if (!err && result) {
-
 
                     if (person.active && (!person.dateLimit || person.dateLimit.toJSON().slice(0, 10) > new Date().toJSON().slice(0, 10))) {
                         const clains = {
@@ -33,6 +41,8 @@ export default async (req, res) => {
                             permissions: person.permissions,
                             userStatus: person.userStatus,
                             dateLimit: person.dateLimit,
+                            userConfig: userConfig,
+                            companyLogo: companyLogo ? companyLogo : '',
                             active: person.active
                         }
 

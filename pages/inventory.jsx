@@ -224,7 +224,7 @@ export default function Inventory() {
                                         <UnitsList unidList={unidList} yearSelect />
                                     </InventoryCards>
 
-                                    <ShoppingCart save={() => save(list, company_id)} saveLoading={saveLoading} />
+                                    <ShoppingCart />
 
                                     {states.unid_id && states.anoInventario && (
                                         <InventoryCards>
