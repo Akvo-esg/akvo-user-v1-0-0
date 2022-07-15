@@ -30,13 +30,13 @@ import FerroviarioCombList from "../combustiveis/FerroviarioCombList";
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 
-export default function TransporteFerriavio(props) {
+export default function TransporteFerriavio() {
 	const dispatch = useDispatch()
-    const list = useSelector(state => state.inventoryList)
-    const states = useSelector(state => state.inventoryStates)
-    const inventory = useSelector(state => state.inventoryDB)
-    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
-    const token = jwt.decode(Cookie.get('auth'))
+	const list = useSelector(state => state.inventoryList)
+	const states = useSelector(state => state.inventoryStates)
+	const inventory = useSelector(state => state.inventoryDB)
+	const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+	const token = jwt.decode(Cookie.get('auth'))
 
 	//List Items
 	const [code, setCode] = useState("");
@@ -90,7 +90,7 @@ export default function TransporteFerriavio(props) {
 
 	useEffect(() => {
 		handleCode();
-	}, [, list, states.inventario]);
+	}, [, list, inventory]);
 
 	useEffect(() => {
 		let boxes = document.getElementsByClassName("listElement");
@@ -128,9 +128,8 @@ export default function TransporteFerriavio(props) {
 	const handleCode = (oldCode) => {
 		const code = inventoryCode(
 			list,
-			states.inventario,
+			inventory,
 			states.fonteEmissao,
-			"TRN",
 			oldCode
 		);
 		setCode(code);
@@ -245,7 +244,6 @@ export default function TransporteFerriavio(props) {
 	};
 
 	const validate = () => {
-		console.log(descricaoFrota, combustivelId, periodoConsumo, consumoAnual);
 		if (descricaoFrota && combustivelId && periodoConsumo && consumoAnual > 0) {
 			return true;
 		} else {

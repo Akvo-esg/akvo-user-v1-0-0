@@ -19,10 +19,10 @@ export function update(data) {
     }
 }
 
-export function remove(list, code) {
+export function remove(list, index) {
     return {
         type: 'REMOVE',
-        payload: [list, code]
+        payload: [list, index]
     }
 }
 export function removeMany(list, deleteManyArray) {

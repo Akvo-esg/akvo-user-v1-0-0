@@ -26,59 +26,23 @@ import { userStatusName, editCompanyView, freeAccountRedirect, userRestriction }
 export default function Nav({ children }) {
 
     const list = useSelector(state => state.inventoryList)
+    const token = jwt.decode(Cookie.get('auth'))
 
-    const [user_id, setUser_id] = useState('')
-    const [userStatus, setUserStatus] = useState('')
-    const [userFirstName, setUserFirstName] = useState('')
-    const [userLastName, setUserLastName] = useState('')
-    const [userProfilePicture, setUserProfilePicture] = useState('')
-    const [token, setToken] = useState('')
-    const [userConfig, setUserConfig] = useState('')
-    const [dateLimit, setDateLimit] = useState('')
-    const [companyEdit, setCompanyEdit] = useState(false)
     const [companyLogo, setCompanyLogo] = useState('')
 
-
     useEffect(() => {
-        setToken(Cookie.get('auth'))
-
+        dataFunction(token.company_id)
     }, [])
 
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
 
-            setUser_id(data.sub)
-            setUserFirstName(data.firstName)
-            setUserLastName(data.lastName)
-            setUserStatus(data.userStatus)
-            setUserProfilePicture(data.profilePicture)
-            setDateLimit(data.dateLimit)
-            if (data.company_id) {
-                dataFunction(data.company_id, data.userStatus)
-            }
-        } else {
-            return
-        }
-    }, [token])
-
-    const dataFunction = async (company_id, userStatus) => {
+    const dataFunction = async (company_id) => {
 
         await axios.get(`${baseUrl()}/api/company`, {
             params: {
                 company_id: company_id
             }
         }).then(res => {
-            setUserConfig(res.data.userConfig)
-            // console.log(res.data)
             setCompanyLogo(res.data.profileImageUrl)
-            if (res.data.userConfig === "avancado" && userStatus !== "admGlobal") {
-                setCompanyEdit(false)
-            } else if (res.data.userConfig === "basico" && userStatus !== "admGlobal" && userStatus !== "admLocal") {
-                setCompanyEdit(false)
-            } else {
-                setCompanyEdit(true)
-            }
         }).catch(e => {
             console.log(e)
         })
@@ -102,10 +66,10 @@ export default function Nav({ children }) {
                 <div className=" row align-items-center my-4 fadeItem">
                     <div className="col">
                         <div className="row align-items-center">
-                            <Link href={`/editProfile/${user_id}`}>
+                            <Link href={`/editProfile/${token.sub}`}>
                                 <div className="d-flex justify-content-center">
                                     <span type="button">
-                                        <img src={userProfilePicture ? userProfilePicture : "./userIcon.png"} alt="User profile picture" className={`${styles.img} shadow`} />
+                                        <img src={token.profilePicture ? token.profilePicture : "./userIcon.png"} alt="User profile picture" className={`${styles.img} shadow`} />
                                     </span>
                                 </div>
                             </Link>
@@ -115,20 +79,20 @@ export default function Nav({ children }) {
                                 <span type="button" className="row align-items-center mt-3">
 
                                     <div className="d-flex justify-content-center">
-                                        <img src={`${companyLogo}`} style={{ "height": "25px" }} className="" />
+                                        <img src={`${token.companyLogo}`} style={{ "height": "25px" }} className="" />
                                     </div>
                                 </span>
                             </Link>
                         )}
                         <div className="row align-items-center mt-2">
                             <div className={`d-flex justify-content-center ${styles.userName}`}>
-                                {userFirstName} {userLastName}
+                                {token.firstName} {token.lastName}
                             </div>
                         </div>
 
                         <div className="row align-items-center">
                             <div className="d-flex justify-content-center">
-                                <small className={styles.userStatus}>{userStatusName(userStatus, userConfig)}</small>
+                                <small className={styles.userStatus}>{userStatusName(token.userStatus, token.userConfig)}</small>
                             </div>
                         </div>
 
@@ -158,7 +122,7 @@ export default function Nav({ children }) {
                         <ul className="collapse" id="InicioItem" aria-labelledby="InicioItem" data-bs-parent="#siberbarMenu">
                         </ul>
                     </li>
-                    {userRestriction(['auditor'], userStatus) && (
+                    {userRestriction(['auditor'], token.userStatus) && (
                         <li>
                             <Link href="/inventory">
                                 <span className="font-weight-bold" type='button'
@@ -210,14 +174,14 @@ export default function Nav({ children }) {
                             </div>
                         </span>
                         <ul className="collapse" id="gestaoEmissoesCollapse" aria-labelledby="gestaoEmissoesCollapse" data-bs-parent="#siberbarMenu">
-                            {userRestriction(['auditor'], userStatus) && (
+                            {userRestriction(['auditor'], token.userStatus) && (
                                 <li li >
                                     <Link href="/geeEmissions">
                                         <a>Emissões GEE</a>
                                     </Link>
                                 </li>
                             )}
-                            {userRestriction(['user', 'auditor'], userStatus) && (
+                            {userRestriction(['user', 'auditor'], token.userStatus) && (
                                 <li>
                                     <Link href="/inventoryManagement">
                                         <a>Metas e Planos de Ação</a>
@@ -232,7 +196,7 @@ export default function Nav({ children }) {
                         </ul>
 
                     </li>
-                    {userRestriction(['auditor'], userStatus) && (
+                    {userRestriction(['auditor'], token.userStatus) && (
                         <li >
                             <span className="font-weight-bold btn-toggle collapsed "
                                 type='button' id='unidadeButton'
@@ -254,7 +218,7 @@ export default function Nav({ children }) {
                                 </div>
                             </span>
                             <ul className="collapse" id='unidades' aria-labelledby="unidades" data-bs-parent="#siberbarMenu">
-                                {userRestriction(['user', 'auditor'], userStatus) && (
+                                {userRestriction(['user', 'auditor'], token.userStatus) && (
 
                                     <li>
                                         <Link href="/unityAdd">
@@ -271,7 +235,7 @@ export default function Nav({ children }) {
                         </li>
                     )}
 
-                    {userRestriction(['auditor'], userStatus) && (
+                    {userRestriction(['auditor'], token.userStatus) && (
 
                         <li>
                             <span className="font-weight-bold btn-toggle"
@@ -293,9 +257,9 @@ export default function Nav({ children }) {
                                 </div>
                             </span>
                             <ul className="collapse" id='usuarios' aria-labelledby="usuarios" data-bs-parent="#siberbarMenu">
-                                {userRestriction(['user', 'auditor'], userStatus) && (
+                                {userRestriction(['user', 'auditor'], token.userStatus) && (
                                     <li>
-                                        <Link href={freeAccountRedirect(dateLimit, '/userAdd')}>
+                                        <Link href={freeAccountRedirect(token.dateLimit, '/userAdd')}>
                                             <a>Adicionar usuário</a>
                                         </Link>
                                     </li>
@@ -329,7 +293,7 @@ export default function Nav({ children }) {
                         </span>
                         <ul className="collapse" id='configuracoes' aria-labelledby="configuracoes" data-bs-parent="#siberbarMenu">
                             <li>
-                                <Link href={`/editProfile/${user_id}`}>
+                                <Link href={`/editProfile/${token.sub}`}>
                                     <a>Editar Perfil</a>
                                 </Link>
                             </li>
@@ -338,7 +302,7 @@ export default function Nav({ children }) {
                                     <a>Alterar Senha</a>
                                 </Link>
                             </li>
-                            {userRestriction(['user', 'auditor'], userStatus) && editCompanyView(userStatus, userConfig) && (
+                            {userRestriction(['user', 'auditor'], token.userStatus) && editCompanyView(token.userStatus, token.userConfig) && (
                                 <li>
                                     <Link href="/companyEdit">
                                         <a>Editar Instituição</a>

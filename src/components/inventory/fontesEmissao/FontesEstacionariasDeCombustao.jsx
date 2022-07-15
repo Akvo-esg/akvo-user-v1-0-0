@@ -50,8 +50,8 @@ export default function FontesEstacionariasDeCombustao(props) {
     const [editCombustivelName, setEditCombustivelName] = useState('')
     const [editQtd, setEditQtd] = useState('')
     const [editUnidade, setEditUnidade] = useState('')
-    const [deleteElemCode, setDeleteElemCode] = useState('')
-    const [commentElemCode, setCommentElemCode] = useState('')
+    const [deleteElemIndex, setDeleteElemIndex] = useState('')
+    const [commentElemDesc, setCommentElemDesc] = useState('')
     const [commentElemIndex, setCommentElemIndex] = useState('')
     const [editComentario, setEditComentario] = useState('')
     const [deleteManyArray, setDeleteManyArray] = useState([])
@@ -60,11 +60,9 @@ export default function FontesEstacionariasDeCombustao(props) {
     const [excelError, setExcelError] = useState('')
 
     useEffect(() => {
-        handleCode()
-    }, [, list, inventory])
-
-    useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
+        let selectAllBox = document.getElementsByClassName('selectAll')
+        selectAllBox[0].checked = false
         for (var i = 0; i < boxes.length; i++) {
             boxes[i].checked = false
             setDeleteManyArray([])
@@ -84,12 +82,6 @@ export default function FontesEstacionariasDeCombustao(props) {
         }
     }, [deleteManyArray])
 
-
-    const handleCode = (oldCode) => {
-        const code = inventoryCode(list, inventory, states.fonteEmissao, "FEC", oldCode)
-        setCode(code)
-        return code
-    }
 
     const multiplosValores = (elem) => {
         const array = elem.split(",")
@@ -114,7 +106,6 @@ export default function FontesEstacionariasDeCombustao(props) {
                 escopo: states.escopo,
                 fonteEmissao: states.fonteEmissao,
                 comentario: '',
-                code,
                 identificador,
                 descricaoFonte,
                 qtd,
@@ -142,7 +133,6 @@ export default function FontesEstacionariasDeCombustao(props) {
             $('#combustivelSelect').each(function () {
                 this.value = ''
             })
-            handleCode(data.code)
         } else {
             return
         }
@@ -164,7 +154,7 @@ export default function FontesEstacionariasDeCombustao(props) {
         dispatch(update(oldList))
 
         setEditComentario('')
-        setCommentElemCode('')
+        setCommentElemDesc('')
 
         return
     }
@@ -256,7 +246,6 @@ export default function FontesEstacionariasDeCombustao(props) {
         } else {
             return
         }
-
     }
 
     const multiplosValoresEdit = (elem) => {
@@ -287,7 +276,6 @@ export default function FontesEstacionariasDeCombustao(props) {
             var wb = XLSX.read(excelData, { type: 'array' })
 
             let newList = []
-            let newCode = code
 
             if (wb.Sheets.FEC) {
 
@@ -318,7 +306,6 @@ export default function FontesEstacionariasDeCombustao(props) {
                                 escopo: states.escopo,
                                 fonteEmissao: states.fonteEmissao,
                                 comentario: comentarioItem,
-                                code: newCode,
                                 identificador: identificadorItem,
                                 descricaoFonte: descricaoItem,
                                 qtd: qtdItem,
@@ -335,7 +322,6 @@ export default function FontesEstacionariasDeCombustao(props) {
                                 emissoesBiogenicas: emissoes.emissoesBiogenicas
                             }
                             newList.unshift(data)
-                            newCode = handleCode(newCode)
                         } else {
                             setExcelError(`Item "${descricaoItem}" preenchido incorretamente (linha ${i})`)
 
@@ -366,7 +352,10 @@ export default function FontesEstacionariasDeCombustao(props) {
         if (checked) {
             for (var i = 0; i < boxes.length; i++) {
                 boxes[i].checked = true
-                deleteArray.push(boxes[i].value)
+                deleteArray.push({
+                    index: i,
+                    descricao: boxes[i].value
+                })
                 setDeleteManyArray(deleteArray)
             }
         } else {
@@ -377,12 +366,15 @@ export default function FontesEstacionariasDeCombustao(props) {
         }
     }
 
-    const deleteItemSelect = (checked, code) => {
+    const deleteItemSelect = (checked, descricao, index) => {
         const deleteArray = deleteManyArray
         if (checked) {
-            setDeleteManyArray(deleteArray.concat([code]))
+            setDeleteManyArray(deleteArray.concat({
+                descricao,
+                index
+            }))
         } else {
-            setDeleteManyArray(deleteArray.filter(elem => elem !== code))
+            setDeleteManyArray(deleteArray.filter(elem => elem.index !== index))
         }
 
     }
@@ -390,7 +382,10 @@ export default function FontesEstacionariasDeCombustao(props) {
     const handleDeleteManyModal = () => {
         dispatch(removeMany(list, deleteManyArray))
         let boxes = document.getElementsByClassName('listElement')
+        let selectAllBox = document.getElementsByClassName('selectAll')
+        selectAllBox[0].checked = false
         for (var i = 0; i < boxes.length; i++) {
+            selectAllBox.checked = false
             boxes[i].checked = false
             setDeleteManyArray([])
         }
@@ -442,7 +437,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                         <tr className="py-2">
                             <th scope="col">
                                 <div className="form-check pb-0 mb-0">
-                                    <input type="checkbox" className="form-check-input listElement" id="customCheck1" value='' onChange={e => handleDeleteMany(e.target.checked)} />
+                                    <input type="checkbox" className="form-check-input selectAll" id="customCheck1" value='' onChange={e => handleDeleteMany(e.target.checked)} />
                                     <label className="form-check-label"></label>
                                     {deleteManyArray.length > 0 && (
                                         <span
@@ -456,20 +451,16 @@ export default function FontesEstacionariasDeCombustao(props) {
 
                                 </div>
                             </th>
-                            <th className="text-center akvo-text-escopo1">Código</th>
                             <th className="text-center akvo-text-escopo1">Identificador</th>
-                            <th className="text-center akvo-text-escopo1">Descrição da fonte</th>
-                            <th className="text-center akvo-text-escopo1">Combustível</th>
-                            <th className="text-center akvo-text-escopo1">Quantidade</th>
+                            <th className="text-center akvo-text-escopo1">Descrição da fonte*</th>
+                            <th className="text-center akvo-text-escopo1">Combustível*</th>
+                            <th className="text-center akvo-text-escopo1">Quantidade*</th>
                             <th className="text-center akvo-text-escopo1"></th>
                         </tr>
                     </thead>
                     <tbody className="escopo1_bg">
                         <tr>
                             <td></td>
-                            <td className="text-center text-light ">
-                                {code}
-                            </td>
                             <td>
                                 <input type="text" className="form-control form-control-sm"
                                     id="identificadorItem"
@@ -508,14 +499,12 @@ export default function FontesEstacionariasDeCombustao(props) {
                             if (elem.fonteEmissao === "Fontes Estacionárias de Combustão" &&
                                 elem.anoInventario === states.anoInventario &&
                                 elem.unid_id === states.unid_id) {
+
                                 return (
                                     <>
                                         {editElement === index ?
                                             <tr key={`edit${index}`}>
                                                 <td scopo="row"></td>
-                                                <td scopo="row" className="mt-1">
-                                                    {elem.code}
-                                                </td>
                                                 <td scopo="row">
                                                     <input className="form-control form-control-sm" type="text" value={editIdentificador} onChange={e => setEditIdentificador(e.target.value)} />
                                                 </td>
@@ -567,12 +556,9 @@ export default function FontesEstacionariasDeCombustao(props) {
                                             <tr className="fadeItem" key={`view${index}`}>
                                                 <td scopo="row">
                                                     <div className="form-check">
-                                                        <input type="checkbox" className="form-check-input listElement" id={elem.code} value={elem.code} onChange={e => deleteItemSelect(e.target.checked, e.target.value)} />
+                                                        <input type="checkbox" className="form-check-input listElement" id={elem.code} value={elem.descricaoFonte} onChange={e => deleteItemSelect(e.target.checked, e.target.value, index)} />
                                                         <label className="form-check-label"></label>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <small>{elem.code}</small>
                                                 </td>
                                                 <td>
                                                     {elem.identificador}
@@ -597,7 +583,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                             data-bs-toggle="modal" data-bs-placement="bottom"
                                                             title="Excluir" data-toggle-tooltip="true" data-bs-target="#deleteModal"
                                                             onClick={() => {
-                                                                setDeleteElemCode(elem.code)
+                                                                setDeleteElemIndex(index)
                                                             }}>
                                                             <FontAwesomeIcon icon={faTrashAlt} />
                                                         </span>
@@ -606,7 +592,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                             title="Comentar"
                                                             onClick={() => {
                                                                 setEditComentario(elem.comentario)
-                                                                setCommentElemCode(elem.code)
+                                                                setCommentElemDesc(elem.descricaoFonte)
                                                                 setCommentElemIndex(index)
                                                             }}>
                                                             <FontAwesomeIcon icon={faComment} />
@@ -622,7 +608,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                             <div className="modal-dialog modal-dialog-centered" role="document">
                                                                 <div className="modal-content">
                                                                     <div className="modal-header">
-                                                                        <h5 className="h5_modal" id="exampleModalLabel">Comentar o registro {commentElemCode} </h5>
+                                                                        <h5 className="h5_modal" id="exampleModalLabel">Comentar o registro &#34;{commentElemDesc}&#34; </h5>
                                                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setEditComentario(null)}>
                                                                         </button>
                                                                     </div>
@@ -669,13 +655,13 @@ export default function FontesEstacionariasDeCombustao(props) {
                         </div>
                         <div className="modal-body">
                             <p className="p">
-                                Tem certeza que deseja excluir o registro {deleteElemCode}?
+                                Tem certeza que deseja excluir este registro?
                             </p>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
                             <button type="buttom" className="btn btn-danger btn-sm" data-bs-dismiss="modal"
-                                onClick={() => dispatch(remove(list, deleteElemCode))}
+                                onClick={() => dispatch(remove(list, deleteElemIndex))}
                             >Excluir
                             </button>
                         </div>
@@ -694,7 +680,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                         <div className="modal-body">
                             <p className="p">
                                 Tem certeza que deseja excluir os registros:
-                                {deleteManyArray.map((elem, index) => <div key={index}>{elem}</div>)}
+                                {deleteManyArray.map((elem, index) => <div key={index}>&#8226; {elem.descricao}</div>)}
                             </p>
                         </div>
                         <div className="modal-footer">

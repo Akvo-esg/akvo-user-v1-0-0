@@ -5,6 +5,8 @@ export default function baseUrl() {
 
     //Produção
     const baseUrl = 'https://akvo-user-v1-0-0.vercel.app'
+    
+    //const baseUrl = 'https://akvo-user-v1-0-0.vercel.app'
 
     return baseUrl
 }

@@ -35,9 +35,6 @@ import jwt from 'jsonwebtoken'
 
 
 export default function FerroviarioTable(props) {
-
-    const dispatch = useDispatch()
-    const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
@@ -174,7 +171,8 @@ export default function FerroviarioTable(props) {
             const emissoes = calc(editCombustivelIdDB, editConsumoAnualDB, states.fonteEmissao, fatoresEmissao, "Por tipo de combustivel")
 
             const data = {
-                unid_id: token.unid_id,
+                company_id: token.company_id,
+                unid_id: states.unid_id,
                 unidSetorPrimario: states.unidSetorPrimario,
                 unidName: states.unidName,
                 anoInventario: states.anoInventario,
@@ -211,13 +209,13 @@ export default function FerroviarioTable(props) {
                 emissoesN2O_B: emissoes.emissoesN2O_B,
                 emissoesTotais: emissoes.emissoesTotais,
                 emissoesBiogenicas: emissoes.emissoesBiogenicas,
-                userName: `${states.userName} ${states.userLastName}`,
-                user_id: states.user_id,
+                userName: `${token.firstName} ${token.lastName}`,
+                user_id: token.sub,
                 dateAdded: editDateAddedDB,
                 dateUpdated: new Date()
             }
 
-            await axios.patch(`${baseUrl()}/api/editInventory/${states.company_id}`, data)
+            await axios.patch(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
                 .then(setLoadingEditDB(true))
                 .then(res => {
                     setLoadingEditDB(false)
@@ -238,11 +236,11 @@ export default function FerroviarioTable(props) {
     const handleDeleteDB = async (code) => {
 
         const data = {
-            company_id: states.company_id,
+            company_id: token.company_id,
             code: code
         }
 
-        await axios.post(`${baseUrl()}/api/editInventory/${states.company_id}`, data)
+        await axios.post(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
             .then(res => { props.updateList() })
     }
 
@@ -617,8 +615,8 @@ export default function FerroviarioTable(props) {
                                                             )}
                                                         </td>
                                                         <td>
-                                                            {idCompare(states.user_id, elem.user_id, states.userConfig, states.userStatus) && (
-                                                                <div className="btn-group btn-group-sm" role="group">
+                                                            {idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) && (
+                                                                <div className="btn-group btn-group-sm" role="group" disabled={ idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus)}>
                                                                     <span type="button" className="mx-2"
                                                                         data-bs-toggle-tooltip="true" data-bs-placement="bottom" title="Editar"
                                                                         onClick={() => editDB(elem)}>
@@ -691,7 +689,7 @@ export default function FerroviarioTable(props) {
 
     return (
         <>
-            {renderInventoryTable(inventario)}
+            {renderInventoryTable(inventory)}
         </>
     )
 }

@@ -17,9 +17,9 @@ export default authenticated(async (req, res) => {
 
     if (req.method === 'PATCH') {
 
-        const { list, company_id } = req.body
+        const { newList, company_id } = req.body
 
-        if (list) {
+        if (newList) {
 
             const { db } = await connect()
 
@@ -29,7 +29,7 @@ export default authenticated(async (req, res) => {
                 {
                     $push: {
                         inventory: {
-                            $each: list,
+                            $each: newList,
                             $position: 0
                         }
                     }

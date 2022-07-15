@@ -9,11 +9,16 @@ export default async (req, res) => {
 
     if (req.method === 'POST') {
 
-        const { user_id } = req.body
+        const { user_id, userConfig, imageUrl } = req.body
 
         const { db } = await connect()
 
         const person = await db.collection('users').findOne({ _id: ObjectId(user_id) })
+
+        const company = await db.collection('companies').findOne({ _id: ObjectId(person.company_id) })
+        const userConfigDB = company.userConfig
+        const companyLogoDB = company.profileImageUrl
+
 
         const clains = {
             sub: person._id,
@@ -21,15 +26,19 @@ export default async (req, res) => {
             lastName: person.lastName,
             company_id: person.company_id,
             profilePicture: person.profileImageUrl,
+            permissions: person.permissions,
             userStatus: person.userStatus,
-            dateLimit:person.dateLimit
+            dateLimit: person.dateLimit,
+            userConfig: userConfig ? userConfig : userConfigDB ? userConfigDB : '',
+            companyLogo: imageUrl ? imageUrl : companyLogoDB ? companyLogoDB : '',
+            active: person.active
         }
 
         const jwt = sign(clains, process.env.JWT_SECRET, {})
 
         const response = res.setHeader('Set-Cookie', cookie.serialize('auth', jwt, {
             httpOnly: false,
-            secure: process.env.NODE_ENV !== 'development', //em produção usar true
+            secure: process.env.NODE_ENV !== true, //em produção usar true
             sameSite: 'strict',
             maxAge: 3600,
             path: '/'

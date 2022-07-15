@@ -25,6 +25,7 @@ if (typeof window !== "undefined") {
 
 export default function CompanyEdit() {
 
+
     const [companyName, setCompanyName] = useState('')
     const [previewSource, setPreviewSource] = useState('')
     const [companyNameError, setCompanyNameError] = useState('')
@@ -160,7 +161,6 @@ export default function CompanyEdit() {
 
         const imageUrl = await createImageUrl()
 
-
         const company = {
             user_id,
             companyName,
@@ -175,7 +175,7 @@ export default function CompanyEdit() {
                 Cookie.remove('auth')
                 localStorage.removeItem('auth')
 
-                await axios.post(`${baseUrl()}/api/updateToken`, { user_id })
+                await axios.post(`${baseUrl()}/api/updateToken`, { user_id, userConfig, imageUrl })
                     .then(res => {
                         localStorage.setItem('auth', (Cookie.get('auth')))
                         Router.reload()
@@ -195,7 +195,8 @@ export default function CompanyEdit() {
             company_id,
             companyName,
             profileImageUrl: imageUrl ? imageUrl : '',
-            userConfig
+            userConfig,
+            user_id
         }
 
         await axios.patch(`${baseUrl()}/api/company`, company)
