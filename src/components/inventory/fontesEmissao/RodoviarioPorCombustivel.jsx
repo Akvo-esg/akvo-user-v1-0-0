@@ -434,7 +434,6 @@ export default function RodoviarioPorCombustivel() {
             </div>
 
             <small>
-
                 <table className="table table-striped table-hover table-sm fadeItem">
                     <thead>
                         <tr className="py-2">
@@ -466,9 +465,6 @@ export default function RodoviarioPorCombustivel() {
                     <tbody className="escopo1_bg">
                         <tr>
                             <td></td>
-                            <td className="text-center text-light ">
-                                {code}
-                            </td>
                             <td>
                                 <input type="text" className="form-control form-control-sm"
                                     id="identificadorItem"
@@ -573,9 +569,6 @@ export default function RodoviarioPorCombustivel() {
                                             <>
                                                 <tr key={`edit${index}`}>
                                                     <td scopo="row"></td>
-                                                    <td scopo="row">
-                                                        <small>{elem.code}</small>
-                                                    </td>
                                                     <td scopo="row">
                                                         <input className="form-control form-control-sm" type="text" value={editIdentificador} onChange={e => setEditIdentificador(e.target.value)} />
                                                     </td>
@@ -693,9 +686,6 @@ export default function RodoviarioPorCombustivel() {
                                                         <input type="checkbox" className="custom-control-input listElement" id={elem.code} value={elem.code} onChange={e => deleteItemSelect(e.target.checked, e.target.value)} />
                                                         <label className="custom-control-label" htmlFor={elem.code}></label>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <small>{elem.code}</small>
                                                 </td>
                                                 <td>
                                                     {elem.identificador}

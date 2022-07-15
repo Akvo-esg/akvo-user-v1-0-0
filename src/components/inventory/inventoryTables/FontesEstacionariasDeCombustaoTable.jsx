@@ -21,9 +21,9 @@ import { idCompare } from "../../../../utils/permission"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import { useSelector, useDispatch } from "react-redux";
+import styles from '../../../../styles/Popover.module.scss'
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
-    
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
@@ -503,7 +503,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                         </td>
                                                                     </>
                                                                 )}
-                                                                <td style={{ "overflow": "hidden" }} className="text-center">
+                                                                <td style={{ "overflow": "hidden" }} className={`text-center ${styles['parent-element']}`}>
                                                                     {elem.comentario && (
                                                                         <span type="button" tabIndex="0" className="position-relative" data-bs-trigger="focus" title={`Comentário`} data-bs-toggle="popover" data-bs-placement="left"
                                                                             data-bs-content={elem.comentario} >

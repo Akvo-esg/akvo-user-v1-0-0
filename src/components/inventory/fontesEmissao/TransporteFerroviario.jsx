@@ -478,7 +478,6 @@ export default function TransporteFerriavio() {
 									)}
 								</div>
 							</th>
-							<th className='text-center akvo-text-escopo1'>Código</th>
 							<th className='text-center akvo-text-escopo1'>Identificador</th>
 							<th className='text-center akvo-text-escopo1'>
 								Descrição da frota
@@ -498,7 +497,7 @@ export default function TransporteFerriavio() {
 					<tbody className='escopo1_bg'>
 						<tr>
 							<td></td>
-							<td className='text-center text-light '>{code}</td>
+
 							<td>
 								<input
 									type='text'
@@ -629,9 +628,6 @@ export default function TransporteFerriavio() {
 											<>
 												<tr key={`edit${index}`}>
 													<td scopo='row'></td>
-													<td scopo='row'>
-														<small>{elem.code}</small>
-													</td>
 													<td scopo='row'>
 														<input
 															className='form-control form-control-sm'
@@ -785,9 +781,6 @@ export default function TransporteFerriavio() {
 															className='custom-control-label'
 															htmlFor={elem.code}></label>
 													</div>
-												</td>
-												<td>
-													<small>{elem.code}</small>
 												</td>
 												<td>{elem.identificador}</td>
 												<td>{elem.descricaoFrota}</td>

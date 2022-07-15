@@ -17,9 +17,6 @@ import {
 	faUpload,
 	faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-if (typeof window !== "undefined") {
-	const bootstrap = require("bootstrap");
-}
 import { useSelector, useDispatch } from "react-redux";
 import {
 	add,
@@ -132,7 +129,6 @@ export default function TransporteHidroviario(props) {
 			list,
 			inventory,
 			states.fonteEmissao,
-			"TRN",
 			oldCode
 		);
 		setCode(code);
@@ -163,7 +159,7 @@ export default function TransporteHidroviario(props) {
 				combustivelId,
 				consumoAnual,
 				states.fonteEmissao,
-				states.fatoresEmissao,
+				fatoresEmissao,
 				"Por tipo de combustivel"
 			);
 
@@ -481,7 +477,6 @@ export default function TransporteHidroviario(props) {
 									)}
 								</div>
 							</th>
-							<th className='text-center akvo-text-escopo1'>Código</th>
 							<th className='text-center akvo-text-escopo1'>Identificador</th>
 							<th className='text-center akvo-text-escopo1'>
 								Descrição da frota
@@ -501,7 +496,7 @@ export default function TransporteHidroviario(props) {
 					<tbody className='escopo1_bg'>
 						<tr>
 							<td></td>
-							<td className='text-center text-light '>{code}</td>
+
 							<td>
 								<input
 									type='text'
@@ -635,9 +630,6 @@ export default function TransporteHidroviario(props) {
 											<>
 												<tr key={`edit${index}`}>
 													<td scopo='row'></td>
-													<td scopo='row'>
-														<small>{elem.code}</small>
-													</td>
 													<td scopo='row'>
 														<input
 															className='form-control form-control-sm'
@@ -794,9 +786,6 @@ export default function TransporteHidroviario(props) {
 															className='custom-control-label'
 															htmlFor={elem.code}></label>
 													</div>
-												</td>
-												<td>
-													<small>{elem.code}</small>
 												</td>
 												<td>{elem.identificador}</td>
 												<td>{elem.descricaoFrota}</td>
