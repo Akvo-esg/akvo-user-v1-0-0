@@ -46,35 +46,12 @@ export default function Inventory() {
     //TODO: Fix list, não ta chamando a função expecífica da lista.
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
+    const token = jwt.decode(Cookie.get('auth'))
+
     const dispatch = useDispatch()
-
-    //Set User Info
-    const [token, setToken] = useState(null)
-    const [user_id, setUser_id] = useState(null)
-    const [company_id, setCompany_id] = useState(null)
-    const [userName, setUserName] = useState(null)
-    const [userLastName, setUserLastName] = useState(null)
-    const [userStatus, setUserStatus] = useState('')
-
 
     //Set Variables
     const [unidList, setUnidList] = useState([])
-    const [inventario, setInventario] = useState([])
-    const [userConfig, setUserConfig] = useState('')
-    const [unid_id, setUnid_id] = useState(null)
-    const [unidSetorPrimario, setUnidSetorPrimario] = useState(null)
-    const [unidName, setUnidName] = useState(null)
-    const [anoInventario, setAnoInventario] = useState(null)
-    const [escopo, setEscopo] = useState(null)
-    const [fonteEmissao, setFonteEmissao] = useState(null)
-    const [fatoresEmissao, setFatoresEmissao] = useState([])
-
-    //Transportes Variables
-    const [transporte, setTransporte] = useState(null)
-    const [tipoCalculo, setTipoCalculo] = useState(null)
-
-    //Emissões Fugitivas Variables
-    const [tipoEmissao, setTipoEmissao] = useState('')
 
     //Updating render array elements
     const [forceUpdate, setForceUpdate] = useState(0)
@@ -83,47 +60,22 @@ export default function Inventory() {
 
     //Loading components
     const [loading, setLoading] = useState(true)
-    const [saveLoading, setSaveLoading] = useState(false)
-
 
     useEffect(() => {
         sidebarHide()
-        setToken(Cookie.get('auth'))
-        // dispatch(initialValues())
+        if (token.company_id) {
+            dataFunction(token.company_id)
+            userRestriction(['auditor'], token.userStatus, true)
+        } else {
+            setLoading(false)
+        }
     }, [])
 
-    // handle auth of user
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            userRestriction(['auditor'], data.userStatus, true)
-
-            setUser_id(data.sub)
-            if (data.company_id) {
-                setUser_id(data.sub)
-                setUserName(data.firstName)
-                setUserLastName(data.lastName)
-                setCompany_id(data.company_id)
-                setUserStatus(data.userStatus)
-                dataFunction(data.company_id)
-            } else {
-                setLoading(false)
-            }
-        } else {
-            return
-        }
-    }, [token])
 
     // force component to update
     useEffect(() => {
         setForceUpdate(forceUpdate + 1)
     }, [list])
-
-    useEffect(() => {
-        setTransporte('')
-        setTipoCalculo('')
-        setTipoEmissao('')
-    }, [fonteEmissao])
 
     //Getting data from the company inventory
     const dataFunction = async (company_id) => {
@@ -133,19 +85,18 @@ export default function Inventory() {
             }
         })
             .then(res => {
-                setUserConfig(res.data.userConfig)
-                const list = []
+                const filteredList = []
                 if (res.data.unidades.length === 0) {
                     setAddUnid(true)
                 }
                 res.data.unidades.map(unid => {
-                    list.push({
+                    filteredList.push({
                         "_id": unid._id,
                         "unidName": unid.unidName,
                         "setorPrimario": unid.setorPrimario
                     })
                 })
-                setUnidList(list)
+                setUnidList(filteredList)
                 dispatch(getInventory(res.data.inventory))
                 setLoading(false)
 
@@ -159,40 +110,40 @@ export default function Inventory() {
     }
 
     //Save data
-    const save = async (list, company_id) => {
+    // const save = async (list, company_id) => {
 
-        setSaveLoading(true)
+    //     setSaveLoading(true)
 
-        list.map(elem => {
-            elem.userName = `${userName} ${userLastName}`,
-                elem.user_id = user_id,
-                elem.dateAdded = new Date(),
-                elem.dateUpdated = ''
-        })
+    //     list.map(elem => {
+    //         elem.userName = `${userName} ${userLastName}`,
+    //             elem.user_id = user_id,
+    //             elem.dateAdded = new Date(),
+    //             elem.dateUpdated = ''
+    //     })
 
-        const data = {
-            list,
-            company_id
-        }
+    //     const data = {
+    //         list,
+    //         company_id
+    //     }
 
-        await axios.patch(`${baseUrl()}/api/inventory`, data)
-            .then(res => {
-                dispatch(reset([]))
-                dataFunction(company_id)
-                setSaveLoading(false)
-                return true
-            }).catch(e => {
-                setSaveLoading(false)
-            })
-    }
+    //     await axios.patch(`${baseUrl()}/api/inventory`, data)
+    //         .then(res => {
+    //             dispatch(reset([]))
+    //             dataFunction(company_id)
+    //             setSaveLoading(false)
+    //             return true
+    //         }).catch(e => {
+    //             setSaveLoading(false)
+    //         })
+    // }
 
-    const handleList = (data) => {
-        const oldList = list
+    // const handleList = (data) => {
+    //     const oldList = list
 
-        oldList.unshift(data)
+    //     oldList.unshift(data)
 
-        dispatch(update(oldList))
-    }
+    //     dispatch(update(oldList))
+    // }
 
     return (
         <body className='fadeItem'>
@@ -260,10 +211,10 @@ export default function Inventory() {
                                                         <FontesEstacionariasDeCombustao />
                                                     </InventoryCards>
                                                     <InventoryCards>
-                                                        <FontesEstacionariasDeCombustaoTable data={{ userConfig }}
-                                                            title save={() => save(list, company_id)}
+                                                        <FontesEstacionariasDeCombustaoTable
+                                                            title
                                                             forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                            updateList={() => dataFunction(company_id)} />
+                                                            updateList={() => dataFunction(token.company_id)} />
                                                     </InventoryCards>
                                                 </>
                                             )}
@@ -388,7 +339,7 @@ export default function Inventory() {
 
 
 
-                                            {/* ESCOPO 2 */}
+                                            {/* ESCOPO 2
 
                                             {fonteEmissao === "Energia elétrica - Sem escolha de compra" && (
                                                 <>
@@ -425,7 +376,7 @@ export default function Inventory() {
                                                     )}
                                                 </>
                                             )}
-
+                                            */}
 
 
 
@@ -435,6 +386,7 @@ export default function Inventory() {
 
 
                                             {/* ESCOPO 3 */}
+                                            {/*
 
                                             {fonteEmissao === "Transporte e Distribuição" && (
                                                 <>
@@ -484,6 +436,7 @@ export default function Inventory() {
                                                     )}
                                                 </>
                                             )}
+                                    */}
                                         </>)
                                     }
 

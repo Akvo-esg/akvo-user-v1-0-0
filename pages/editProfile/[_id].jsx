@@ -12,6 +12,8 @@ import jwt from "jsonwebtoken"
 
 export default function EditProfile() {
 
+    const token = jwt.decode(Cookie.get('auth'))
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setlastName] = useState('')
     const [email, setEmail] = useState('')
@@ -28,28 +30,18 @@ export default function EditProfile() {
     const [loading, setLoading] = useState(true)
     const [emailError, setEmailError] = useState('')
     const [firstNameError, setFirstNameError] = useState('')
-    const [token, setToken] = useState('')
 
     const router = useRouter()
     const user_id = router.query._id
 
     useEffect(() => {
         sidebarHide()
-        setToken(Cookie.get('auth'))
-    }, [])
-
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            if (data.sub === user_id) {
-                dataFunction()
-            } else {
-                Router.push('/')
-            }
+        if (token.sub === user_id) {
+            dataFunction()
         } else {
-            return
+            Router.push('/')
         }
-    }, [token])
+    }, [])
 
 
 

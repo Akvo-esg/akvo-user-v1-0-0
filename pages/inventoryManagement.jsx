@@ -9,21 +9,12 @@ import jwt from 'jsonwebtoken';
 
 export default function InventoryManagement() {
 
-    const [token, setToken] = useState('')
+    const token = jwt.decode(Cookie.get('auth'))
 
     useEffect(() => {
         sidebarHide()
-        setToken(Cookie.get('auth'))
+        userRestriction(['user', 'auditor'], token.userStatus, true)
     }, [])
-
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            userRestriction(['user', 'auditor'], data.userStatus, true)
-        } else {
-            return
-        }
-    }, [token])
 
     return (
         <div>

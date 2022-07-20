@@ -12,7 +12,8 @@ import UnitsManagementTable from '../src/components/tables/UnitsManagementTable'
 
 export default function UnitsManagement() {
 
-    const [token, setToken] = useState('')
+    const token = jwt.decode(Cookie.get('auth'))
+
     const [user_id, setUser_id] = useState('')
     const [loading, setLoading] = useState(true)
     const [addUnitButton, setAddUnitButton] = useState(false)
@@ -26,39 +27,24 @@ export default function UnitsManagement() {
 
     useEffect(() => {
         sidebarHide()
-        setToken(Cookie.get('auth'))
-    }, [])
-
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            setUser_id(data.sub)
-            userRestriction(['auditor'], data.userStatus, true)
-            setUserStatus(data.userStatus)
-            if (data.company_id) {
-                setCompany_id(data.company_id)
-                setUserPermissions(data.permissions)
-                dataFunction(data.company_id)
-            } else {
-                setLoading(false)
-                setAddCompanyButton(true)
-            }
+        userRestriction(['auditor'], token.userStatus, true)
+        if (token.company_id) {
+            dataFunction(token.company_id)
         } else {
-            return
+            setLoading(false)
+            setAddCompanyButton(true)
         }
-    }, [token])
-
+    }, [])
 
     const dataFunction = async (company_id) => {
 
         await axios.get(`${baseUrl()}/api/company`, {
             params: {
-                company_id: company_id
+                company_id: token.company_id
             }
         }).then(res => {
             if (res.data.unidades.length > 0) {
                 setUnidades(res.data.unidades)
-                setUserConfig(res.data.userConfig)
             } else {
                 setAddUnitButton(true)
             }
@@ -106,7 +92,7 @@ export default function UnitsManagement() {
                                     <div className="container">
                                         <div className="row">
                                             <div className="col-12">
-                                                {userRestriction(['user', 'auditor'], userStatus) && (
+                                                {userRestriction(['user', 'auditor'], token.userStatus) && (
                                                     <>
                                                         <div className="row mb-4">
                                                             <div className="col-6 text-start">
@@ -141,13 +127,8 @@ export default function UnitsManagement() {
                                                                     <UnitsManagementTable
                                                                         searchInput
                                                                         editButtons
-                                                                        userConfig={userConfig}
-                                                                        userStatus={userStatus}
                                                                         unidades={unidades}
-                                                                        permissions={userPermissions}
                                                                         users={usersList}
-                                                                        company_id={company_id}
-                                                                        user_id={user_id}
                                                                         updateList={company_id => dataFunction(company_id)} />
                                                                 )}
                                                             </div>

@@ -21,7 +21,6 @@ import { idCompare } from "../../../../utils/permission"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import { useSelector, useDispatch } from "react-redux";
-import styles from '../../../../styles/Popover.module.scss'
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
     const states = useSelector(state => state.inventoryStates)
@@ -503,7 +502,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                         </td>
                                                                     </>
                                                                 )}
-                                                                <td style={{ "overflow": "hidden" }} className={`text-center ${styles['parent-element']}`}>
+                                                                <td style={{ "overflow": "hidden" }} className={`text-center`}>
                                                                     {elem.comentario && (
                                                                         <span type="button" tabIndex="0" className="position-relative" data-bs-trigger="focus" title={`Comentário`} data-bs-toggle="popover" data-bs-placement="left"
                                                                             data-bs-content={elem.comentario} >
@@ -516,8 +515,8 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                 </td>
 
                                                                 <td>
-                                                                    {idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) && (
-                                                                        <div className="btn-group btn-group-sm" role="group" disabled={idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) }> 
+                                                                    {idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus) && (
+                                                                        <div className="btn-group btn-group-sm" role="group" disabled={idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus) }> 
                                                                             <span type="button" className="mx-2"
                                                                                 data-bs-toggle-tooltip="true" data-bs-placement="bottom" title="Editar"
                                                                                 onClick={() => editDB(elem)}>

@@ -12,32 +12,19 @@ import Router from 'next/router'
 
 export default function Pricing() {
 
-
-    const [token, setToken] = useState('')
-    const [user_id, setUser_id] = useState('')
+    const token = jwt.decode(Cookie.get('auth'))
 
     useEffect(() => {
         sidebarHide()
-        setToken(Cookie.get('auth'))
+        userRestriction(['user', 'auditor'], token.userStatus, true)
     }, [])
 
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            userRestriction(['user', 'auditor'], data.userStatus, true)
-            setUser_id(data.sub)
-        } else {
-            return
-        }
-    }, [token])
+    const changeFreeAccount = async () => {
 
-
-    const changeFreeAccount = async (id) => {
-
-        await axios.patch(`${baseUrl()}/api/change2Premium`, { id })
+        await axios.patch(`${baseUrl()}/api/change2Premium`, { _id: token.sub })
             .then(async res => {
 
-                await axios.post(`${baseUrl()}/api/updateToken`, { user_id })
+                await axios.post(`${baseUrl()}/api/updateToken`, { user_id: token.sub })
                     .then(async res => {
                         localStorage.setItem('auth', (Cookie.get('auth')))
                         Router.reload()
@@ -58,7 +45,7 @@ export default function Pricing() {
                             <div className="row mb-4">
                                 <div className="col-6 text-start">
                                     <button className="akvo_btn akvo_btn_primary btn-sm"
-                                        id="salvarButton" onClick={() => changeFreeAccount(user_id)}
+                                        id="salvarButton" onClick={() => changeFreeAccount()}
                                     >
                                         Teste mudar para conta premium
                                     </button>

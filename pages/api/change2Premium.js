@@ -18,13 +18,13 @@ export default authenticated(async (req, res) => {
     if (req.method === 'PATCH') {
 
         const {
-            id
+            _id
         } = req.body
 
         const { db } = await connect()
 
         const response = await db.collection('users').updateOne(
-            { _id: ObjectId(id) },
+            { _id: ObjectId(_id) },
             {
                 $set: {
                     "dateLimit": false
