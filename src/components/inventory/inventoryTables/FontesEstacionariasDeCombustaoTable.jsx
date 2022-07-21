@@ -30,11 +30,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const token = jwt.decode(Cookie.get('auth'))
     
-    // useEffect(() => {
-    //     handleToolTip();
-    // });
-
-
     //Edit Data Base Itens
     const [deleteElemCodeDB, setDeleteElemCodeDB] = useState(null)
     const [editCodeDB, setEditCodeDB] = useState(null)
@@ -82,13 +77,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
             setEditComentarioDB(null)
         }, 10)
     }
-
-    // const handleToolTip = () => {
-    //     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    //     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    //         return new bootstrap.Popover(popoverTriggerEl)
-    //     })
-    // };
 
     const handleEditDB = async () => {
 
@@ -507,19 +495,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                 )}
                                                                 <td style={{ "overflow": "hidden" }} className={`text-center`}>
                                                                     {elem.comentario && (
-                                                                        // <>
                                                                             <Comentarios comentario={elem.comentario}/>
-                                                                        // </>
-                                                                        
-                                                                        // <span type="button" tabIndex="0" className="position-relative" data-bs-trigger="focus" title={`Comentário`} data-bs-toggle="popover" data-bs-placement="left"
-                                                                        //     data-bs-content={elem.comentario} >
-                                                                        //     <FontAwesomeIcon icon={faComment} />
-                                                                        //     <span className="notificationSign fadeItem">
-                                                                        //         <span className="visually-hidden">New alerts</span>
-                                                                        //     </span>
-                                                                        // </span>
-
-                                                                        
                                                                     )}
                                                                 </td>
 

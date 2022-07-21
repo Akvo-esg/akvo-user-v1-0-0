@@ -7,6 +7,7 @@ import baseUrl from "../../../../utils/baseUrl"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCancel,
+    faEraser,
     faCheck,
     faComment,
     faCommentAlt,
@@ -31,16 +32,13 @@ import { Scrollbars } from 'react-custom-scrollbars-2'
 import { useSelector } from "react-redux"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
+import Comentarios from "./Comentarios"
 
 export default function HidroviarioTable(props) {
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const token = jwt.decode(Cookie.get('auth'))
-
-      useEffect(() => {
-        handleToolTip();
-    });
 
     //Edit Data Base Itens
     const [deleteElemCodeDB, setDeleteElemCodeDB] = useState(null)
@@ -153,12 +151,6 @@ export default function HidroviarioTable(props) {
         }, 10)
     }
 
-      const handleToolTip = () => {
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl)
-        })
-    };
 
     const handleEditDB = async () => {
 
@@ -223,7 +215,6 @@ export default function HidroviarioTable(props) {
                     setEditdescricaoFrotaDB(null)
                     setEditConsumoAnualDB(null)
                     setEditComentarioDB(null)
-                    handleToolTip()
                 })
 
         } else {
@@ -490,6 +481,7 @@ export default function HidroviarioTable(props) {
                                                                                 onChange={e => setEditComentarioDB(e.target.value)} />
                                                                         </div>
                                                                         <div className="modal-footer">
+                                                                            <button type="button" className="btn btn-outline-warning" onClick={() => setEditComentarioDB('')}><FontAwesomeIcon icon={faEraser} /></button>
                                                                             <button type="button" className="btn btn-outline-success" data-bs-dismiss="modal"><FontAwesomeIcon icon={faSave} /></button>
                                                                             <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal" onClick={() => setEditComentarioDB(elem.comentario)}> <FontAwesomeIcon icon={faTimes} /> </button>
                                                                         </div>
@@ -606,13 +598,7 @@ export default function HidroviarioTable(props) {
                                                         )}
                                                         <td>
                                                             {elem.comentario && (
-                                                                <span type="button" tabIndex="0" className="position-relative" data-bs-trigger="focus" title={`Comentário`} data-bs-toggle="popover" data-bs-placement="left"
-                                                                    data-bs-content={elem.comentario} >
-                                                                    <FontAwesomeIcon icon={faComment} />
-                                                                    <span className="notificationSign fadeItem">
-                                                                        <span className="visually-hidden">New alerts</span>
-                                                                    </span>
-                                                                </span>
+                                                                <Comentarios comentario={elem.comentario} />
                                                             )}
                                                         </td>
                                                         <td>

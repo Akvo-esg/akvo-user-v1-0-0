@@ -43,7 +43,6 @@ import AereoTable from '../src/components/inventory/inventoryTables/AereoTable';
 export default function Inventory() {
 
     // Redux variables // inventory list
-    //TODO: Fix list, não ta chamando a função expecífica da lista.
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const dispatch = useDispatch()
