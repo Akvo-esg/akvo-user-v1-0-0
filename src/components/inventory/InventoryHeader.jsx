@@ -20,7 +20,7 @@ export default function InventoryHeader(props) {
         <>
             {states.unid_id && (
 
-                <div className="inventoryHeader_content fadeItem shadow">
+                <div className="inventoryHeader_content fadeItem shadow" style={{"zIndex": "1001"}}>
                     <div className="row align-items-center">
                         <div className="col-12 d-flex justify-content-center">
                             {states.unidName && (
