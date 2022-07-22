@@ -37,6 +37,8 @@ import FerroviarioTable from '../src/components/inventory/inventoryTables/Ferrov
 import TransporteHidroviario from '../src/components/inventory/fontesEmissao/TransporteHidroviario';
 import HidroviarioTable from '../src/components/inventory/inventoryTables/HidroviarioTable';
 import { getValues } from '../store/FatoresEmissao/FatoresEmissao.actions';
+import TransporteAereo from '../src/components/inventory/fontesEmissao/TransporteAereo';
+import AereoTable from '../src/components/inventory/inventoryTables/AereoTable';
 
 export default function Inventory() {
 
@@ -314,6 +316,26 @@ export default function Inventory() {
                                                             </InventoryCards>
                                                         </>
                                                     )}
+
+                                                    {states.tipoEmissao === "Transporte Aéreo" && (
+                                                        <>
+                                                            <InventoryCards>
+                                                                <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
+                                                                <TransporteAereo data={{ userConfig }}
+                                                                    onChange={data => handleList(data)}
+                                                                    edit={newList => setList(newList)}
+                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
+                                                                    save={() => save(list, company_id)}
+                                                                    updateList={() => dataFunction(company_id)} />
+                                                            </InventoryCards>
+                                                            <InventoryCards>
+                                                                <AereoTable data={{ userConfig }}
+                                                                    save={() => save(list, company_id)} title
+                                                                    updateList={() => dataFunction(company_id)} />
+                                                            </InventoryCards>
+                                                        </>
+                                                    )}
+
                                                     {states.tipoCalculo === "Por tipo e ano de fabricacao" && (
                                                         <>
                                                             <InventoryCards>

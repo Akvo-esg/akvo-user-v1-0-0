@@ -19,9 +19,6 @@ import {
     faUpload,
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
-if (typeof window !== "undefined") {
-    const bootstrap = require("bootstrap");
-}
 import { useSelector, useDispatch } from "react-redux";
 import { add, addMany, update, remove, removeMany } from '../../../../store/InventoryList/InventoryList.actions'
 import inventoryCode from "../../../../utils/inventoryCode"
@@ -486,9 +483,6 @@ export default function RodoviarioPorTipo() {
                     <tbody className="escopo1_bg">
                         <tr>
                             <td></td>
-                            <td className="text-center text-light ">
-                                {code}
-                            </td>
                             <td>
                                 <input type="text" className="form-control form-control-sm"
                                     id="identificadorItem"
@@ -594,9 +588,6 @@ export default function RodoviarioPorTipo() {
                                             <>
                                                 <tr key={`edit${index}`}>
                                                     <td scopo="row"></td>
-                                                    <td scopo="row">
-                                                        <small>{elem.code}</small>
-                                                    </td>
                                                     <td scopo="row">
                                                         <input className="form-control form-control-sm" type="text" value={editIdentificador} onChange={e => setEditIdentificador(e.target.value)} />
                                                     </td>
@@ -717,9 +708,6 @@ export default function RodoviarioPorTipo() {
                                                         <label className="custom-control-label" htmlFor={elem.code}></label>
                                                     </div>
                                                 </td>
-                                                {/* <td>
-                                                    <small>{elem.code}</small>
-                                                </td> */}
                                                 <td>
                                                     {elem.identificador}
                                                 </td>
