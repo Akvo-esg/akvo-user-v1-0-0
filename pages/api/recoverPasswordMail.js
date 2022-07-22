@@ -38,7 +38,7 @@ export default async function recoverPasswordMail(req, res) {
                         email: 'contato@akvo-esg.com.br',
                         name: 'Akvo-esg'
                     },
-                    templateId: 'd-4fc58139b53b41fcb00cfa909f2e03a8',
+                    templateId: 'd-b29c330079b5443e9f7ee0415331a57b',
                     dynamic_template_data: {
                         firstName: userExists.firstName,
                         link: `${baseUrl()}/passwordRecover/params?id=${userExists._id}&token=${token}`

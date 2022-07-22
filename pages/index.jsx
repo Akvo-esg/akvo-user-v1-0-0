@@ -10,6 +10,7 @@ import axios from 'axios'
 import baseUrl from '../utils/baseUrl'
 import sidebarHide from "../utils/sidebarHide";
 import { useSelector } from 'react-redux'
+import { Accordion } from 'react-bootstrap'
 
 
 if (typeof window !== "undefined") {
@@ -33,6 +34,8 @@ export default function Home() {
   const [firstUnityNot, setFirstUnityNot] = useState(false)
   const [tutorialNot, setTutorialNot] = useState(false)
   const [dateFreeAcoount, setDateFreeAccount] = useState(null)
+
+  const [activeId, setActiveId] = useState('0');
 
 
   useEffect(() => {
@@ -98,10 +101,20 @@ export default function Home() {
 
 
 
+  const toggleActive = (id) => {
+    if (activeId === id) {
+      setActiveId(null);
+    } else {
+      setActiveId(id);
+    }
+  }
+
+
+
 
   return (
 
-    <div>
+    <div className='App'>
       <Title title={`Olá, ${userFirstName}!`} subtitle={'Qual sua meta de sustentabilidade para hoje?'} />
 
       <h5>{token1.userConfig}</h5>
@@ -172,6 +185,11 @@ export default function Home() {
           )}
         </div>
       </div>
+
+
+
+
+
 
     </div>
   )
