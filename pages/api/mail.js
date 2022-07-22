@@ -35,7 +35,7 @@ export default async (req, res) => {
                 email: 'contato@akvo-esg.com.br',
                 name: 'Akvo-esg'
             },
-            templateId: 'd-47b234272a1e49bcab7385e30b3dbc7d',
+            templateId: 'd-add94546187a417b9002950b256c86f5',
             dynamic_template_data: {
                 firstName: body.firstName,
                 code: code

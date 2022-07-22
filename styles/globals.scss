@@ -1086,3 +1086,26 @@ table td {
 #item-3-2 {
   scroll-margin: 80px 0px;
 }
+
+
+// .accordionContent {
+//   overflow: hidden;
+//   max-height: 0;
+//   transition: max-height 0.2s;
+// }
+
+
+
+@keyframes collapsed{
+  0% {
+    max-height: 100%;
+  }
+  100% {
+    max-height: 0;
+  }
+}
+
+.forceCollapse + ul {
+  animation: collapsed 1s;
+}
+

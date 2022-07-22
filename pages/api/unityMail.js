@@ -12,7 +12,7 @@ export default async (req, res) => {
             email: 'contato@akvo-esg.com.br',
             name: 'Akvo-esg'
         },
-        templateId: 'd-ab358be34f144666a754b9ad17f27c65',
+        templateId: 'd-8857e6143edd484cac02f3a8c4b4ea96',
         dynamic_template_data: {
             unidName: body.unidName,
             link: body.link

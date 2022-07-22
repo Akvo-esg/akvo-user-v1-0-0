@@ -24,7 +24,7 @@ export default authenticated(async (req, res) => {
             email: 'contato@akvo-esg.com.br',
             name: 'Akvo-esg'
         },
-        templateId: 'd-967ef740debe45f1a99917ff331114ca',
+        templateId: 'd-8059e883a63848668b704a84029d89e2',
         dynamic_template_data: {
             firstName: body.firstName,
             password: body.password,
