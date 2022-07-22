@@ -21,7 +21,7 @@ import { idCompare } from "../../../../utils/permission"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import { useSelector } from "react-redux";
-import Comentarios from './Comentarios';
+import Comentarios from '../../formComponets/Comentarios';
 
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
@@ -495,7 +495,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                 )}
                                                                 <td style={{ "overflow": "hidden" }} className={`text-center`}>
                                                                     {elem.comentario && (
-                                                                            <Comentarios comentario={elem.comentario}/>
+                                                                        <Comentarios comentario={elem.comentario}/>
                                                                     )}
                                                                 </td>
 
@@ -516,8 +516,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                         </div>
                                                                     )}
                                                                 </td>
-
-
 
 
                                                                 <div className="modal fade" id="deleteModalBD" aria-labelledby="deleteModalLabel" aria-hidden="true">

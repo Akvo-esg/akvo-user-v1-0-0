@@ -31,7 +31,7 @@ import { Scrollbars } from 'react-custom-scrollbars-2'
 import { useSelector } from "react-redux"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
-import Comentarios from "./Comentarios"
+import Comentarios from "../../formComponets/Comentarios"
 
 export default function RodoviarioPorCombustivelTable(props) {
 
