@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import $ from "jquery"
-import { calc } from '../../../utils/equations/transportesDistancia'
+import { calc } from '../../../../utils/equations/transportesDistancia'
 import axios from "axios"
-import FrotaList from "../inventory/FrotaList"
-import AnoOptions from "../inventory/AnoOptions"
-import ConsumoMensalListEdit from "../inventory/ConsumoMensalListEdit"
-import baseUrl from "../../../utils/baseUrl"
+import FrotaList from "../../formComponets/FrotaList"
+import AnoOptions from "../../formComponets/AnoOptions"
+import ConsumoMensalListEdit from "../../formComponets/ConsumoMensalListEdit"
+import baseUrl from "../../../../utils/baseUrl";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCancel,
@@ -241,10 +241,10 @@ export default function RodoviarioPorDistanciaTable(props) {
 
     const renderInventoryTable = (list) => {
 
-        $(function () {
-            $("[data-toggle=popover]")
-                .popover({ html: true })
-        })
+        // $(function () {
+        //     $("[data-toggle=popover]")
+        //         .popover({ html: true })
+        // })
 
         let inventoryList = []
         let inventoryLength = 0

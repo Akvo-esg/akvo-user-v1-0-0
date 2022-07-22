@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import $ from "jquery"
-import { calc } from '../../../utils/equations/transportesDistancia'
-import FrotaList from "./FrotaList"
-import AnoOptions from "./AnoOptions"
+import { calc } from '../../../../utils/equations/transportesDistancia'
+import FrotaList from "../../formComponets/FrotaList"
+import AnoOptions from "../../formComponets/AnoOptions"
 import {
     faCheck,
     faComment,
@@ -16,10 +16,16 @@ import {
     faUpload,
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
-import ConsumoMensalList from "./ConsumoMensalList"
-import ConsumoMensalListEdit from "./ConsumoMensalListEdit"
+import ConsumoMensalList from "../../formComponets/ConsumoMensalList"
+import ConsumoMensalListEdit from "../../formComponets/ConsumoMensalListEdit"
 import { useSelector, useDispatch } from "react-redux";
-import { add, addMany, update, remove, removeMany } from '../../../store/InventoryList/InventoryList.actions'
+import {
+    add,
+    addMany,
+    update,
+    remove,
+    removeMany,
+  } from "../../../../store/InventoryList/InventoryList.actions";
 import inventoryCode from "../../../../utils/inventoryCode"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
@@ -40,7 +46,7 @@ export default function RodoviarioPorDistancia() {
     const [descricaoFrota, setDescricaoFrota] = useState('')
     const [tipoFrotaId, setTipoFrotaId] = useState('')
     const [tipoFrotaName, setTipoFrotaName] = useState('')
-    const [unidade, setUnidade] = useState('-')
+    const [unidade, setUnidade] = useState('')
     const [anoFrota, setAnoFrota] = useState('')
     const [periodoConsumo, setPeriodoConsumo] = useState('')
     const [consumoAnual, setConsumoAnual] = useState(null)
@@ -491,22 +497,22 @@ export default function RodoviarioPorDistancia() {
                                     onChange={e => setDescricaoFrota(e.target.value)} />
                             </td>
                             <td>
-                                <select name="combustivel" id="tipoFrotaSelect"
-                                    className="custom-select custom-select-sm"
+                                <select name="tipoFrota" id="tipoFrotaSelect"
+                                    className="form-select form-select-sm"
                                     onChange={e => multiplosValores(e.target.value)}>
                                     <FrotaList />
                                 </select>
                             </td>
                             <td>
-                                <select name="combustivel" id="anoFrotaSelect"
-                                    className="custom-select custom-select-sm"
+                                <select name="anoFrota" id="anoFrotaSelect"
+                                    className="form-select form-select-sm"
                                     onChange={e => setAnoFrota(e.target.value)}>
                                     <AnoOptions />
                                 </select>
                             </td>
                             <td>
                                 <select name="combustivel" id="periodoConsumoSelect"
-                                    className="custom-select custom-select-sm"
+                                    className="form-select form-select-sm"
                                     onChange={e => {
                                         handlePeriodoConsumo(e.target.value)
                                     }}>
@@ -567,21 +573,9 @@ export default function RodoviarioPorDistancia() {
                     <tbody>
                         {list.map((elem, index) => {
 
-                            // $(function () {
-                            //     $('[data-toggle="popover"]').popover({
-                            //         container: 'body',
-                            //         html: true,
-                            //         placement: 'bottom',
-                            //         sanitize: false,
-                            //         content: function () {
-                            //             return $('#PopoverContent').html()
-                            //         }
-                            //     })
-                            // })
-
                             if (elem.fonteEmissao === "Transportes" &&
-                                elem.transporte === "Transporte rodoviário" &&
-                                elem.tipoCalculo === "Por distancia" &&
+                                elem.transporte === "Transporte Rodoviário" &&
+                                elem.tipoCalculo === "Por distancia e peso da carga" &&
                                 elem.anoInventario === states.anoInventario &&
                                 elem.unid_id === states.unid_id) {
                                 return (
@@ -597,7 +591,7 @@ export default function RodoviarioPorDistancia() {
                                                         <input className="form-control form-control-sm" type="text" value={editdescricaoFrota} onChange={e => setEditdescricaoFrota(e.target.value)} />
                                                     </td>
                                                     <td scopo="row">
-                                                        <select className="custom-select custom-select-sm"
+                                                        <select className="form-select form-select-sm"
                                                             value={`${editTipoFrotaId},${editTipoFrotaName},${editUnidade}`}
                                                             onChange={e => {
                                                                 multiplosValoresEdit(e.target.value)
@@ -606,7 +600,7 @@ export default function RodoviarioPorDistancia() {
                                                         </select>
                                                     </td>
                                                     <td scopo="row">
-                                                        <select className="custom-select custom-select-sm"
+                                                        <select className="form-select form-select-sm"
                                                             value={editAnoFrota}
                                                             onChange={e => {
                                                                 setEditAnoFrota(e.target.value)
@@ -643,7 +637,7 @@ export default function RodoviarioPorDistancia() {
                                                                 className="btn btn-outline-danger"
                                                                 data-toggle-tooltip="true" data-placement="bottom" title="Cancelar"
                                                                 onClick={() => cancel()}>
-                                                                <i className="fa fa-times"></i>
+                                                                <FontAwesomeIcon icon={faXmark} />
                                                             </button>
 
                                                         </div>
@@ -708,7 +702,7 @@ export default function RodoviarioPorDistancia() {
                                                 <td scopo="row">
                                                     <div className="custom-control custom-checkbox">
                                                         <input type="checkbox" className="custom-control-input listElement" id={elem.code} value={elem.code} onChange={e => deleteItemSelect(e.target.checked, e.target.value)} />
-                                                        <label class="custom-control-label" for={elem.code}></label>
+                                                        <label class="custom-control-label" htmlFor={elem.code}></label>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -777,7 +771,7 @@ export default function RodoviarioPorDistancia() {
                                                                             onChange={e => setEditComentario(e.target.value)} />
                                                                     </div>
                                                                     <div className="modal-footer">
-                                                                        <button   button type="button" className="btn btn-outline-success" onClick={() => handleComentario(commentElemIndex)} data-bs-dismiss="modal">
+                                                                        <button type="button" className="btn btn-outline-success" onClick={() => handleComentario(commentElemIndex)} data-bs-dismiss="modal">
                                                                             <FontAwesomeIcon icon={faSave} />
                                                                         </button>
                                                                         <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal" onClick={() => setEditComentario(null)}>

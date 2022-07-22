@@ -88,30 +88,32 @@ export default function TransporteFerriavio() {
 	const [editComentario, setEditComentario] = useState(null);
 	const [deleteManyArray, setDeleteManyArray] = useState([]);
 
-	useEffect(() => {
-		handleCode();
-	}, [, list, inventory]);
+	// useEffect(() => {
+	// 	handleCode();
+	// }, [, list, inventory]);
 
 	useEffect(() => {
-		let boxes = document.getElementsByClassName("listElement");
+		let boxes = document.getElementsByClassName('listElement')
+		let selectAllBox = document.getElementsByClassName('selectAll')
+		selectAllBox[0].checked = false
 		for (var i = 0; i < boxes.length; i++) {
-			boxes[i].checked = false;
-			setDeleteManyArray([]);
+				boxes[i].checked = false
+				setDeleteManyArray([])
 		}
-	}, [list]);
+	}, [list])
 
 	useEffect(() => {
-		let tags = document.getElementsByClassName("editElement");
-		if (deleteManyArray.length) {
-			for (var i = 0; i < tags.length; i++) {
-				tags[i].disabled = true;
+			let tags = document.getElementsByClassName('editElement')
+			if (deleteManyArray.length) {
+					for (var i = 0; i < tags.length; i++) {
+							tags[i].disabled = true
+					}
+			} else {
+					for (var i = 0; i < tags.length; i++) {
+							tags[i].disabled = false
+					}
 			}
-		} else {
-			for (var i = 0; i < tags.length; i++) {
-				tags[i].disabled = false;
-			}
-		}
-	}, [deleteManyArray]);
+	}, [deleteManyArray])
 
 	useEffect(() => {
 		if (editPeriodoConsumo === "anual") {
@@ -404,39 +406,49 @@ export default function TransporteFerriavio() {
 	};
 
 	const handleDeleteMany = (checked) => {
-		let boxes = document.getElementsByClassName("listElement");
-		const deleteArray = [];
+		let boxes = document.getElementsByClassName('listElement')
+		const deleteArray = []
 		if (checked) {
-			for (var i = 0; i < boxes.length; i++) {
-				boxes[i].checked = true;
-				deleteArray.push(boxes[i].value);
-				setDeleteManyArray(deleteArray);
-			}
+				for (var i = 0; i < boxes.length; i++) {
+						boxes[i].checked = true
+						deleteArray.push({
+								index: i,
+								descricao: boxes[i].value
+						})
+						setDeleteManyArray(deleteArray)
+				}
 		} else {
-			for (var i = 0; i < boxes.length; i++) {
-				boxes[i].checked = false;
-				setDeleteManyArray([]);
-			}
+				for (var i = 0; i < boxes.length; i++) {
+						boxes[i].checked = false
+						setDeleteManyArray([])
+				}
 		}
-	};
+	}
 
-	const deleteItemSelect = (checked, code) => {
-		const deleteArray = deleteManyArray;
-		if (checked) {
-			setDeleteManyArray(deleteArray.concat([code]));
-		} else {
-			setDeleteManyArray(deleteArray.filter((elem) => elem !== code));
-		}
-	};
+	const deleteItemSelect = (checked, descricao, index) => {
+			const deleteArray = deleteManyArray
+			if (checked) {
+					setDeleteManyArray(deleteArray.concat({
+							descricao,
+							index
+					}))
+			} else {
+					setDeleteManyArray(deleteArray.filter(elem => elem.index !== index))
+			}
+
+	}
 
 	const handleDeleteManyModal = () => {
-		dispatch(removeMany(list, deleteManyArray));
-		let boxes = document.getElementsByClassName("listElement");
-		for (var i = 0; i < boxes.length; i++) {
-			boxes[i].checked = false;
-			setDeleteManyArray([]);
-		}
-	};
+			dispatch(removeMany(list, deleteManyArray))
+			let boxes = document.getElementsByClassName('listElement')
+			let selectAllBox = document.getElementsByClassName('selectAll')
+			selectAllBox[0].checked = false
+			for (var i = 0; i < boxes.length; i++) {
+					selectAllBox.checked = false
+					boxes[i].checked = false
+					setDeleteManyArray([])
+			}
+	}
 
 	return (
 		<div>
@@ -454,26 +466,15 @@ export default function TransporteFerriavio() {
 						<tr className='py-2'>
 							<th scope='col'>
 								<div className='form-check pb-0 mb-0'>
-									<input
-										type='checkbox'
-										className='form-check-input listElement'
-										id='customCheck1'
-										value=''
-										onChange={(e) => handleDeleteMany(e.target.checked)}
-									/>
-									<label
-										className='form-check-label'
-										htmlFor='customCheck1'></label>
+									<input type="checkbox" className="form-check-input selectAll" id="customCheck1" value='' onChange={e => handleDeleteMany(e.target.checked)} />
+									<label className="form-check-label"></label>
 									{deleteManyArray.length > 0 && (
 										<span
-											type='button'
-											data-bs-toggle='modal'
-											data-toggle-tooltip='true'
-											data-bs-target='#deleteManyModal'>
-											<FontAwesomeIcon
-												icon={faTrashAlt}
-												className='text-danger'
-											/>
+											type="button"
+											data-bs-toggle="modal"
+											data-toggle-tooltip="true"
+											data-bs-target="#deleteManyModal">
+											<FontAwesomeIcon icon={faTrashAlt} className="text-danger" />
 										</span>
 									)}
 								</div>
@@ -607,14 +608,6 @@ export default function TransporteFerriavio() {
 
 					<tbody>
 						{list.map((elem, index) => {
-							var popoverTriggerList = [].slice.call(
-								document.querySelectorAll('[data-bs-toggle="popover"]')
-							);
-							var popoverList = popoverTriggerList.map(function (
-								popoverTriggerEl
-							) {
-								return new bootstrap.Popover(popoverTriggerEl);
-							});
 
 							if (
 								elem.fonteEmissao === "Transportes" &&
@@ -764,22 +757,9 @@ export default function TransporteFerriavio() {
 										) : (
 											<tr className='fadeItem' key={`view${index}`}>
 												<td scopo='row'>
-													<div className='custom-control custom-checkbox'>
-														<input
-															type='checkbox'
-															className='custom-control-input listElement'
-															id={elem.code}
-															value={elem.code}
-															onChange={(e) =>
-																deleteItemSelect(
-																	e.target.checked,
-																	e.target.value
-																)
-															}
-														/>
-														<label
-															className='custom-control-label'
-															htmlFor={elem.code}></label>
+													<div className="form-check">
+															<input type="checkbox" className="form-check-input listElement" id={elem.code} value={elem.descricaoFrota} onChange={e => deleteItemSelect(e.target.checked, e.target.value, index)} />
+															<label className="form-check-label"></label>
 													</div>
 												</td>
 												<td>{elem.identificador}</td>
@@ -803,18 +783,13 @@ export default function TransporteFerriavio() {
 															onClick={() => edit(elem, index)}>
 															<FontAwesomeIcon icon={faPenToSquare} />
 														</span>
-														<span
-															type='button'
-															className='mx-2'
-															data-bs-toggle='modal'
-															data-bs-placement='bottom'
-															title='Excluir'
-															data-toggle-tooltip='true'
-															data-bs-target='#deleteModal'
-															onClick={() => {
-																setDeleteElemCode(elem.code);
-															}}>
-															<FontAwesomeIcon icon={faTrashAlt} />
+														<span type="button" className="mx-2"
+																data-bs-toggle="modal" data-bs-placement="bottom"
+																title="Excluir" data-toggle-tooltip="true" data-bs-target="#deleteModal"
+																onClick={() => {
+																		setDeleteElemIndex(index)
+																}}>
+																<FontAwesomeIcon icon={faTrashAlt} />
 														</span>
 														<span
 															type='button'
@@ -912,88 +887,56 @@ export default function TransporteFerriavio() {
 				</table>
 			</small>
 
-			<div
-				className='modal fade'
-				id='deleteModal'
-				tabIndex='-1'
-				aria-labelledby='deleteModalLabel'
-				aria-hidden='true'>
-				<div className='modal-dialog'>
-					<div className='modal-content'>
-						<div className='modal-header'>
-							<h5 className='h5_modal'>Excluir registro</h5>
-							<button
-								type='button'
-								className='btn-close'
-								data-bs-dismiss='modal'
-								aria-label='Close'></button>
-						</div>
-						<div className='modal-body'>
-							<p className='p'>
-								Tem certeza que deseja excluir o registro {deleteElemCode}?
-							</p>
-						</div>
-						<div className='modal-footer'>
-							<button
-								type='button'
-								className='btn btn-secondary btn-sm'
-								data-bs-dismiss='modal'>
-								Cancelar
-							</button>
-							<button
-								type='buttom'
-								className='btn btn-danger btn-sm'
-								data-bs-dismiss='modal'
-								onClick={() => dispatch(remove(list, deleteElemCode))}>
-								Excluir
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
+			<div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="h5_modal">Excluir registro</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <p className="p">
+                                Tem certeza que deseja excluir este registro?
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="buttom" className="btn btn-danger btn-sm" data-bs-dismiss="modal"
+                                onClick={() => dispatch(remove(list, deleteElemIndex))}
+                            >Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-			<div
-				className='modal fade'
-				id='deleteManyModal'
-				tabIndex='-1'
-				aria-labelledby='deleteManyModalLabel'
-				aria-hidden='true'>
-				<div className='modal-dialog'>
-					<div className='modal-content'>
-						<div className='modal-header'>
-							<h5 className='h5_modal'>Excluir registro</h5>
-							<button
-								type='button'
-								className='btn-close'
-								data-bs-dismiss='modal'
-								aria-label='Close'></button>
-						</div>
-						<div className='modal-body'>
-							<p className='p'>
-								Tem certeza que deseja excluir os registros:
-								{deleteManyArray.map((elem, index) => (
-									<div key={index}>{elem}</div>
-								))}
-							</p>
-						</div>
-						<div className='modal-footer'>
-							<button
-								type='button'
-								className='btn btn-secondary btn-sm'
-								data-bs-dismiss='modal'>
-								Cancelar
-							</button>
-							<button
-								type='buttom'
-								className='btn btn-danger btn-sm'
-								data-bs-dismiss='modal'
-								onClick={() => handleDeleteManyModal()}>
-								Excluir
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
+            <div className="modal fade" id="deleteManyModal" tabIndex="-1" aria-labelledby="deleteManyModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="h5_modal">Excluir registro</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <p className="p">
+                                Tem certeza que deseja excluir os registros:
+																{console.log("DELETE MANY ARRAY", deleteManyArray)}
+                                {deleteManyArray.map((elem, index) => <div key={index}>&#8226; {elem.descricao}</div>)}
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="buttom" className="btn btn-danger btn-sm" data-bs-dismiss="modal"
+                                onClick={() => handleDeleteManyModal()}
+                            >
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
 	);
 }
