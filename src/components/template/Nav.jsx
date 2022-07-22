@@ -21,14 +21,20 @@ import $ from 'jquery'
 import axios from 'axios'
 import baseUrl from '../../../utils/baseUrl'
 import { userStatusName, editCompanyView, freeAccountRedirect, userRestriction } from '../../../utils/permission'
+import Accordion from 'react-bootstrap/Accordion';
 
 
 export default function Nav({ children }) {
+
+    $(document).ready(function () {
+        $('.collapse').collapse
+    });
 
     const list = useSelector(state => state.inventoryList)
     const token = jwt.decode(Cookie.get('auth'))
 
     const [companyLogo, setCompanyLogo] = useState('')
+    const [activeId, setActiveId] = useState('0')
 
     useEffect(() => {
         dataFunction(token.company_id)
@@ -50,10 +56,13 @@ export default function Nav({ children }) {
 
 
 
-    const collapseBack = () => {
+    const collapseBack = (id) => {
 
-        $('#unidadeButton').attr("aria-expanded", "false")
-        $('#unidades').removeClass("show")
+        if (activeId === id) {
+            setActiveId(null);
+        } else {
+            setActiveId(id);
+        }
 
     }
 
@@ -61,44 +70,73 @@ export default function Nav({ children }) {
     return (
 
         <aside className={`${styles.menuArea} shadow`}>
-            <Scrollbars style={{ height: "100%" }} autoHide autoHideTimeout={1000} autoHideDuration={200}>
 
-                <div className=" row align-items-center my-4 fadeItem">
-                    <div className="col">
-                        <div className="row align-items-center">
-                            <Link href={`/editProfile/${token.sub}`}>
-                                <div className="d-flex justify-content-center">
-                                    <span type="button">
-                                        <img src={token.profilePicture ? token.profilePicture : "./userIcon.png"} alt="User profile picture" className={`${styles.img} shadow`} />
-                                    </span>
-                                </div>
-                            </Link>
-                        </div>
-                        {companyLogo && (
-                            <Link href={"/companyEdit"}>
-                                <span type="button" className="row align-items-center mt-3">
-
-                                    <div className="d-flex justify-content-center">
-                                        <img src={`${token.companyLogo}`} style={{ "height": "25px" }} className="" />
-                                    </div>
-                                </span>
-                            </Link>
-                        )}
-                        <div className="row align-items-center mt-2">
-                            <div className={`d-flex justify-content-center ${styles.userName}`}>
-                                {token.firstName} {token.lastName}
-                            </div>
-                        </div>
-
-                        <div className="row align-items-center">
+            <div className=" row align-items-center my-4 fadeItem">
+                <div className="col">
+                    <div className="row align-items-center">
+                        <Link href={`/editProfile/${token.sub}`}>
                             <div className="d-flex justify-content-center">
-                                <small className={styles.userStatus}>{userStatusName(token.userStatus, token.userConfig)}</small>
+                                <span type="button">
+                                    <img src={token.profilePicture ? token.profilePicture : "./userIcon.png"} alt="User profile picture" className={`${styles.img} shadow`} />
+                                </span>
                             </div>
-                        </div>
+                        </Link>
+                    </div>
+                    {companyLogo && (
+                        <Link href={"/companyEdit"}>
+                            <span type="button" className="row align-items-center mt-3">
 
+                                <div className="d-flex justify-content-center">
+                                    <img src={`${token.companyLogo}`} style={{ "height": "25px" }} className="" />
+                                </div>
+                            </span>
+                        </Link>
+                    )}
+                    <div className="row align-items-center mt-2">
+                        <div className={`d-flex justify-content-center ${styles.userName}`}>
+                            {token.firstName} {token.lastName}
+                        </div>
+                    </div>
+
+                    <div className="row align-items-center">
+                        <div className="d-flex justify-content-center">
+                            <small className={styles.userStatus}>{userStatusName(token.userStatus, token.userConfig)}</small>
+                        </div>
                     </div>
 
                 </div>
+
+            </div>
+
+            <Scrollbars style={{ height: "100%" }} autoHide autoHideTimeout={1000} autoHideDuration={200}>
+
+                {/* 
+
+                <Accordion defaultActiveKey={activeId} >
+
+                    <div className={activeId === '0' ? 'panel-wrap active-panel' : 'panel-wrap'}>
+                        <div className="panel-header">
+                            <Accordion.Toggle onClick={() => toggleActive('0')} className="font-weight-bold btn-toggle" variant="link" eventKey="0">
+
+                                Gestão de emissões
+                            </Accordion.Toggle>
+                        </div>
+
+                        <Accordion.Collapse eventKey="0">
+                            <div className="panel-body">Body content for panel 1</div>
+                        </Accordion.Collapse>
+                    </div>
+                </Accordion> */}
+
+
+
+
+
+
+
+
+
+
 
 
                 <ul className='accordion' id="siberbarMenu">
@@ -155,9 +193,9 @@ export default function Nav({ children }) {
                     <li>
                         <span
                             className="font-weight-bold btn-toggle"
-                            type='button'
+                            type='button' id='gestaoButton'
                             data-bs-toggle="collapse" data-bs-target="#gestaoEmissoesCollapse" aria-expanded="false" aria-controls="gestaoEmissoesCollapse"
-                            onClick={() => collapseBack()}
+                            onClick={e => collapseBack()}
                         >
                             <div className="row align-items-center">
                                 <div className='d-flex justify-content-start '>
@@ -173,9 +211,10 @@ export default function Nav({ children }) {
                                 </div>
                             </div>
                         </span>
+
                         <ul className="collapse" id="gestaoEmissoesCollapse" aria-labelledby="gestaoEmissoesCollapse" data-bs-parent="#siberbarMenu">
                             {userRestriction(['auditor'], token.userStatus) && (
-                                <li li >
+                                <li >
                                     <Link href="/geeEmissions">
                                         <a>Emissões GEE</a>
                                     </Link>
@@ -194,6 +233,17 @@ export default function Nav({ children }) {
                                 </Link>
                             </li>
                         </ul>
+
+
+
+
+
+
+
+
+
+
+
 
                     </li>
                     {userRestriction(['auditor'], token.userStatus) && (
@@ -345,6 +395,7 @@ export default function Nav({ children }) {
                             </li>
                         </ul>
                     </li>
+                    <div id='closeTabs' aria-labelledby="closeTabs" data-bs-parent="#closeTabs"></div>
 
                 </ul >
 

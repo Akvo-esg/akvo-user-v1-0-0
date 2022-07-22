@@ -10,6 +10,7 @@ import axios from 'axios'
 import baseUrl from '../utils/baseUrl'
 import sidebarHide from "../utils/sidebarHide";
 import { useSelector } from 'react-redux'
+import { Accordion } from 'react-bootstrap'
 
 
 if (typeof window !== "undefined") {
@@ -32,6 +33,8 @@ export default function Home() {
   const [firstUnityNot, setFirstUnityNot] = useState(false)
   const [tutorialNot, setTutorialNot] = useState(false)
   const [dateFreeAcoount, setDateFreeAccount] = useState(null)
+
+  const [activeId, setActiveId] = useState('0');
 
 
   useEffect(() => {
@@ -153,6 +156,11 @@ export default function Home() {
           )}
         </div>
       </div>
+
+
+
+
+
 
     </div>
   )
