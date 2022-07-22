@@ -130,7 +130,7 @@ export default function Inventory() {
     //     await axios.patch(`${baseUrl()}/api/inventory`, data)
     //         .then(res => {
     //             dispatch(reset([]))
-    //             dataFunction(company_id)
+    //             dataFunction(token.company_id)
     //             setSaveLoading(false)
     //             return true
     //         }).catch(e => {
@@ -226,26 +226,69 @@ export default function Inventory() {
                                                         <h5 className='h5_title mb-0' id='passo4'>Passo 4</h5>
                                                         <Transportes />
                                                         {states.tipoEmissao === "Transporte Rodoviário" && (
-                                                            <TipoCalcTransporteRodoviario data={{ userConfig }}
-                                                                setTipoCalculo={(value) => { setTipoCalculo(value) }} />
+                                                            <TipoCalcTransporteRodoviario />
                                                         )}
                                                     </InventoryCards>
+
+                                                    {states.tipoEmissao === 'Transporte Rodoviário' && (
+                                                        <>
+                                                            {states.tipoCalculo === "Por tipo e ano de fabricacao" && (
+                                                                <>
+                                                                    <InventoryCards>
+                                                                        <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
+                                                                        <RodoviarioPorTipo />
+                                                                    </InventoryCards>
+                                                                    <InventoryCards>
+                                                                        <RodoviarioPorTipoTable title
+                                                                            forceUpdate={() => setForceUpdate(forceUpdate + 1)}
+                                                                            updateList={() => dataFunction(token.company_id)} />
+                                                                    </InventoryCards>
+                                                                </>
+                                                            )}
+                                                            {states.tipoCalculo === "Por tipo de combustivel" && (
+                                                                <>
+                                                                    <InventoryCards>
+                                                                        <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
+                                                                        <RodoviarioPorCombustivel />
+                                                                    </InventoryCards>
+                                                                    <InventoryCards>
+                                                                        <RodoviarioPorCombustivelTable
+                                                                            forceUpdate={() => setForceUpdate(forceUpdate + 1)} title
+                                                                            updateList={() => dataFunction(token.company_id)} />
+                                                                    </InventoryCards>
+                                                                </>
+
+                                                            )}
+
+                                                            {states.tipoCalculo === "Por distancia" && (
+                                                                <>
+                                                                    <InventoryCards>
+                                                                        <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
+                                                                        <RodoviarioPorDistancia />
+                                                                    </InventoryCards>
+                                                                    <InventoryCards>
+                                                                        <RodoviarioPorDistanciaTable
+                                                                            forceUpdate={() => setForceUpdate(forceUpdate + 1)} title
+                                                                            updateList={() => dataFunction(token.company_id)} />
+                                                                    </InventoryCards>
+                                                                </>
+
+                                                            )}
+                                                        </>
+
+                                                    )}
+
 
                                                     {states.tipoEmissao === "Transporte Ferroviário" && (
                                                         <>
                                                             <InventoryCards>
                                                                 <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
-                                                                <TransporteFerroviario data={{ userConfig }}
-                                                                    onChange={data => handleList(data)}
-                                                                    edit={newList => setList(newList)}
-                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    save={() => save(list, company_id)}
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                <TransporteFerroviario />
                                                             </InventoryCards>
                                                             <InventoryCards>
-                                                                <FerroviarioTable data={{ userConfig }}
-                                                                    save={() => save(list, company_id)} title
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                <FerroviarioTable
+                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)} title
+                                                                    updateList={() => dataFunction(token.company_id)} />
                                                             </InventoryCards>
                                                         </>
                                                     )}
@@ -254,17 +297,12 @@ export default function Inventory() {
                                                         <>
                                                             <InventoryCards>
                                                                 <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
-                                                                <TransporteHidroviario data={{ userConfig }}
-                                                                    onChange={data => handleList(data)}
-                                                                    edit={newList => setList(newList)}
-                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    save={() => save(list, company_id)}
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                <TransporteHidroviario />
                                                             </InventoryCards>
                                                             <InventoryCards>
-                                                                <HidroviarioTable data={{ userConfig }}
-                                                                    save={() => save(list, company_id)} title
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                <HidroviarioTable
+                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)} title
+                                                                    updateList={() => dataFunction(token.company_id)} />
                                                             </InventoryCards>
                                                         </>
                                                     )}
@@ -273,84 +311,17 @@ export default function Inventory() {
                                                         <>
                                                             <InventoryCards>
                                                                 <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
-                                                                <TransporteAereo data={{ userConfig }}
-                                                                    onChange={data => handleList(data)}
-                                                                    edit={newList => setList(newList)}
-                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    save={() => save(list, company_id)}
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                <TransporteAereo />
                                                             </InventoryCards>
                                                             <InventoryCards>
-                                                                <AereoTable data={{ userConfig }}
-                                                                    save={() => save(list, company_id)} title
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                <AereoTable
+                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)} title
+                                                                    updateList={() => dataFunction(token.company_id)} />
                                                             </InventoryCards>
                                                         </>
                                                     )}
 
-                                                    {states.tipoCalculo === "Por tipo e ano de fabricacao" && (
-                                                        <>
-                                                            <InventoryCards>
-                                                                <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
-                                                                <RodoviarioPorTipo data={{ unid_id, unidSetorPrimario, unidName, anoInventario, escopo, fonteEmissao, company_id, user_id, userName, userLastName }}
-                                                                    fatoresEmissao={fatoresEmissao}
-                                                                    tipoEmissao={tipoEmissao}
-                                                                    tipoCalculo={tipoCalculo}
-                                                                    list={list} inventario={inventario}
-                                                                    onChange={data => handleList(data)}
-                                                                    edit={newList => setList(newList)}
-                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    save={() => save(list, company_id)}
-                                                                    updateList={() => dataFunction(company_id)} />
-                                                            </InventoryCards>
-                                                            <InventoryCards>
-                                                                <RodoviarioPorTipoTable data={{ unid_id, unidSetorPrimario, unidName, anoInventario, escopo, fonteEmissao, company_id, user_id, userName, userLastName }}
-                                                                    fatoresEmissao={fatoresEmissao} inventario={inventario}
-                                                                    tipoEmissao={tipoEmissao} tipoCalculo={tipoCalculo}
-                                                                    save={() => save(list, company_id)} title
-                                                                    updateList={() => dataFunction(company_id)} />
-                                                            </InventoryCards>
-                                                        </>
-                                                    )}
-                                                    {states.tipoCalculo === "Por tipo de combustivel" && (
-                                                        <>
-                                                            <InventoryCards>
-                                                                <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
-                                                                <RodoviarioPorCombustivel data={{ userConfig }}
-                                                                    onChange={data => handleList(data)}
-                                                                    edit={newList => setList(newList)}
-                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    save={() => save(list, company_id)}
-                                                                    updateList={() => dataFunction(company_id)} />
-                                                            </InventoryCards>
-                                                            <InventoryCards>
-                                                                <RodoviarioPorCombustivelTable data={{ userConfig }}
-                                                                    save={() => save(list, company_id)} title
-                                                                    updateList={() => dataFunction(company_id)} />
-                                                            </InventoryCards>
-                                                        </>
 
-                                                    )}
-
-                                                    {states.tipoCalculo === "Por distancia e peso da carga" && (
-                                                        <>
-                                                            <InventoryCards>
-                                                                <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
-                                                                <RodoviarioPorDistancia data={{ userConfig }}
-                                                                    onChange={data => handleList(data)}
-                                                                    edit={newList => setList(newList)}
-                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    save={() => save(list, company_id)}
-                                                                    updateList={() => dataFunction(company_id)} />
-                                                            </InventoryCards>
-                                                            <InventoryCards>
-                                                                <RodoviarioPorDistanciaTable data={{ userConfig }}
-                                                                    save={() => save(list, company_id)} title
-                                                                    updateList={() => dataFunction(company_id)} />
-                                                            </InventoryCards>
-                                                        </>
-                                                        
-                                                    )}
 
                                                 </>
                                             )}
@@ -380,7 +351,7 @@ export default function Inventory() {
                                                                     fatoresEmissao={fatoresEmissao} tipoEmissao={tipoEmissao} inventario={inventario} title
                                                                     onChange={data => handleList(data)}
                                                                     forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                    updateList={() => dataFunction(token.company_id)} />
                                                             </>
                                                         )}
                                                     </InventoryCards>
@@ -391,7 +362,7 @@ export default function Inventory() {
                                                                     fatoresEmissao={fatoresEmissao} inventario={inventario} title tipoEmissao={tipoEmissao}
                                                                     save={() => save(list, company_id)}
                                                                     forceUpdate={() => setForceUpdate(forceUpdate + 1)}
-                                                                    updateList={() => dataFunction(company_id)} />
+                                                                    updateList={() => dataFunction(token.company_id)} />
                                                             </InventoryCards>
                                                         </>
                                                     )}
@@ -439,7 +410,7 @@ export default function Inventory() {
                                                                             edit={newList => setList(newList)}
                                                                             forceUpdate={() => setForceUpdate(forceUpdate + 1)}
                                                                             save={() => save(list, company_id)}
-                                                                            updateList={() => dataFunction(company_id)} />
+                                                                            updateList={() => dataFunction(token.company_id)} />
                                                                     </>
                                                                 )}
                                                             </>
@@ -450,8 +421,8 @@ export default function Inventory() {
                                                             <TransporteRodoviarioTranspDistPorTipoAnoFabTable data={{ unid_id, unidSetorPrimario, unidName, anoInventario, escopo, fonteEmissao, company_id, user_id, userName, userLastName }}
                                                                 fatoresEmissao={fatoresEmissao} inventario={inventario}
                                                                 tipoEmissao={tipoEmissao} tipoCalculo={tipoCalculo}
-                                                                save={() => save(list, company_id)} title
-                                                                updateList={() => dataFunction(company_id)}
+                                                                forceUpdate={() => setForceUpdate(forceUpdate + 1)} title
+                                                                updateList={() => dataFunction(token.company_id)}
                                                             />
                                                         </InventoryCards>
                                                     )}

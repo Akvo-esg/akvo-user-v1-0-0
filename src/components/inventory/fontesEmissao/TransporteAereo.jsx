@@ -29,7 +29,7 @@ import inventoryCode from "../../../../utils/inventoryCode";
 import Cookie from "js-cookie";
 import jwt from "jsonwebtoken";
 
-export default function TransporteAereo(props) {
+export default function TransporteAereo() {
   const dispatch = useDispatch();
   const list = useSelector((state) => state.inventoryList);
   const states = useSelector((state) => state.inventoryStates);
