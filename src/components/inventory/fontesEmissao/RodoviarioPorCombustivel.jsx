@@ -17,9 +17,6 @@ import {
     faUpload,
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
-if (typeof window !== "undefined") {
-    const bootstrap = require("bootstrap");
-}
 import { useSelector, useDispatch } from "react-redux";
 import { add, addMany, update, remove, removeMany } from '../../../../store/InventoryList/InventoryList.actions'
 import inventoryCode from "../../../../utils/inventoryCode"
@@ -453,7 +450,6 @@ export default function RodoviarioPorCombustivel() {
 
                                 </div>
                             </th>
-                            {/* <th className="text-center akvo-text-escopo1">Código</th> */}
                             <th className="text-center akvo-text-escopo1">Identificador</th>
                             <th className="text-center akvo-text-escopo1">Descrição da frota</th>
                             <th className="text-center akvo-text-escopo1">Tipo de combustível</th>
@@ -552,11 +548,6 @@ export default function RodoviarioPorCombustivel() {
 
                     <tbody>
                         {list.map((elem, index) => {
-
-                            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-                            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                                return new bootstrap.Popover(popoverTriggerEl)
-                            })
 
                             if (elem.fonteEmissao === "Transportes" &&
                                 elem.tipoEmissao === "Transporte Rodoviário" &&
@@ -731,7 +722,6 @@ export default function RodoviarioPorCombustivel() {
                                                                     <span className="visually-hidden">New alerts</span>
                                                                 </span>
                                                             )}
-
                                                         </span>
 
 

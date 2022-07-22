@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import $ from "jquery"
 import { calc } from '../../../../utils/equations/fontesEstacionariasDeCombustao'
 import axios from "axios"
@@ -20,7 +20,9 @@ import {
 import { idCompare } from "../../../../utils/permission"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import Comentarios from '../../formComponets/Comentarios';
+
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
     const states = useSelector(state => state.inventoryStates)
@@ -28,10 +30,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const token = jwt.decode(Cookie.get('auth'))
     
-    useEffect(() => {
-        handleToolTip();
-    });
-
     //Edit Data Base Itens
     const [deleteElemCodeDB, setDeleteElemCodeDB] = useState(null)
     const [editCodeDB, setEditCodeDB] = useState(null)
@@ -52,6 +50,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
     //Show more items
     const [showMore, setShowMore] = useState(false)
     const [showMoreInfo, setShowMoreInfo] = useState(false)
+
 
     const editDB = (elem) => {
         setShowMoreInfo(false)
@@ -78,13 +77,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
             setEditComentarioDB(null)
         }, 10)
     }
-
-    const handleToolTip = () => {
-        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl)
-        })
-    };
 
     const handleEditDB = async () => {
 
@@ -137,7 +129,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                     setEditQtdDB(null)
                     setEditUnidadeDB(null)
                     setEditComentarioDB(null)
-                    handleToolTip();
                 });
 
         } else {
@@ -504,13 +495,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                 )}
                                                                 <td style={{ "overflow": "hidden" }} className={`text-center`}>
                                                                     {elem.comentario && (
-                                                                        <span type="button" tabIndex="0" className="position-relative" data-bs-trigger="focus" title={`Comentário`} data-bs-toggle="popover" data-bs-placement="left"
-                                                                            data-bs-content={elem.comentario} >
-                                                                            <FontAwesomeIcon icon={faComment} />
-                                                                            <span className="notificationSign fadeItem">
-                                                                                <span className="visually-hidden">New alerts</span>
-                                                                            </span>
-                                                                        </span>
+                                                                        <Comentarios comentario={elem.comentario}/>
                                                                     )}
                                                                 </td>
 
@@ -531,8 +516,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                         </div>
                                                                     )}
                                                                 </td>
-
-
 
 
                                                                 <div className="modal fade" id="deleteModalBD" aria-labelledby="deleteModalLabel" aria-hidden="true">

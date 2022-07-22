@@ -39,11 +39,12 @@ import HidroviarioTable from '../src/components/inventory/inventoryTables/Hidrov
 import { getValues } from '../store/FatoresEmissao/FatoresEmissao.actions';
 import TransporteAereo from '../src/components/inventory/fontesEmissao/TransporteAereo';
 import AereoTable from '../src/components/inventory/inventoryTables/AereoTable';
-
+import RodoviarioPorDistancia from '../src/components/inventory/fontesEmissao/RodoviarioPorDistancia';
+import RodoviarioPorDistanciaTable from '../src/components/inventory/inventoryTables/RodoviarioPorDistanciaTable'
+1
 export default function Inventory() {
 
     // Redux variables // inventory list
-    //TODO: Fix list, não ta chamando a função expecífica da lista.
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const token = jwt.decode(Cookie.get('auth'))
@@ -328,8 +329,28 @@ export default function Inventory() {
                                                                     updateList={() => dataFunction(company_id)} />
                                                             </InventoryCards>
                                                         </>
+
                                                     )}
 
+                                                    {states.tipoCalculo === "Por distancia e peso da carga" && (
+                                                        <>
+                                                            <InventoryCards>
+                                                                <h5 className='h5_title mb-0' id='passo5'>Passo 5</h5>
+                                                                <RodoviarioPorDistancia data={{ userConfig }}
+                                                                    onChange={data => handleList(data)}
+                                                                    edit={newList => setList(newList)}
+                                                                    forceUpdate={() => setForceUpdate(forceUpdate + 1)}
+                                                                    save={() => save(list, company_id)}
+                                                                    updateList={() => dataFunction(company_id)} />
+                                                            </InventoryCards>
+                                                            <InventoryCards>
+                                                                <RodoviarioPorDistanciaTable data={{ userConfig }}
+                                                                    save={() => save(list, company_id)} title
+                                                                    updateList={() => dataFunction(company_id)} />
+                                                            </InventoryCards>
+                                                        </>
+                                                        
+                                                    )}
 
                                                 </>
                                             )}
