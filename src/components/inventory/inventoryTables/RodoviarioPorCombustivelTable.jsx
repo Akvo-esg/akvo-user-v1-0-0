@@ -436,7 +436,6 @@ export default function RodoviarioPorCombustivelTable(props) {
                                                                             <span className="visually-hidden">New alerts</span>
                                                                         </span>
                                                                     )}
-
                                                                 </span>
                                                             </td>
                                                             <td>

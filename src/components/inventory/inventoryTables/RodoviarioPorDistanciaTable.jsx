@@ -6,9 +6,41 @@ import FrotaList from "../inventory/FrotaList"
 import AnoOptions from "../inventory/AnoOptions"
 import ConsumoMensalListEdit from "../inventory/ConsumoMensalListEdit"
 import baseUrl from "../../../utils/baseUrl"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    faCancel,
+    faEraser,
+    faCheck,
+    faComment,
+    faCommentAlt,
+    faCommentDots,
+    faDownload,
+    faEdit,
+    faEye,
+    faMinus,
+    faPenToSquare,
+    faPlus,
+    faSave,
+    faSearch,
+    faTimes,
+    faTrash,
+    faTrashAlt,
+    faUpload,
+    faXmark
+} from '@fortawesome/free-solid-svg-icons'
+import { idCompare } from "../../../../utils/permission"
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useSelector } from "react-redux"
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
+import Comentarios from "../../formComponets/Comentarios"
 
-export default function FontesEstacionariasDeCombustao(props) {
+export default function RodoviarioPorDistanciaTable(props) {
 
+    const states = useSelector(state => state.inventoryStates)
+    const inventory = useSelector(state => state.inventoryDB)
+    const fatoresEmissao = useSelector(state => state.fatoresEmissao)
+    const token = jwt.decode(Cookie.get('auth'))
 
     //Edit Data Base Itens
     const [deleteElemCodeDB, setDeleteElemCodeDB] = useState(null)
@@ -130,17 +162,18 @@ export default function FontesEstacionariasDeCombustao(props) {
 
         if (isValid) {
 
-            const emissoes = calc(editTipoFrotaIdDB, editAnoFrotaDB, editConsumoAnualDB, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+            const emissoes = calc(editTipoFrotaIdDB, editAnoFrotaDB, editConsumoAnualDB, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
             const data = {
-                unid_id: props.data.unid_id,
-                unidSetorPrimario: props.data.unidSetorPrimario,
-                unidName: props.data.unidName,
-                anoInventario: props.data.anoInventario,
-                escopo: props.data.escopo,
-                fonteEmissao: props.data.fonteEmissao,
-                transporte: props.transporte,
-                tipoCalculo: props.tipoCalculo,
+                company_id: token.company_id,
+                unid_id: states.unid_id,
+                unidSetorPrimario: states.unidSetorPrimario,
+                unidName: states.unidName,
+                anoInventario: states.anoInventario,
+                escopo: states.escopo,
+                fonteEmissao: states.fonteEmissao,
+                tipoEmissao: states.tipoEmissao,
+                tipoCalculo: states.tipoCalculo,
                 code: editCodeDB,
                 identificador: editIdentificadorDB,
                 descricaoFrota: editdescricaoFrotaDB,
@@ -171,13 +204,13 @@ export default function FontesEstacionariasDeCombustao(props) {
                 emissoesN2O_B: emissoes.emissoesN2O_B,
                 emissoesTotais: emissoes.emissoesTotais,
                 emissoesBiogenicas: emissoes.emissoesBiogenicas,
-                userName: `${props.data.userName} ${props.data.userLastName}`,
-                user_id: props.data.user_id,
+                userName: `${token.firstName} ${token.lastName}`,
+                user_id: token.sub,
                 dateAdded: editDateAddedDB,
                 dateUpdated: new Date()
             }
 
-            await axios.patch(`${baseUrl()}/api/editInventory/${props.data.company_id}`, data)
+            await axios.patch(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
                 .then(setLoadingEditDB(true))
                 .then(res => {
                     setLoadingEditDB(false)
@@ -197,11 +230,11 @@ export default function FontesEstacionariasDeCombustao(props) {
     const handleDeleteDB = async (code) => {
 
         const data = {
-            company_id: props.data.company_id,
+            company_id: token.company_id,
             code: code
         }
 
-        await axios.post(`${baseUrl()}/api/editInventory/${props.data.company_id}`, data)
+        await axios.post(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
             .then(res => { props.updateList() })
 
     }
@@ -220,23 +253,23 @@ export default function FontesEstacionariasDeCombustao(props) {
             if (list[i].fonteEmissao === "Transportes" &&
                 list[i].transporte === "Transporte rodoviário" &&
                 list[i].tipoCalculo === "Por distancia" &&
-                list[i].unid_id === props.data.unid_id &&
-                list[i].anoInventario === props.data.anoInventario &&
+                list[i].unid_id === states.unid_id &&
+                list[i].anoInventario === states.anoInventario &&
                 !showMore && inventoryList.length < 5) {
                 inventoryList.push(list[i])
             } else if (list[i].fonteEmissao === "Transportes" &&
                 list[i].transporte === "Transporte rodoviário" &&
                 list[i].tipoCalculo === "Por distancia" &&
-                list[i].unid_id === props.data.unid_id &&
-                list[i].anoInventario === props.data.anoInventario &&
+                list[i].unid_id === states.unid_id &&
+                list[i].anoInventario === states.anoInventario &&
                 showMore) {
                 inventoryList.push(list[i])
             }
             if (list[i].fonteEmissao === "Transportes" &&
                 list[i].transporte === "Transporte rodoviário" &&
                 list[i].tipoCalculo === "Por distancia" &&
-                list[i].unid_id === props.data.unid_id &&
-                list[i].anoInventario === props.data.anoInventario) {
+                list[i].unid_id === states.unid_id &&
+                list[i].anoInventario === states.anoInventario) {
                 inventoryLength++
             }
         }
@@ -245,7 +278,7 @@ export default function FontesEstacionariasDeCombustao(props) {
             return (
 
                 <div className="mt-5 fadeItem">
-                    <h6>Últimos dados cadastrados em {props.data.unidName} / {props.data.anoInventario}</h6>
+                    <h6 className="h5_title">Últimos dados cadastrados em {states.unidName} / {states.anoInventario}</h6>
 
                     <div className="table-responsive">
                         <small>
@@ -253,22 +286,33 @@ export default function FontesEstacionariasDeCombustao(props) {
                                 <table className="table table-striped table-sm ">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Código</th>
-                                            {showMore ?
+                                            <th className="text-center akvo-text-escopo1">Código</th>
+                                            {showMore && !editCodeDB ?
+                                                <>
                                                 <th>
                                                     <div className="input-group input-group-sm">
                                                         <input type="text" className="form-control form-control-sm"
                                                             placeholder="Identificador"
                                                             value={searchIdentificador}
                                                             onChange={e => setSearchIdentificador(e.target.value)} />
-                                                        <div className="input-group-append">
-                                                            <span className="input-group-text" ><i className="fa fa-search"></i></span>
-                                                        </div>
+                                                        <span className="input-group-text" ><FontAwesomeIcon icon={faSearch} /></span>
                                                     </div>
-
                                                 </th>
+                                                <th>
+                                                    <div className="input-group input-group-sm">
+                                                        <input type="text" className="form-control form-control-sm"
+                                                            placeholder="Descrição da fonte"
+                                                            value={searchDescricao}
+                                                            onChange={e => setSearchDescricao(e.target.value)} />
+                                                        <span className="input-group-text" ><FontAwesomeIcon icon={faSearch} /></span>
+                                                    </div>
+                                                </th>
+                                                </>
                                                 :
-                                                <th scope="col">Identificador</th>
+                                                <>
+                                                    <th className="text-center akvo-text-escopo1">Identificador</th>
+                                                    <th className="text-center akvo-text-escopo1">Descrição da fonte</th>
+                                                </>
                                             }
                                             {showMore ?
                                                 <th>
@@ -277,9 +321,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                             placeholder="Descrição da fonte"
                                                             value={searchDescricao}
                                                             onChange={e => setSearchDescricao(e.target.value)} />
-                                                        <div className="input-group-append">
-                                                            <span className="input-group-text" ><i className="fa fa-search"></i></span>
-                                                        </div>
+                                                        <span className="input-group-text" ><FontAwesomeIcon icon={faSearch} /></span>
                                                     </div>
                                                 </th>
                                                 :
@@ -303,16 +345,16 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                     <th scope="col">Data de cadastro/Atualização</th>
                                                 </>
                                             )}
-                                            <th scope="col"></th>
-                                            <th scope="col">
+                                            <th className="text-center akvo-text-escopo1"></th>
+                                            <th className="text-center akvo-text-escopo1">
                                                 <span
-                                                    class="badge badge-pill badge-primary"
+                                                    className="badge rounded-pill bg-primary"
                                                     type="button"
-                                                    onClick={() => setShowMoreInfo(!showMoreInfo)}>
+                                                    onClick={() => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }}>
                                                     {showMoreInfo ?
-                                                        <i className="fa fa-minus"></i>
+                                                        <FontAwesomeIcon icon={faMinus} />
                                                         :
-                                                        <i className="fa fa-plus"></i>
+                                                        <FontAwesomeIcon icon={faPlus} />
                                                     }
                                                 </span>
                                             </th>
@@ -336,7 +378,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                 <>
                                                     {editCodeDB === elem.code ?
                                                         <>
-                                                            <tr className="fadeItem">
+                                                            <tr className="fadeItem" key={`edit${index}`}>
                                                                 <td scopo="row">
                                                                     <small>{elem.code}</small>
                                                                 </td>
@@ -374,9 +416,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                                             value={editConsumoAnualDB}
                                                                             placeholder="0"
                                                                             onChange={e => setEditConsumoAnualDB(e.target.value)} />
-                                                                        <div className="input-group-append">
-                                                                            <span class="input-group-text">km</span>
-                                                                        </div>
+                                                                        <span className="input-group-text">{editUnidadeDB}</span>
                                                                     </div>
                                                                 </td>
                                                                 <td>
@@ -414,13 +454,17 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                                     </>
                                                                 )}
                                                                 <td>
-                                                                    <button type="button"
-                                                                        className="btn btn-sm btn-info"
-                                                                        data-toggle="modal"
-                                                                        data-target="#commentModalDB"
-                                                                    >
-                                                                        <i className="fa fa-comments"></i>
-                                                                    </button>
+                                                                    <span type="button" className="me-1 position-relative"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#commentModalDB"                                                                >
+                                                                        <FontAwesomeIcon icon={faComment} />
+                                                                        {editComentarioDB && (
+                                                                            <span className="notificationSign fadeItem">
+                                                                                <span className="visually-hidden">New alerts</span>
+                                                                            </span>
+                                                                        )}
+
+                                                                    </span>
                                                                 </td>
                                                                 <td>
                                                                     <div className="btn-group btn-group-sm fadeItem" role="group">
@@ -433,7 +477,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                                                         handleEditDB(editCodeDB)
                                                                                     }, 10)
                                                                                 }}>
-                                                                                <i className="fa fa-check"></i>
+                                                                                <FontAwesomeIcon icon={faCheck} />
                                                                             </button>
                                                                             :
                                                                             <button type="button" disabled="true"
@@ -447,19 +491,17 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                                             className="btn btn-outline-danger"
                                                                             data-toggle-tooltip="true" data-placement="bottom" title="Cancelar"
                                                                             onClick={() => cancelEditDB()}>
-                                                                            <i className="fa fa-times"></i>
+                                                                            <FontAwesomeIcon icon={faTimes} />
                                                                         </button>
 
                                                                     </div>
                                                                 </td>
-                                                                <div className="modal fade" data-backdrop="static" id="commentModalDB" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div className="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" id="commentModalDB" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                     <div className="modal-dialog modal-dialog-centered" role="document">
                                                                         <div className="modal-content">
                                                                             <div className="modal-header">
                                                                                 <h5 className="modal-title" id="exampleModalLabel">Editar o comentario do registro {editCodeDB} </h5>
-                                                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setEditComentarioDB(elem.comentario)}>
-                                                                                    <span aria-hidden="true">&times;</span>
-                                                                                </button>
+                                                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setEditComentarioDB(elem.comentario)}></button>
                                                                             </div>
                                                                             <div className="modal-body">
                                                                                 <textarea rows="3" type="text" className="form-control"
@@ -467,8 +509,9 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                                                     onChange={e => setEditComentarioDB(e.target.value)} />
                                                                             </div>
                                                                             <div className="modal-footer">
-                                                                                <button type="button" className="btn btn-outline-success" data-dismiss="modal"><i className="fa fa-save"></i></button>
-                                                                                <button type="button" className="btn btn-outline-danger" data-dismiss="modal" onClick={() => setEditComentarioDB(elem.comentario)}> <i className="fa fa-times"></i> </button>
+                                                                                <button type="button" className="btn btn-outline-warning" onClick={() => setEditComentarioDB('')}><FontAwesomeIcon icon={faEraser} /></button>
+                                                                                <button type="button" className="btn btn-outline-success" data-bs-dismiss="modal"><FontAwesomeIcon icon={faSave} /></button>
+                                                                                <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal" onClick={() => setEditComentarioDB(elem.comentario)}> <FontAwesomeIcon icon={faTimes} /> </button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -548,7 +591,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                                 {elem.periodoConsumo.charAt(0).toUpperCase() + elem.periodoConsumo.slice(1)}
                                                             </td>
                                                             <td>
-                                                                {elem.consumoAnual} km
+                                                                {elem.consumoAnual} {elem.unidade}
                                                             </td>
                                                             <td>
                                                                 {elem.emissoesTotais.toFixed(2)}
@@ -586,48 +629,42 @@ export default function FontesEstacionariasDeCombustao(props) {
                                                             )}
                                                             <td>
                                                                 {elem.comentario && (
-                                                                    <span type="button" tabindex="0" className="badge badge-pill badge-info" data-trigger="focus" data-container="body" data-toggle="popover" data-placement="bottom"
-                                                                        data-content={elem.comentario} >
-                                                                        <i className="fa fa-comments"></i>
-                                                                    </span>
+                                                                    <Comentarios comentario={elem.comentario} />
                                                                 )}
                                                             </td>
                                                             <td>
-                                                                <div className="btn-group btn-group-sm" role="group">
-                                                                    <button type="button"
-                                                                        className="btn btn-warning"
-                                                                        data-toggle-tooltip="true" data-placement="bottom" title="Editar"
-                                                                        onClick={() => editDB(elem)}>
-                                                                        <i className="fa fa-edit"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        className="btn btn-danger"
-                                                                        data-toggle="modal" data-toggle-tooltip="true" data-target="#deleteModalBD"
-                                                                        data-placement="bottom" title="Excluir"
-                                                                        onClick={() => setDeleteElemCodeDB(elem.code)}>
-                                                                        <i className="fa fa-trash"></i>
-                                                                    </button>
-                                                                </div>
+                                                                {idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) && (
+                                                                    <div className="btn-group btn-group-sm" role="group" disabled={idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) }>
+                                                                        <span type="button" className="mx-2"
+                                                                            data-bs-toggle-tooltip="true" data-bs-placement="bottom" title="Editar"
+                                                                            onClick={() => editDB(elem)}>
+                                                                            <FontAwesomeIcon icon={faEdit} />
+                                                                        </span>
+                                                                        <span type="button" className="mx-2"
+                                                                            data-bs-toggle="modal" data-bs-toggle-tooltip="true" data-bs-target="#deleteModalBD"
+                                                                            data-bs-placement="bottom" title="Excluir"
+                                                                            onClick={() => setDeleteElemCodeDB(elem.code)}>
+                                                                            <FontAwesomeIcon icon={faTrashAlt} />
+                                                                        </span>
+                                                                    </div>
+                                                                )}
                                                             </td>
 
                                                             <div className="modal fade" id="deleteModalBD" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                                                 <div className="modal-dialog">
                                                                     <div className="modal-content">
                                                                         <div className="modal-header">
-                                                                            <h5 className="modal-title" id="exampleModalLabel">Excluir registro</h5>
-                                                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
+                                                                            <h5 className="h5_title" id="exampleModalLabel">Excluir registro</h5>
+                                                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                         </div>
                                                                         <div className="modal-body">
                                                                             Tem certeza que deseja excluir o registro {deleteElemCodeDB}
                                                                         </div>
                                                                         <div className="modal-footer">
-                                                                            <button type="button" className="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
-                                                                            <button type="buttom" className="btn btn-danger btn-sm" data-dismiss="modal"
+                                                                            <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                                                                            <button type="buttom" className="btn btn-danger btn-sm" data-bs-dismiss="modal"
                                                                                 onClick={() => handleDeleteDB(deleteElemCodeDB)}
                                                                             >Excluir
-                                                                                <i className="fa fa-trash ml-1"></i>
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -661,14 +698,7 @@ export default function FontesEstacionariasDeCombustao(props) {
                             }
                         </>
                     )}
-                    {/* <div className="row">
-                        <div className="col-12">
-                            <div className="d-flex justify-content-end">
-                                <h6><a href="#" onClick={() => acessarInventorio()}>Acessar inventório completo</a></h6>
-                            </div>
-                        </div>
-
-                    </div> */}
+                    
                 </div>
             )
         } else {
@@ -678,7 +708,7 @@ export default function FontesEstacionariasDeCombustao(props) {
 
     return (
         <>
-            {renderInventoryTable(props.inventario)}
+            {renderInventoryTable(inventory)}
         </>
     )
 

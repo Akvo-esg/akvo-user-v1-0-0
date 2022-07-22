@@ -25,7 +25,7 @@ import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 
 
-export default function RodoviarioPorDistancia(props) {
+export default function RodoviarioPorDistancia() {
 
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
@@ -149,18 +149,18 @@ export default function RodoviarioPorDistancia(props) {
         const isValid = validate()
 
         if (isValid) {
-            const emissoes = calc(tipoFrotaId, anoFrota, consumoAnual, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+            const emissoes = calc(tipoFrotaId, anoFrota, consumoAnual, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
             const data = {
-                company_id: props.data.company_id,
-                unid_id: props.data.unid_id,
-                unidSetorPrimario: props.data.unidSetorPrimario,
-                unidName: props.data.unidName,
-                anoInventario: props.data.anoInventario,
-                escopo: props.data.escopo,
-                fonteEmissao: props.data.fonteEmissao,
-                transporte: props.transporte,
-                tipoCalculo: props.tipoCalculo,
+                company_id: token.company_id,
+                unid_id: states.unid_id,
+                unidSetorPrimario: states.unidSetorPrimario,
+                unidName: states.unidName,
+                anoInventario: states.anoInventario,
+                escopo: states.escopo,
+                fonteEmissao: states.fonteEmissao,
+                tipoEmissao: states.tipoEmissao,
+                tipoCalculo: states.tipoCalculo,
                 comentario: '',
                 code,
                 descricaoFrota,
@@ -334,7 +334,7 @@ export default function RodoviarioPorDistancia(props) {
 
     const handleEdit = (index) => {
 
-        const emissoes = calc(editTipoFrotaId, editAnoFrota, editConsumoAnual, props.data.fonteEmissao, props.fatoresEmissao, props.tipoCalculo)
+        const emissoes = calc(editTipoFrotaId, editAnoFrota, editConsumoAnual, states.fonteEmissao, fatoresEmissao, states.tipoCalculo)
 
         const newList = list
 
@@ -582,8 +582,8 @@ export default function RodoviarioPorDistancia(props) {
                             if (elem.fonteEmissao === "Transportes" &&
                                 elem.transporte === "Transporte rodoviário" &&
                                 elem.tipoCalculo === "Por distancia" &&
-                                elem.anoInventario === props.data.anoInventario &&
-                                elem.unid_id === props.data.unid_id) {
+                                elem.anoInventario === states.anoInventario &&
+                                elem.unid_id === states.unid_id) {
                                 return (
                                     <>
                                         {editElementIndex === index ?
