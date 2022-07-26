@@ -34,6 +34,9 @@ import { useDispatch, useSelector } from "react-redux"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import Comentarios from "../../formComponets/Comentarios"
+import ShowMoreButtons from "../../formComponets/ShowMoreButtons"
+import ModalDeleteItem from "../../formComponets/ModalDeleteItem"
+import ModalCommentItem from "../../formComponets/ModalCommentItem"
 
 export default function RodoviarioPorTipoTable(props) {
     const states = useSelector(state => state.inventoryStates)
@@ -273,13 +276,13 @@ export default function RodoviarioPorTipoTable(props) {
             return (
 
                 <div className="fadeItem">
-                    <h6 className="h5_title">Últimos dados cadastrados em {states.unidName} / {states.anoInventario}</h6>
-
+                    < ShowMoreButtons unidName={states.unidName} anoInventario={states.anoInventario} showMoreInfo={showMoreInfo}
+                     handleClick={ () => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }} />
 
                     <div className="table-responsive">
                         <small>
-                            <table className="table table-striped table-sm ">
-                                {/* <Scrollbars > */}
+                            <small>
+                            <table className="table table-striped table-sm scrollBarTable scrollit ">
                                 <thead>
                                     <tr>
                                         <th className="text-center akvo-text-escopo1">Código</th>
@@ -288,7 +291,7 @@ export default function RodoviarioPorTipoTable(props) {
                                                 <th>
                                                     <div className="input-group input-group-sm">
                                                         <input type="text" className="form-control form-control-sm"
-                                                            placeholder="Identificador"
+                                                            placeholder="Id"
                                                             value={searchIdentificador}
                                                             onChange={e => setSearchIdentificador(e.target.value)} />
                                                         <span className="input-group-text" ><FontAwesomeIcon icon={faSearch} /></span>
@@ -329,18 +332,6 @@ export default function RodoviarioPorTipoTable(props) {
                                             </>
                                         )}
                                         <th className="text-center akvo-text-escopo1"></th>
-                                        <th className="text-center akvo-text-escopo1">
-                                            <span
-                                                className="badge rounded-pill bg-primary"
-                                                type="button"
-                                                onClick={() => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }}>
-                                                {showMoreInfo ?
-                                                    <FontAwesomeIcon icon={faMinus} />
-                                                    :
-                                                    <FontAwesomeIcon icon={faPlus} />
-                                                }
-                                            </span>
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -362,16 +353,16 @@ export default function RodoviarioPorTipoTable(props) {
                                                 {editCodeDB === elem.code ?
                                                     <>
                                                         <tr className="fadeItem" key={`edit${index}`}>
-                                                            <td scopo="row">
+                                                            <td className="text-center">
                                                                 <small>{elem.code}</small>
                                                             </td>
-                                                            <td scopo="row">
+                                                            <td className="text-center">
                                                                 <input className="form-control form-control-sm" type="text" value={editIdentificadorDB} onChange={e => setEditIdentificadorDB(e.target.value)} />
                                                             </td>
-                                                            <td scopo="row">
+                                                            <td className="text-center">
                                                                 <input className="form-control form-control-sm" type="text" value={editdescricaoFrotaDB} onChange={e => setEditdescricaoFrotaDB(e.target.value)} />
                                                             </td>
-                                                            <td scopo="row">
+                                                            <td className="text-center">
                                                                 <select className="form-select form-select-sm frotaListItem"
                                                                     value={`${editTipoFrotaIdDB},${editTipoFrotaNameDB},${editUnidadeDB}`}
                                                                     onChange={e => {
@@ -380,7 +371,7 @@ export default function RodoviarioPorTipoTable(props) {
                                                                     <FrotaList />
                                                                 </select>
                                                             </td>
-                                                            <td scopo="row">
+                                                            <td className="text-center">
                                                                 <select className="form-select form-select-sm"
                                                                     value={editAnoFrotaDB}
                                                                     onChange={e => {
@@ -389,7 +380,7 @@ export default function RodoviarioPorTipoTable(props) {
                                                                     <AnoOptions />
                                                                 </select>
                                                             </td>
-                                                            <td scopo="row">
+                                                            <td className="text-center">
                                                                 {editPeriodoConsumoDB.charAt(0).toUpperCase() + editPeriodoConsumoDB.slice(1)}
                                                             </td>
                                                             <td>
@@ -402,41 +393,41 @@ export default function RodoviarioPorTipoTable(props) {
                                                                     <span className="input-group-text">{editUnidadeDB}</span>
                                                                 </div>
                                                             </td>
-                                                            <td>
+                                                            <td className="text-center">
                                                                 -
                                                             </td>
-                                                            <td>
+                                                            <td className="text-center">
                                                                 -
                                                             </td>
                                                             {showMoreInfo && (
                                                                 <>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
-                                                                    <td>
+                                                                    <td className="text-center">
                                                                         -
                                                                     </td>
                                                                 </>
                                                             )}
-                                                            <td>
+                                                            <td className="text-center">
                                                                 <span type="button" className="me-1 position-relative"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#commentModalDB"                                                                >
@@ -449,7 +440,7 @@ export default function RodoviarioPorTipoTable(props) {
 
                                                                 </span>
                                                             </td>
-                                                            <td>
+                                                            <td className="text-center">
                                                                 <div className="btn-group btn-group-sm fadeItem" role="group">
                                                                     {!loadingEditDB ?
                                                                         <button type="button"
@@ -479,28 +470,7 @@ export default function RodoviarioPorTipoTable(props) {
 
                                                                 </div>
                                                             </td>
-
-
-                                                            <div className="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" id="commentModalDB" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div className="modal-dialog modal-dialog-centered" role="document">
-                                                                    <div className="modal-content">
-                                                                        <div className="modal-header">
-                                                                            <h5 className="h5_title" id="exampleModalLabel">Editar o comentario do registro {editCodeDB} </h5>
-                                                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setEditComentarioDB(elem.comentario)}></button>
-                                                                        </div>
-                                                                        <div className="modal-body">
-                                                                            <textarea rows="3" type="text" className="form-control"
-                                                                                value={editComentarioDB}
-                                                                                onChange={e => setEditComentarioDB(e.target.value)} />
-                                                                        </div>
-                                                                        <div className="modal-footer">
-                                                                            <button type="button" className="btn btn-outline-warning" onClick={() => setEditComentarioDB('')}><FontAwesomeIcon icon={faEraser} /></button>
-                                                                            <button type="button" className="btn btn-outline-success" data-bs-dismiss="modal"><FontAwesomeIcon icon={faSave} /></button>
-                                                                            <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal" onClick={() => setEditComentarioDB(elem.comentario)}> <FontAwesomeIcon icon={faTimes} /> </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <ModalCommentItem editComentarioDB={editComentarioDB} editCodeDB={editCodeDB} handleChange={(e) => setEditComentarioDB(e.target.value)} elemComentario={elem.comentario} setEditComentarioDB={setEditComentarioDB} />
                                                         </tr>
                                                         {editPeriodoConsumoDB === "mensal" && (
                                                             <tr className="fadeItem">
@@ -557,67 +527,67 @@ export default function RodoviarioPorTipoTable(props) {
                                                     </>
                                                     :
                                                     <tr className="fadeItem">
-                                                        <td>
+                                                        <td className="text-center">
                                                             <small>{elem.code}</small>
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.identificador}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.descricaoFrota}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.tipoFrotaName}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.anoFrota}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.periodoConsumo.charAt(0).toUpperCase() + elem.periodoConsumo.slice(1)}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.consumoAnual} {elem.unidade}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.emissoesTotais.toFixed(2)}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.emissoesBiogenicas.toFixed(2)}
                                                         </td>
                                                         {showMoreInfo && (
                                                             <>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.emissoesCO2_F.toFixed(4)}
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.emissoesCH4_F.toFixed(4)}
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.emissoesN2O_F.toFixed(4)}
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.emissoesCO2_B.toFixed(4)}
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.emissoesCH4_B.toFixed(4)}
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.emissoesN2O_B.toFixed(4)}
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.userName}
                                                                 </td>
-                                                                <td>
+                                                                <td className="text-center">
                                                                     {elem.dateUpdated ? ` ${new Date(elem.dateUpdated).getDate()}/${new Date(elem.dateUpdated).getMonth()}/${new Date(elem.dateUpdated).getFullYear()}` : `${new Date(elem.dateAdded).getDate()}/${new Date(elem.dateAdded).getMonth()}/${new Date(elem.dateAdded).getFullYear()}`}
                                                                 </td>
                                                             </>
                                                         )}
-                                                        <td>
+                                                        <td className="text-center">
                                                             {elem.comentario && (
                                                                 <Comentarios comentario={elem.comentario} />
                                                             )}
                                                         </td>
-                                                        <td>
+                                                        <td className="text-center">
                                                             {idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus) && (
                                                                 <div className="btn-group btn-group-sm" role="group" disabled={idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus) }>
                                                                     <span type="button" className="mx-2"
@@ -634,38 +604,16 @@ export default function RodoviarioPorTipoTable(props) {
                                                                 </div>
                                                             )}
                                                         </td>
-
-                                                        <div className="modal fade" id="deleteModalBD" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                                            <div className="modal-dialog">
-                                                                <div className="modal-content">
-                                                                    <div className="modal-header">
-                                                                        <h5 className="h5_title" id="exampleModalLabel">Excluir registro</h5>
-                                                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div className="modal-body">
-                                                                        Tem certeza que deseja excluir o registro {deleteElemCodeDB}
-                                                                    </div>
-                                                                    <div className="modal-footer">
-                                                                        <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                                                                        <button type="buttom" className="btn btn-danger btn-sm" data-bs-dismiss="modal"
-                                                                            onClick={() => handleDeleteDB(deleteElemCodeDB)}
-                                                                        >Excluir
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
+                                                        <ModalDeleteItem deleteElemCodeDB={deleteElemCodeDB} handleClick={ () => handleDeleteDB(deleteElemCodeDB)} />
                                                     </tr>
-
                                                 }
-                                            </>
+                                            </> 
                                         )
                                     })
                                     }
                                 </tbody>
-                                {/* </Scrollbars> */}
                             </table>
+                            </small>
                         </small>
                     </div>
                     {
@@ -685,15 +633,6 @@ export default function RodoviarioPorTipoTable(props) {
                             </>
                         )
                     }
-                    {/* <div className="row">
-                        <div className="col-12">
-                            <div className="d-flex justify-content-end">
-                                <h6><a href="#" onClick={() => acessarInventorio()}>Acessar inventório completo</a></h6>
-                            </div>
-                        </div>
-
-                    </div> */}
-
                 </div>
             )
         } else {
