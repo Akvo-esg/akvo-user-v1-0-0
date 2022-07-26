@@ -282,8 +282,7 @@ export default function RodoviarioPorTipoTable(props) {
                     <div className="table-responsive">
                         <small>
                             <small>
-                            <table className="table table-striped table-sm scrollBarTable ">
-                                {/* <Scrollbars > */}
+                            <table className="table table-striped table-sm scrollBarTable scrollit ">
                                 <thead>
                                     <tr>
                                         <th className="text-center akvo-text-escopo1">Código</th>
@@ -292,7 +291,7 @@ export default function RodoviarioPorTipoTable(props) {
                                                 <th>
                                                     <div className="input-group input-group-sm">
                                                         <input type="text" className="form-control form-control-sm"
-                                                            placeholder="Identificador"
+                                                            placeholder="Id"
                                                             value={searchIdentificador}
                                                             onChange={e => setSearchIdentificador(e.target.value)} />
                                                         <span className="input-group-text" ><FontAwesomeIcon icon={faSearch} /></span>
@@ -354,16 +353,16 @@ export default function RodoviarioPorTipoTable(props) {
                                                 {editCodeDB === elem.code ?
                                                     <>
                                                         <tr className="fadeItem" key={`edit${index}`}>
-                                                            <td scopo="row" className="text-center">
+                                                            <td className="text-center">
                                                                 <small>{elem.code}</small>
                                                             </td>
-                                                            <td scopo="row" className="text-center">
+                                                            <td className="text-center">
                                                                 <input className="form-control form-control-sm" type="text" value={editIdentificadorDB} onChange={e => setEditIdentificadorDB(e.target.value)} />
                                                             </td>
-                                                            <td scopo="row" className="text-center">
+                                                            <td className="text-center">
                                                                 <input className="form-control form-control-sm" type="text" value={editdescricaoFrotaDB} onChange={e => setEditdescricaoFrotaDB(e.target.value)} />
                                                             </td>
-                                                            <td scopo="row" className="text-center">
+                                                            <td className="text-center">
                                                                 <select className="form-select form-select-sm frotaListItem"
                                                                     value={`${editTipoFrotaIdDB},${editTipoFrotaNameDB},${editUnidadeDB}`}
                                                                     onChange={e => {
@@ -372,7 +371,7 @@ export default function RodoviarioPorTipoTable(props) {
                                                                     <FrotaList />
                                                                 </select>
                                                             </td>
-                                                            <td scopo="row" className="text-center">
+                                                            <td className="text-center">
                                                                 <select className="form-select form-select-sm"
                                                                     value={editAnoFrotaDB}
                                                                     onChange={e => {
@@ -381,7 +380,7 @@ export default function RodoviarioPorTipoTable(props) {
                                                                     <AnoOptions />
                                                                 </select>
                                                             </td>
-                                                            <td scopo="row" className="text-center">
+                                                            <td className="text-center">
                                                                 {editPeriodoConsumoDB.charAt(0).toUpperCase() + editPeriodoConsumoDB.slice(1)}
                                                             </td>
                                                             <td>
