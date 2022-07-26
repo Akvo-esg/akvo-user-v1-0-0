@@ -13,14 +13,17 @@ if (typeof window !== "undefined") {
     const bootstrap = require("bootstrap");
 }
 import { userRestriction, userConfigUserStatusPermission } from "../../../utils/permission"
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken';
 
 
 export default function UsersManagementTable(props) {
 
+    const token = jwt.decode(Cookie.get('auth'))
+
     const [searchElement, setSearchElement] = useState('')
     const [disableItem, setDisableItem] = useState([])
     const [deleteItem, setDeleteItem] = useState([])
-
 
     useEffect(() => {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -76,7 +79,7 @@ export default function UsersManagementTable(props) {
         const data = {
             company_id: props.company_id,
             listUser_id: disableItem[1],
-            user_id: props.user_id,
+            user_id: token.user_id,
             active: disableItem[2]
         }
 
@@ -91,7 +94,7 @@ export default function UsersManagementTable(props) {
 
         const data = {
             listUser_id: deleteItem[1],
-            user_id: props.user_id,
+            user_id: token.user_id,
             deleted: deleteItem[2]
         }
 
@@ -172,7 +175,7 @@ export default function UsersManagementTable(props) {
                                                 <td>{elem.email}</td>
                                                 <td>{elem.celular}</td>
                                                 <td>{elem.cidade} / {elem.estado}</td>
-                                                <td>{props.userConfig === "avancado" ? (elem.userStatus === "admGlobal" ? "Adm. Global" : elem.userStatus === "admLocal" ? "Adm. Local" : elem.userStatus === "user" ? "Usuário" : "Auditor") :
+                                                <td>{token.userConfig === "avancado" ? (elem.userStatus === "admGlobal" ? "Adm. Global" : elem.userStatus === "admLocal" ? "Adm. Local" : elem.userStatus === "user" ? "Usuário" : "Auditor") :
                                                     ((elem.userStatus === "admGlobal" ? "Administrador" : elem.userStatus === "admLocal" ? "Administrador" : elem.userStatus === "user" ? "Usuário" : "Auditor"))}</td>
                                                 <td>{elem.active ?
                                                     <span className="badge bg-success">Ativo</span>
@@ -186,9 +189,9 @@ export default function UsersManagementTable(props) {
                                                                 <FontAwesomeIcon icon={faEye} />
                                                             </span>
                                                         </Link>
-                                                        {userRestriction(['user', 'auditor'], props.userStatus) &&
-                                                            elem._id !== props.user_id &&
-                                                            userConfigUserStatusPermission(props.userConfig, props.userStatus, elem.userStatus) && (
+                                                        {userRestriction(['user', 'auditor'], token.userStatus) &&
+                                                            elem._id !== token.user_id &&
+                                                            userConfigUserStatusPermission(token.userConfig, token.userStatus, elem.userStatus) && (
                                                                 <>
                                                                     <Link href={`/userEdit/${elem._id}`}>
                                                                         <span type="button" className=" mx-2" data-bs-toggle="tooltip"
@@ -245,9 +248,9 @@ export default function UsersManagementTable(props) {
                                                                 <FontAwesomeIcon icon={faEye} />
                                                             </span>
                                                         </Link>
-                                                        {userRestriction(['user', 'auditor'], props.userStatus) &&
-                                                            elem._id !== props.user_id &&
-                                                            userConfigUserStatusPermission(props.userConfig, props.userStatus, elem.userStatus) && (
+                                                        {userRestriction(['user', 'auditor'], token.userStatus) &&
+                                                            elem._id !== token.user_id &&
+                                                            userConfigUserStatusPermission(token.userConfig, token.userStatus, elem.userStatus) && (
                                                                 <>
                                                                     <span type="button" className="mx-2" data-bs-toggle="tooltip"
                                                                         data-bs-placement="bottom" title="Reativar"

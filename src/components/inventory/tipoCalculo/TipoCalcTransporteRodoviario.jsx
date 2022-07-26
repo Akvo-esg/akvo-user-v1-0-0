@@ -33,20 +33,9 @@ export default function TransporteRodoviario(props) {
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const inventory = useSelector(state => state.inventoryDB)
     const token = jwt.decode(Cookie.get('auth'))
-    console.log(list)
-    console.log(states)
-    console.log(fatoresEmissao);
-
-
-    //List items
-    const [code, setCode] = useState('')
-
+  
     //Error elements
     const [excelError, setExcelError] = useState('')
-
-    useEffect(() => {
-        handleCode()
-    }, [, list, states.inventory])
 
     useEffect(() => {
         activeButtons()
@@ -121,13 +110,6 @@ export default function TransporteRodoviario(props) {
         return transporteQtd.length > 0 ? transporteQtd.length : ''
     }
 
-
-    const handleCode = (oldCode) => {
-        const code = inventoryCode(list, inventory, states.fonteEmissao, "TRN", oldCode)
-        setCode(code)
-        return code
-    }
-
     const importFile = (e) => {
 
         setExcelError('')
@@ -141,7 +123,6 @@ export default function TransporteRodoviario(props) {
             var wb = XLSX.read(excelData, { type: 'array' })
 
             let newList = []
-            let newCode = code
 
             if (wb.Sheets.porTipo) {
 
@@ -188,7 +169,6 @@ export default function TransporteRodoviario(props) {
                                 transporte: states.transporte,
                                 tipoCalculo: "Por tipo e ano de fabricacao",
                                 comentario: comentarioItem,
-                                code: newCode,
                                 identificador: identificadorItem,
                                 descricaoFrota: descricaoItem,
                                 tipoFrotaId: frotaItem[0],
@@ -220,7 +200,6 @@ export default function TransporteRodoviario(props) {
                             }
 
                             newList.unshift(data)
-                            newCode = handleCode(data.code)
                         } else {
                             setExcelError(`Item "${descricaoItem}" preenchido incorretamente`)
                             document.getElementById("inputExcel").value = null
@@ -275,7 +254,6 @@ export default function TransporteRodoviario(props) {
                                 transporte: states.transporte,
                                 tipoCalculo: 'Por tipo de combustivel',
                                 comentario: comentarioItem,
-                                code: newCode,
                                 identificador: identificadorItem,
                                 descricaoFrota: descricaoItem,
                                 combustivelId: combustivelItem[0],
@@ -306,7 +284,6 @@ export default function TransporteRodoviario(props) {
                             }
 
                             newList.unshift(data)
-                            newCode = handleCode(data.code)
                         } else {
                             setExcelError(`Item "${descricaoItem}" preenchido incorretamente`)
                             document.getElementById("inputExcel").value = null
@@ -362,7 +339,6 @@ export default function TransporteRodoviario(props) {
                                 transporte: states.transporte,
                                 tipoCalculo: 'Por distancia',
                                 comentario: comentarioItem,
-                                code: newCode,
                                 identificador: identificadorItem,
                                 descricaoFrota: descricaoItem,
                                 tipoFrotaId: tipoFrotaItem[0],
@@ -394,7 +370,6 @@ export default function TransporteRodoviario(props) {
                             }
 
                             newList.unshift(data)
-                            newCode = handleCode(data.code)
                         } else {
                             setExcelError(`Item "${descricaoItem}" preenchido incorretamente`)
                             document.getElementById("inputExcel").value = null
@@ -485,8 +460,8 @@ export default function TransporteRodoviario(props) {
                         </button>
                         <button type="button"
                             className="transporteRodoviario btn btn-outline-escopo1 invetoryBtnFont"
-                            id="Por distancia e peso da carga"
-                            value="Por distancia e peso da carga"
+                            id="Por distancia"
+                            value="Por distancia"
                             onClick={e => { dispatch(tipoCalculoStore(e.target.value)); scrollDown("passo5") }}>
                             Cálculo de emissões por distância percorrida no ano de {states.anoInventario} <span className="badge akvo-bg-primary  badge-light fadeItem">{showQtd("Por distancia")}</span>
                         </button>

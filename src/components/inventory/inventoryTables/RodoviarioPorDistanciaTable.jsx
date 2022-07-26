@@ -234,7 +234,7 @@ export default function RodoviarioPorDistanciaTable(props) {
             code: code
         }
 
-        await axios.post(`${baseUrl()}/api/editInventory/${token.company_id}`, data)
+        await axios.post(`${baseUrl()}/api/editInvent ory/${token.company_id}`, data)
             .then(res => { props.updateList() })
 
     }
@@ -251,14 +251,14 @@ export default function RodoviarioPorDistanciaTable(props) {
 
         for (let i = 0; i < list.length; i++) {
             if (list[i].fonteEmissao === "Transportes" &&
-                list[i].transporte === "Transporte rodoviário" &&
+                list[i].tipoEmissao === "Transporte Rodoviário" &&
                 list[i].tipoCalculo === "Por distancia" &&
                 list[i].unid_id === states.unid_id &&
                 list[i].anoInventario === states.anoInventario &&
                 !showMore && inventoryList.length < 5) {
                 inventoryList.push(list[i])
             } else if (list[i].fonteEmissao === "Transportes" &&
-                list[i].transporte === "Transporte rodoviário" &&
+                list[i].tipoEmissao === "Transporte Rodoviário" &&
                 list[i].tipoCalculo === "Por distancia" &&
                 list[i].unid_id === states.unid_id &&
                 list[i].anoInventario === states.anoInventario &&
@@ -266,7 +266,7 @@ export default function RodoviarioPorDistanciaTable(props) {
                 inventoryList.push(list[i])
             }
             if (list[i].fonteEmissao === "Transportes" &&
-                list[i].transporte === "Transporte rodoviário" &&
+                list[i].tipoEmissao === "Transporte Rodoviário" &&
                 list[i].tipoCalculo === "Por distancia" &&
                 list[i].unid_id === states.unid_id &&
                 list[i].anoInventario === states.anoInventario) {
@@ -633,8 +633,8 @@ export default function RodoviarioPorDistanciaTable(props) {
                                                                 )}
                                                             </td>
                                                             <td>
-                                                                {idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) && (
-                                                                    <div className="btn-group btn-group-sm" role="group" disabled={idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) }>
+                                                                {idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus) && (
+                                                                    <div className="btn-group btn-group-sm" role="group" disabled={idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus) }>
                                                                         <span type="button" className="mx-2"
                                                                             data-bs-toggle-tooltip="true" data-bs-placement="bottom" title="Editar"
                                                                             onClick={() => editDB(elem)}>

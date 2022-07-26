@@ -3,8 +3,12 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react"
 import axios from "axios"
 import baseUrl from "../../../utils/baseUrl"
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken'
 
 export default function ResponsavelTable(props) {
+
+    const token = jwt.decode(Cookie.get('auth'))
 
     const [searchElement, setSearchElement] = useState('')
     const [userId, setUserId] = useState('')
@@ -17,7 +21,7 @@ export default function ResponsavelTable(props) {
     const [newUserError, setNewUserError] = useState('')
 
     useEffect(() => {
-        if (props.userConfig === 'basico') setUserStatus('admGlobal')
+        if (token.userConfig === 'basico') setUserStatus('admGlobal')
 
         setUserId(props.responsavel_id)
     }, [])
@@ -68,7 +72,7 @@ export default function ResponsavelTable(props) {
                 firstName,
                 lastName,
                 email,
-                company_id: props.company_id,
+                company_id: token.company_id,
                 userStatus,
                 password: password,
                 permissions: userStatus === "admGlobal" ? false : [],
@@ -187,7 +191,7 @@ export default function ResponsavelTable(props) {
                 </table>
             </small>
 
-            {!props.dateLimit && (
+            {!token.dateLimit && (
 
                 <div className="row">
                     <div className="col-12 d-flex justify-content-end">
@@ -198,7 +202,7 @@ export default function ResponsavelTable(props) {
                             <div className="col-12">
                                 <div className="row">
                                     <label className="akvo_form_label" >Novo usuário</label>
-                                    {props.userConfig === "avancado" && (
+                                    {token.userConfig === "avancado" && (
                                         <>
                                             <div className="col-3 px-1">
                                                 <input type="text" placeholder="Nome *"
@@ -229,7 +233,7 @@ export default function ResponsavelTable(props) {
                                             </div>
                                         </>
                                     )}
-                                    {props.userConfig === "basico" && (
+                                    {token.userConfig === "basico" && (
                                         <>
                                             <div className="col-4 px-1">
                                                 <input type="text" placeholder="Nome *"

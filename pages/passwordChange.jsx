@@ -15,6 +15,8 @@ import sidebarHide from "../utils/sidebarHide";
 
 export default function PasswordChange() {
 
+    const token = jwt.decode(Cookie.get('auth'))
+
     //Form variables
     const [oldPassword, setOldPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
@@ -24,10 +26,6 @@ export default function PasswordChange() {
     const [oldPasswordError, setOldPasswordError] = useState('')
     const [newPasswordError, setNewPasswordError] = useState('')
 
-    //User info
-    const [token, setToken] = useState('')
-    const [user_id, setUser_id] = useState('')
-
     //Render Elements
     const [loading, setLoading] = useState(false)
     const [loadingModal, setLoadingModal] = useState(false)
@@ -35,19 +33,7 @@ export default function PasswordChange() {
 
     useEffect(() => {
         sidebarHide()
-    })
-    useEffect(() => {
-        setToken(Cookie.get('auth'))
     }, [])
-
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            setUser_id(data.sub)
-        } else {
-            return
-        }
-    }, [token])
 
     const validate = () => {
 
@@ -79,7 +65,7 @@ export default function PasswordChange() {
             setLoading(true)
 
             const data = {
-                user_id,
+                user_id: token.sub,
                 oldPassword,
                 newPassword
             }
@@ -95,7 +81,7 @@ export default function PasswordChange() {
         setEmailSent(false)
         setLoadingModal(true)
 
-        await axios.patch(`${baseUrl()}/api/recoverPasswordMail2`, { user_id })
+        await axios.patch(`${baseUrl()}/api/recoverPasswordMail2`, { user_id: token.sub })
             .then(res => {
                 setEmailSent(true)
                 setLoadingModal(false)

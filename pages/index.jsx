@@ -21,11 +21,10 @@ if (typeof window !== "undefined") {
 
 export default function Home() {
 
-  const token1 = jwt.decode(Cookie.get('auth'))
+  const token = jwt.decode(Cookie.get('auth'))
 
 
   const [userFirstName, setUserFirstName] = useState('')
-  const [token, setToken] = useState('')
 
   const [userProfilePicture, setUserProfilePicture] = useState(null)
   const [userId, setUserId] = useState(null)
@@ -40,21 +39,8 @@ export default function Home() {
 
   useEffect(() => {
     sidebarHide()
-  })
-
-  useEffect(() => {
-    setToken(Cookie.get('auth'))
+    dataFunction(token.sub)
   }, [])
-
-  useEffect(() => {
-    if (token) {
-      const data = jwt.decode(token)
-      setUserFirstName(data.firstName)
-      setUserProfilePicture(data.profilePicture)
-      setUserId(data.sub)
-      dataFunction(data.sub)
-    }
-  }, [token])
 
 
   const dataFunction = async (userId) => {
@@ -76,53 +62,38 @@ export default function Home() {
     }
   }
 
-  const unsetTokem = (e) => {
-    e.preventDefault()
+  // const unsetTokem = (e) => {
+  //   e.preventDefault()
 
-    Cookie.remove('auth')
-    localStorage.removeItem('auth')
-    router.push('/premiumAccount')
-  }
+  //   Cookie.remove('auth')
+  //   localStorage.removeItem('auth')
+  //   router.push('/premiumAccount')
+  // }
 
   useEffect(() => {
     if (perfilNot || cadastroInstNot || dateFreeAcoount) {
-      // console.log(perfilNot, cadastroInstNot, dateFreeAcoount)
       var toastElList = [].slice.call(document.querySelectorAll('.toast'))
       var toastList = toastElList.map(function (toastEl) {
         // Creates an array of toasts (it only initializes them)
         return new bootstrap.Toast(toastEl, { autohide: false }) // No need for options; use the default options
       });
       toastList.forEach(toast => toast.show()); // This show them
-
     } else {
       return
     }
   }, [perfilNot, cadastroInstNot, dateFreeAcoount])
 
-
-
-  const toggleActive = (id) => {
-    if (activeId === id) {
-      setActiveId(null);
-    } else {
-      setActiveId(id);
-    }
-  }
-
-
-
-
   return (
 
-    <div className='App'>
-      <Title title={`Olá, ${userFirstName}!`} subtitle={'Qual sua meta de sustentabilidade para hoje?'} />
+    <div>
+      <Title title={`Olá, ${token.firstName}!`} subtitle={'Qual sua meta de sustentabilidade para hoje?'} />
 
-      <h5>{token1.userConfig}</h5>
+      <h5>{token.userConfig}</h5>
 
       <div className="notifications">
 
         <div className="toast-container">
-          {perfilNot && (
+          {/* {perfilNot && ( */}
             <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
               <div className="toast-header">
 
@@ -130,11 +101,11 @@ export default function Home() {
                 <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
               <div className="toast-body">
-                Clique <Link href={`/editProfile/${userId}`}>aqui</Link> para completar os dados do seu perfil.
+                Clique <Link href={`/editProfile/${token.sub}`}>aqui</Link> para completar os dados do seu perfil.
               </div>
             </div>
-          )}
-          {cadastroInstNot && (
+          {/* )} */}
+          {/* {cadastroInstNot && ( */}
             <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
               <div className="toast-header">
 
@@ -146,7 +117,7 @@ export default function Home() {
                 Clique <Link href={`/companyEdit`}>aqui</Link> para realizar o cadastro.
               </div>
             </div>
-          )}
+          {/* )} */}
           {!cadastroInstNot && firstUnityNot && (
             <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
               <div className="toast-header">

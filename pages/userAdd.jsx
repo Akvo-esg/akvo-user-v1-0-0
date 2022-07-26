@@ -21,14 +21,14 @@ import { unitsPermissions, userRestriction } from '../utils/permission';
 
 export default function UserAdd() {
 
+    const token = jwt.decode(Cookie.get('auth'))
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [firstNameError, setFirstNameError] = useState('')
     const [userStatus, setUserStatus] = useState('')
     const [userStatusError, setUserStatusError] = useState('')
     const [saveLoading, setSaveLoading] = useState(false)
-    const [token, setToken] = useState('')
-    const [userConfig, setUserConfig] = useState('')
     const [companyName, setCompanyName] = useState('')
     const [unidades, setUnidades] = useState([])
     const [user_id, setUser_id] = useState('')
@@ -43,30 +43,17 @@ export default function UserAdd() {
 
     useEffect(() => {
         sidebarHide()
-        setToken(Cookie.get('auth'))
-    }, [])
-
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            userRestriction(['user', 'auditor', 'consultor'], data.userStatus, true)
-
-            if (data.dateLimit) {
-                Router.push('/pricing')
-            } else {
-                setUser_id(data.sub)
-                if (data.company_id) {
-                    dataFunction(data.company_id)
-                    setCompany_id(data.company_id)
-                    setUserPermissions(data.permissions)
-                } else {
-                    setLoading(false)
-                }
-            }
+        userRestriction(['user', 'auditor', 'consultor'], token.userStatus, true)
+        if (token.dateLimit) {
+            Router.push('/pricing')
         } else {
-            return
+            if (token.company_id) {
+                dataFunction(token.company_id)
+            } else {
+                setLoading(false)
+            }
         }
-    }, [token])
+    }, [])
 
     const dataFunction = async (company_id) => {
 
@@ -76,7 +63,6 @@ export default function UserAdd() {
             }
         }).then(res => {
             setCompanyName(res.data.companyName)
-            setUserConfig(res.data.userConfig)
             setUnidades(res.data.unidades)
             setLoading(false)
         }).catch(e => {
@@ -256,7 +242,7 @@ export default function UserAdd() {
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <div className="row">
-                                                            {userConfig === "basico" && (
+                                                            {token.userConfig === "basico" && (
                                                                 <div className="col-12 col-xl-3 col-lg-6 my-2">
                                                                     <div className="card cardAnimation border-secondary shadow"
                                                                         id="userStatusadmGlobal" type="button" onClick={() => setUserStatus('admGlobal')}>
@@ -277,7 +263,7 @@ export default function UserAdd() {
                                                             )}
 
 
-                                                            {userConfig === "avancado" && (
+                                                            {token.userConfig === "avancado" && (
                                                                 <>
                                                                     <div className="col-12 col-xl-3 col-lg-6 my-2">
                                                                         <div className="card cardAnimation border-secondary shadow"
@@ -384,7 +370,7 @@ export default function UserAdd() {
                                                     <h5 className="h5_title">Permissões *</h5>
                                                     <div className="row">
                                                         <div className="col-8 col-xl-6 px-1">
-                                                            <UnitysPermissionTable unidades={unitsPermissions(unidades, userPermissions, userConfig, userStatus)} permissions={permissions} onChange={value => { setPermissions(value); setForceUpdate(forceUpdate + 1) }} />
+                                                            <UnitysPermissionTable unidades={unitsPermissions(unidades, userPermissions, token.userConfig, userStatus)} permissions={permissions} onChange={value => { setPermissions(value); setForceUpdate(forceUpdate + 1) }} />
                                                         </div>
                                                     </div>
                                                     <small className="text-danger error_font_size">{permissionsError}</small>

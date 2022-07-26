@@ -161,6 +161,7 @@ export default function CompanyEdit() {
 
         const imageUrl = await createImageUrl()
 
+
         const company = {
             user_id,
             companyName,

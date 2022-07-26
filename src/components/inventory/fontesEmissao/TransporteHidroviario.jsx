@@ -29,7 +29,7 @@ import inventoryCode from "../../../../utils/inventoryCode";
 import Cookie from "js-cookie";
 import jwt from "jsonwebtoken";
 
-export default function TransporteHidroviario(props) {
+export default function TransporteHidroviario() {
   const dispatch = useDispatch();
   const list = useSelector((state) => state.inventoryList);
   const states = useSelector((state) => state.inventoryStates);
