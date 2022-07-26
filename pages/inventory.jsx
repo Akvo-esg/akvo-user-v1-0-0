@@ -49,6 +49,8 @@ export default function Inventory() {
     const states = useSelector(state => state.inventoryStates)
     const token = jwt.decode(Cookie.get('auth'))
 
+    console.log(list)
+
     const dispatch = useDispatch()
 
     //Set Variables
