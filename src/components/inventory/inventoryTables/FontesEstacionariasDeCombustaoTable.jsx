@@ -22,6 +22,9 @@ import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import { useSelector } from "react-redux";
 import Comentarios from '../../formComponets/Comentarios';
+import ShowMoreButtons from "../../formComponets/ShowMoreButtons"
+import ModalDeleteItem from "../../formComponets/ModalDeleteItem"
+import ModalCommentItem from "../../formComponets/ModalCommentItem"
 
 
 export default function FontesEstacionariasDeCombustaoTable(props) {
@@ -204,22 +207,8 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
         if (inventoryList.length > 0) {
             return (
                 <div className="fadeItem">
-                    <h6 className="h5_title">Últimos dados cadastrados na unidade {states.unidName} / {states.anoInventario}</h6>
-                    <div className="row mb-2 me-2">
-                        <div className="d-flex justify-content-end">
-                            <span
-                                className="badge rounded-pill bg-primary "
-                                type="button"
-                                onClick={() => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }}>
-                                {showMoreInfo ?
-                                    <FontAwesomeIcon icon={faMinus} />
-                                    :
-                                    <FontAwesomeIcon icon={faPlus} />
-                                }
-                            </span>
-
-                        </div>
-                    </div>
+                    < ShowMoreButtons unidName={states.unidName} anoInventario={states.anoInventario} showMoreInfo={showMoreInfo}
+                     handleClick={ () => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }} />
                     <div className="table-responsive">
                         <div id="inventoryTable">
                             <small>
@@ -418,8 +407,8 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                     </div>
                                                                 </td>
 
-
-                                                                <div className="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" id="commentModalDB" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <ModalCommentItem editComentarioDB={editComentarioDB} editCodeDB={editCodeDB} handleChange={(e) => setEditComentarioDB(e.target.value)} elemComentario={elem.comentario} setEditComentarioDB={setEditComentarioDB} />
+                                                                {/* <div className="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" id="commentModalDB" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                     <div className="modal-dialog modal-dialog-centered" role="document">
                                                                         <div className="modal-content">
                                                                             <div className="modal-header">
@@ -438,7 +427,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> */}
 
 
                                                             </tr>
@@ -517,27 +506,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                                     )}
                                                                 </td>
 
-
-                                                                <div className="modal fade" id="deleteModalBD" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                                                    <div className="modal-dialog">
-                                                                        <div className="modal-content">
-                                                                            <div className="modal-header">
-                                                                                <h5 className="h5_title" id="exampleModalLabel">Excluir registro</h5>
-                                                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                            </div>
-                                                                            <div className="modal-body">
-                                                                                Tem certeza que deseja excluir o registro {deleteElemCodeDB}
-                                                                            </div>
-                                                                            <div className="modal-footer">
-                                                                                <button type="button" className="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                                                                                <button type="buttom" className="btn btn-danger btn-sm" data-bs-dismiss="modal"
-                                                                                    onClick={() => handleDeleteDB(deleteElemCodeDB)}
-                                                                                >Excluir
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                <ModalDeleteItem deleteElemCodeDB={deleteElemCodeDB} handleClick={ () => handleDeleteDB(deleteElemCodeDB)} />
                                                             </tr>
                                                         }
                                                     </>
@@ -566,14 +535,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                             }
                         </>
                     )}
-                    {/* <div className="row">
-                        <div className="col-12">
-                            <div className="d-flex justify-content-end">
-                                <h6><a href="#" onClick={() => acessarInventorio()}>Acessar inventório completo</a></h6>
-                            </div>
-                        </div>
-
-                    </div> */}
                 </div >
             )
         } else {

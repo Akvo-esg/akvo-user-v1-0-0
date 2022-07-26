@@ -724,7 +724,7 @@ export default function RodoviarioPorTipo() {
                                                     {elem.periodoConsumo.charAt(0).toUpperCase() + elem.periodoConsumo.slice(1)}
                                                 </td>
                                                 <td>
-                                                    {elem.consumoAnual} km
+                                                    {elem.consumoAnual} {elem.unidade}
                                                 </td>
                                                 <td>
                                                     <div className="btn-group btn-group-sm" role="group">
