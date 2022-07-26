@@ -93,7 +93,7 @@ export default function Home() {
       <div className="notifications">
 
         <div className="toast-container">
-          {perfilNot && (
+          {/* {perfilNot && ( */}
             <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
               <div className="toast-header">
 
@@ -104,8 +104,8 @@ export default function Home() {
                 Clique <Link href={`/editProfile/${token.sub}`}>aqui</Link> para completar os dados do seu perfil.
               </div>
             </div>
-          )}
-          {cadastroInstNot && (
+          {/* )} */}
+          {/* {cadastroInstNot && ( */}
             <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
               <div className="toast-header">
 
@@ -117,7 +117,7 @@ export default function Home() {
                 Clique <Link href={`/companyEdit`}>aqui</Link> para realizar o cadastro.
               </div>
             </div>
-          )}
+          {/* )} */}
           {!cadastroInstNot && firstUnityNot && (
             <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
               <div className="toast-header">
