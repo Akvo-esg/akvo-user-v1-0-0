@@ -15,9 +15,15 @@ export default async (req, res) => {
 
         const person = await db.collection('users').findOne({ _id: ObjectId(user_id) })
 
-        const company = await db.collection('companies').findOne({ _id: ObjectId(person.company_id) })
-        const userConfigDB = company.userConfig
-        const companyLogoDB = company.profileImageUrl
+        let userConfigDB
+        let companyLogoDB
+
+        if (person.company_id) {
+            const company = await db.collection('companies').findOne({ _id: ObjectId(person.company_id) })
+            userConfigDB = company.userConfig
+            companyLogoDB = company.profileImageUrl
+        }
+
 
 
         const clains = {

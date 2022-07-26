@@ -90,71 +90,86 @@ export default function Home() {
 
       <h5>{token.userConfig}</h5>
 
-      <div className="notifications">
 
-        <div className="toast-container">
-          {/* {perfilNot && ( */}
-            <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
-              <div className="toast-header">
 
-                <strong className="me-auto h5_modal">Bem vindo!</strong>
-                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div className="toast-body">
-                Clique <Link href={`/editProfile/${token.sub}`}>aqui</Link> para completar os dados do seu perfil.
-              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="position-fixed bottom-0 end-0 p-3" style={{ "z-index": "11" }}>
+
+
+        {perfilNot && (
+          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <strong className="me-auto h5_modal">Bem vindo!</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-          {/* )} */}
-          {/* {cadastroInstNot && ( */}
-            <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
-              <div className="toast-header">
-
-                <strong className="me-auto h5_modal">Adicione sua instituição!</strong>
-                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div className="toast-body">
-                Para realizar o seu invetário você precisa completar o cadastro da sua instituição.
-                Clique <Link href={`/companyEdit`}>aqui</Link> para realizar o cadastro.
-              </div>
+            <div className="toast-body">
+              Clique <Link href={`/editProfile/${token.sub}`}>aqui</Link> para completar os dados do seu perfil.
             </div>
-          {/* )} */}
-          {!cadastroInstNot && firstUnityNot && (
-            <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
-              <div className="toast-header">
+          </div>
+        )}
+        {cadastroInstNot && (
+          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
 
-                <strong className="me-auto h5_modal">Cadastre suas unidades</strong>
-                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div className="toast-body">
-                É possível cadastrar unidades blablabla nesse link <Link href={'/unityAdd'}>aqui</Link>
-              </div>
+              <strong className="me-auto h5_modal">Adicione sua instituição!</strong>
+              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-          )}
-          {tutorialNot && (
-            <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
-              <div className="toast-header">
+            <div className="toast-body">
+              Para realizar o seu invetário você precisa completar o cadastro da sua instituição.
+              Clique <Link href={`/companyEdit`}>aqui</Link> para realizar o cadastro.
+            </div>
+          </div>
+        )}
+        {!cadastroInstNot && firstUnityNot && (
+          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
 
-                <strong className="me-auto h5_modal">Tutoriais</strong>
-                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div className="toast-body">
-                Acesse a <Link href={'/tutorials'}>página de tutoriais</Link> para blablabla... A página de tutoriais também pode ser encontrada no menu lateral em &quot;Referências&quot;
-              </div>
+              <strong className="me-auto h5_modal">Cadastre suas unidades</strong>
+              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-          )}
-          {dateFreeAcoount && (
-            <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
-              <div className="toast-header">
+            <div className="toast-body">
+              É possível cadastrar unidades blablabla nesse link <Link href={'/unityAdd'}>aqui</Link>
+            </div>
+          </div>
+        )}
+        {tutorialNot && (
+          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
 
-                <strong className="me-auto h5_modal">Restam {dateFreeAcoount} dias para acabar sua licença gratuita.</strong>
-                <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div className="toast-body">
-                Clique <Link href={'/pricing'}>aqui</Link> para adquirir uma conta premium.
-              </div>
+              <strong className="me-auto h5_modal">Tutoriais</strong>
+              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-          )}
-        </div>
+            <div className="toast-body">
+              Acesse a <Link href={'/tutorials'}>página de tutoriais</Link> para blablabla... A página de tutoriais também pode ser encontrada no menu lateral em &quot;Referências&quot;
+            </div>
+          </div>
+        )}
+        {dateFreeAcoount && (
+          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
+
+              <strong className="me-auto h5_modal">Restam {dateFreeAcoount} dias para acabar sua licença gratuita.</strong>
+              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div className="toast-body">
+              Clique <Link href={'/pricing'}>aqui</Link> para adquirir uma conta premium.
+            </div>
+          </div>
+        )}
       </div>
 
 
