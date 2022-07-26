@@ -9,12 +9,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { userRestriction, editCompanyView } from '../../../utils/permission'
+import Cookie from 'js-cookie'
+import jwt from 'jsonwebtoken';
 
 if (typeof window !== "undefined") {
     const bootstrap = require("bootstrap");
 }
 
 export default function ResponsavelTable(props) {
+
+    const token = jwt.decode(Cookie.get('auth'))
 
     const [searchElement, setSearchElement] = useState('')
     const [disableItem, setDisableItem] = useState('')
@@ -25,6 +29,7 @@ export default function ResponsavelTable(props) {
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+        console.log("unidades",props.unidades)
     }, [searchElement, props.unidades.length,])
 
     const responsavelImg = (id) => {
@@ -70,14 +75,14 @@ export default function ResponsavelTable(props) {
     const handleActive = async () => {
 
         const data = {
-            company_id: props.company_id,
+            company_id: token.company_id,
             unid_id: disableItem[1],
-            user_id: props.user_id,
+            user_id: token.sub,
             active: disableItem[2]
         }
 
         await axios.patch(`${baseUrl()}/api/unidDisable`, { data })
-            .then(res => props.updateList(props.company_id))
+            .then(res => props.updateList(token.company_id))
             .catch(err => console.log('err'))
     }
 
@@ -86,14 +91,14 @@ export default function ResponsavelTable(props) {
     const handleDelete = async () => {
 
         const data = {
-            company_id: props.company_id,
+            company_id: token.company_id,
             unid_id: deleteItem[1],
-            user_id: props.user_id,
+            user_id: token.sub,
             deleted: deleteItem[2]
         }
 
         await axios.patch(`${baseUrl()}/api/unidDelete`, { data })
-            .then(res => props.updateList(props.company_id))
+            .then(res => props.updateList(token.company_id))
             .catch(err => console.log('err'))
     }
 
@@ -170,7 +175,7 @@ export default function ResponsavelTable(props) {
                                                                 <FontAwesomeIcon icon={faEye} />
                                                             </span>
                                                         </Link>
-                                                        {userRestriction(['user', 'auditor'], props.userStatus) && (props.user_id.includes(elem.responsavel_id) || editCompanyView(props.userStatus, props.userConfig)) && (
+                                                        {userRestriction(['user', 'auditor'], token.userStatus) && (token.sub.includes(elem.responsavel_id) || editCompanyView(token.userStatus, token.userConfig)) && (
                                                             <>
                                                                 <Link href={`/unityEdit/${elem._id}`} onClick={() => bootstrap.Tooltip.hide()}>
                                                                     <span type="button" className=" mx-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Editar">
@@ -229,7 +234,7 @@ export default function ResponsavelTable(props) {
                                                                 <FontAwesomeIcon icon={faEye} />
                                                             </span>
                                                         </Link>
-                                                        {userRestriction(['user', 'auditor'], props.userStatus) && (props.user_id.includes(elem.responsavel_id) || editCompanyView(props.userStatus, props.userConfig)) && (
+                                                        {userRestriction(['user', 'auditor'], token.userStatus) && (token.sub.includes(elem.responsavel_id) || editCompanyView(token.userStatus, token.userConfig)) && (
                                                             <>
                                                                 <span type="button" className="mx-2" data-bs-toggle="tooltip"
                                                                     data-bs-placement="bottom" title="Reativar"

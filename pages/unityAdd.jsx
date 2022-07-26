@@ -16,13 +16,7 @@ import { userRestriction } from '../utils/permission';
 
 export default function UnityAdd() {
 
-    //User Info
-    const [user_id, setUser_id] = useState('')
-    const [company_id, setCompany_id] = useState('')
-    const [token, setToken] = useState('')
-    const [userStatus, setUserStatus] = useState('')
-    const [userConfig, setUserConfig] = useState('')
-    const [dateLimit, setDateLimit] = useState('')
+    const token = jwt.decode(Cookie.get('auth'))
 
     //Form Content
     const [unidName, setUnidName] = useState('')
@@ -64,7 +58,12 @@ export default function UnityAdd() {
 
     useEffect(() => {
         sidebarHide()
-        setToken(Cookie.get('auth'))
+        userRestriction(['user', 'auditor'], token.userStatus, true)
+        if (token.company_id) {
+            dataFunction(token.company_id, token.dateLimit)
+        } else {
+            Router.push("/companyEdit")
+        }
     }, [])
 
     useEffect(() => {
@@ -74,24 +73,6 @@ export default function UnityAdd() {
         if (!coordenadas) { setLongitude(''); setLatitude('') }
 
     }, [handleCnpj, handleInscEst, coordenadas])
-
-    useEffect(() => {
-        if (token) {
-            const data = jwt.decode(token)
-            setDateLimit(data.dateLimit)
-            userRestriction(['user', 'auditor'], data.userStatus, true)
-            setUser_id(data.sub)
-            setUserStatus(data.userStatus)
-            if (data.company_id) {
-                setCompany_id(data.company_id)
-                dataFunction(data.company_id, data.dateLimit)
-            } else {
-                Router.push("/companyEdit")
-            }
-        } else {
-            return
-        }
-    }, [token])
 
     const dataFunction = async (company_id, dateLimit) => {
 
@@ -109,7 +90,6 @@ export default function UnityAdd() {
                 if (res.data.unidades.length > 0) {
                     res.data.unidades.map(elem => { if (elem.group && !groups.includes(elem.group)) groups.push(elem.group) })
                 }
-                setUserConfig(res.data.userConfig)
                 setGroups(groups)
                 setSaveLoading(false)
                 setLoading(false)
@@ -230,7 +210,7 @@ export default function UnityAdd() {
             setSaveLoading(true)
 
             let UnidadeOperacional = {
-                "company_id": company_id,
+                "company_id": token.company_id,
                 "unidName": unidName,
                 "setorPrimario": setorPrimario,
                 "setorSecundario": outroSetorSec || setorSecundario,
@@ -242,12 +222,12 @@ export default function UnityAdd() {
                 "cidade": cidade,
                 "estado": estado,
                 "localizacao": [latitude, longitude],
-                "user_id": user_id,
+                "user_id": token.sub,
                 "responsavel_id": responsavel_id,
                 "email": email,
                 "group": groupSelected && groupSelected !== "novoGrupo" ? groupSelected : newGroup,
                 "responsavelStatus": responsavelStatus,
-                "userStatus": userStatus
+                "userStatus": token.userStatus
             }
 
             await axios.patch(`${baseUrl()}/api/unidadeOperacional`, UnidadeOperacional)
@@ -262,7 +242,6 @@ export default function UnityAdd() {
                 // await axios.patch(`${baseUrl()}/api/notifications`, data)
                 //     .then(res => console.log('foi'))
                 // })
-                .then(res => console.log(res))
                 .then(res => sendEmail())
                 .catch(error => {
                     setUnidNameError(error.response.data.error)
@@ -486,7 +465,7 @@ export default function UnityAdd() {
                                                     <ResponsavelTable
                                                         users={usersList}
                                                         onChange={(responsavelId, email, responsavelStatus) => { setResponsavel_id(responsavelId); setEmail(email); setResponsavelStatus(responsavelStatus) }}
-                                                        userConfig={userConfig} company_id={company_id} reload={() => { dataFunction(company_id, dateLimit); setNewUserLoading(true) }} dateLimit={dateLimit} />
+                                                        reload={() => { dataFunction(company_id, dateLimit); setNewUserLoading(true) }} />
                                                     <small className='text-danger error_font_size'>{responsavelError}</small>
                                                 </>
                                             )

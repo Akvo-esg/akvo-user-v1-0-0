@@ -600,8 +600,8 @@ export default function FerroviarioTable(props) {
                                                             )}
                                                         </td>
                                                         <td>
-                                                            {idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus) && (
-                                                                <div className="btn-group btn-group-sm" role="group" disabled={ idCompare(token.sub, elem.user_id, props.data.userConfig, token.userStatus)}>
+                                                            {idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus) && (
+                                                                <div className="btn-group btn-group-sm" role="group" disabled={ idCompare(token.sub, elem.user_id, token.userConfig, token.userStatus)}>
                                                                     <span type="button" className="mx-2"
                                                                         data-bs-toggle-tooltip="true" data-bs-placement="bottom" title="Editar"
                                                                         onClick={() => editDB(elem)}>

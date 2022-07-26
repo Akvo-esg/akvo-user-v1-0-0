@@ -772,7 +772,7 @@ export default function AereoTable(props) {
                                 {idCompare(
                                   token.sub,
                                   elem.user_id,
-                                  props.data.userConfig,
+                                  token.userConfig,
                                   token.userStatus
                                 ) && (
                                   <div
@@ -781,7 +781,7 @@ export default function AereoTable(props) {
                                     disabled={idCompare(
                                       token.sub,
                                       elem.user_id,
-                                      props.data.userConfig,
+                                      token.userConfig,
                                       token.userStatus
                                     )}
                                   >

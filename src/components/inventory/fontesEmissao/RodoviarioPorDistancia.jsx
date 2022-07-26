@@ -3,6 +3,7 @@ import $ from "jquery"
 import { calc } from '../../../../utils/equations/transportesDistancia'
 import FrotaList from "../../formComponets/FrotaList"
 import AnoOptions from "../../formComponets/AnoOptions"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCheck,
     faComment,
@@ -25,7 +26,7 @@ import {
     update,
     remove,
     removeMany,
-  } from "../../../../store/InventoryList/InventoryList.actions";
+} from "../../../../store/InventoryList/InventoryList.actions";
 import inventoryCode from "../../../../utils/inventoryCode"
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
@@ -33,12 +34,16 @@ import jwt from 'jsonwebtoken'
 
 export default function RodoviarioPorDistancia() {
 
+
     const dispatch = useDispatch()
     const list = useSelector(state => state.inventoryList)
     const states = useSelector(state => state.inventoryStates)
     const inventory = useSelector(state => state.inventoryDB)
     const fatoresEmissao = useSelector(state => state.fatoresEmissao)
     const token = jwt.decode(Cookie.get('auth'))
+
+
+    console.log(list)
 
     //List Items
     const [code, setCode] = useState('')
@@ -92,9 +97,6 @@ export default function RodoviarioPorDistancia() {
     const [editComentario, setEditComentario] = useState(null)
     const [deleteManyArray, setDeleteManyArray] = useState([])
 
-    useEffect(() => {
-        handleCode()
-    }, [, list, inventory])
 
     useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
@@ -130,12 +132,6 @@ export default function RodoviarioPorDistancia() {
         }
     }, [editConsumoAnual])
 
-    const handleCode = (oldCode) => {
-        const code = inventoryCode(list, inventory, states.fonteEmissao, oldCode)
-        setCode(code)
-        return code
-    }
-
     const multiplosValores = (elem) => {
         const array = elem.split(",")
         setTipoFrotaId(array[0])
@@ -160,7 +156,7 @@ export default function RodoviarioPorDistancia() {
             const data = {
                 company_id: token.company_id,
                 unid_id: states.unid_id,
-                unidSetorPrimario: states.unidSetorPrimario,
+                unidSetorPrimario: states.setorPrimario,
                 unidName: states.unidName,
                 anoInventario: states.anoInventario,
                 escopo: states.escopo,
@@ -168,7 +164,6 @@ export default function RodoviarioPorDistancia() {
                 tipoEmissao: states.tipoEmissao,
                 tipoCalculo: states.tipoCalculo,
                 comentario: '',
-                code,
                 descricaoFrota,
                 identificador,
                 tipoFrotaId,
@@ -237,7 +232,6 @@ export default function RodoviarioPorDistancia() {
             $('#periodoConsumoSelect').each(function () {
                 this.value = ''
             })
-            handleCode()
         } else {
             return
         }
@@ -452,7 +446,7 @@ export default function RodoviarioPorDistancia() {
                     <p className='akvo_form_label passo4Text'>Insira os dados na tabela</p>
                 </div>
             </div>
-        
+
             <small>
                 <table className="table table-striped table-hover table-sm fadeItem">
                     <thead>
@@ -463,10 +457,10 @@ export default function RodoviarioPorDistancia() {
                                     <label className="form-check-label" htmlFor="customCheck1"></label>
                                     {deleteManyArray.length > 0 && (
                                         <span
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-toggle-tooltip="true"
-                                        data-bs-target="#deleteManyModal">
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-toggle-tooltip="true"
+                                            data-bs-target="#deleteManyModal">
                                             <FontAwesomeIcon icon={faTrashAlt} className="text-danger" />
                                         </span>
                                     )}
@@ -574,8 +568,8 @@ export default function RodoviarioPorDistancia() {
                         {list.map((elem, index) => {
 
                             if (elem.fonteEmissao === "Transportes" &&
-                                elem.transporte === "Transporte Rodoviário" &&
-                                elem.tipoCalculo === "Por distancia e peso da carga" &&
+                                elem.tipoEmissao === "Transporte Rodoviário" &&
+                                elem.tipoCalculo === "Por distancia" &&
                                 elem.anoInventario === states.anoInventario &&
                                 elem.unid_id === states.unid_id) {
                                 return (
@@ -706,9 +700,6 @@ export default function RodoviarioPorDistancia() {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <small>{elem.code}</small>
-                                                </td>
-                                                <td>
                                                     {elem.identificador}
                                                 </td>
                                                 <td>
@@ -761,9 +752,9 @@ export default function RodoviarioPorDistancia() {
                                                             <div className="modal-dialog modal-dialog-centered" role="document">
                                                                 <div className="modal-content">
                                                                     <div className="modal-header">
-                                                                    <h5 className="h5_modal" id="exampleModalLabel">Comentar o registro &#34;{commentElemCode}&#34; </h5>
-                                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setEditComentario(null)}>
-                                                                    </button>
+                                                                        <h5 className="h5_modal" id="exampleModalLabel">Comentar o registro &#34;{commentElemCode}&#34; </h5>
+                                                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setEditComentario(null)}>
+                                                                        </button>
                                                                     </div>
                                                                     <div className="modal-body">
                                                                         <textarea rows="3" type="text" className="form-control"

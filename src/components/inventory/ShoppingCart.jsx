@@ -20,6 +20,7 @@ export default function ShoppingCart(props) {
 
     const [inventarioList, setInventarioList] = useState([])
     const [saveLoading, setSaveLoading] = useState(false)
+    const [DBerror, setDBerror] = useState('')
 
     useEffect(() => {
         if (list.length > 0) {
@@ -37,7 +38,10 @@ export default function ShoppingCart(props) {
             }
         }).then(res => {
             dispatch(getInventory(res.data.inventory))
-            return
+            return true
+        }).catch(e => {
+            console.log(e)
+            return false
         })
 
     }
@@ -119,47 +123,56 @@ export default function ShoppingCart(props) {
             saveButton.classList.remove("growUpDown")
         }, 1000)
 
-
     }
 
     const inventorySave = async () => {
 
-        setSaveLoading(true)
+        // setSaveLoading(true)
+        setDBerror('')
 
-        const newList = []
-        let newCode = inventoryCode(newList, inventory, list[list.length - 1].fonteEmissao)
 
-        console.log(newCode)
+        const inventoryExists = dataFunction()
 
-        for (let i = list.length - 1; i >= 0; i--) {
-            newList.unshift(
-                {
+        if (inventoryExists) {
+
+            let newList = []
+
+            let newCode = inventoryCode(newList, inventory, list[list.length - 1].fonteEmissao)
+
+            for (let i = list.length - 1; i >= 0; i--) {
+
+                const data = {
                     ...list[i],
                     userName: `${token.firstName} ${token.lastName}`,
                     user_id: token.sub,
                     dateAdded: new Date(),
                     dateUpdated: '',
-                    code: newCode
+                    code: inventoryCode(newList, inventory, list[i].fonteEmissao)
                 }
-            )
-            newCode = inventoryCode(newList, inventory, list[i].fonteEmissao, newCode)
+                newList.unshift(data)
+            }
+
+            const dataSave = {
+                newList,
+                company_id: token.company_id
+            }
+
+
+            await axios.patch(`${baseUrl()}/api/inventory`, dataSave)
+                .then(res => {
+                    dataFunction(token.company_id)
+                    dispatch(reset([]))
+                    setSaveLoading(false)
+                    // return false
+                }).catch(e => {
+                    setSaveLoading(false)
+                    setDBerror('houve um erro ao carregar os dados do banco de dados. Tente novamente mais tarde.')
+                    // return false
+                })
+        } else {
+            setDBerror('houve um erro ao carregar os dados do banco de dados. Tente novamente mais tarde.')
         }
 
-        const data = {
-            newList,
-            company_id: token.company_id
-        }
-
-        await axios.patch(`${baseUrl()}/api/inventory`, data)
-            .then(res => {
-                dataFunction(token.company_id)
-                dispatch(reset([]))
-                setSaveLoading(false)
-                // return false
-            }).catch(e => {
-                setSaveLoading(false)
-                // return false
-            })
     }
 
 
@@ -180,7 +193,6 @@ export default function ShoppingCart(props) {
                                     </div>
                                     <div className="row d-flex justify-content-center">
                                         {elem.anoInventario}
-
                                     </div>
                                 </a>
                                 {elem.fontesEmissao.map((item, index) => {
@@ -196,7 +208,6 @@ export default function ShoppingCart(props) {
                                                             </div>
                                                         </td>
                                                         <td>
-
                                                             <span className="me-1 badge akvo-bg-secondary">
                                                                 {elem.fontesEmissao[index].data.length}
                                                             </span>
@@ -204,8 +215,6 @@ export default function ShoppingCart(props) {
                                                     </tr>
                                                 </tbody>
                                             </table>
-
-
                                         </a>
                                     )
                                 })}
@@ -223,23 +232,21 @@ export default function ShoppingCart(props) {
                     <div className="position-absolute">
 
                         {saveLoading ?
-
-
                             <button className="btn btn-sm btn-success font-weight-bold shoppingCart_button" disabled>
                                 <div className="spinner-border spinner-border-sm text-light" role="status">
                                     <span className="sr-only">Loading...</span>
                                 </div>
                             </button>
                             :
-                            <button className="btn btn-sm btn-success font-weight-bold sticky-bottom" id="saveButton" disabled={list.length === 0}
-                                onClick={() => inventorySave()}> SALVAR
-                            </button>
+                            <>
+                                <button className="btn btn-sm btn-success font-weight-bold sticky-bottom" id="saveButton" disabled={list.length === 0}
+                                    onClick={() => inventorySave()}> SALVAR
+                                </button>
+                            </>
                         }
                     </div>
                 </div>
             </div>
-
-
         </aside>
     )
 }
