@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import styles from '../../../styles/Comentario.module.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 // import Popover from "react-bootstrap/Popover";
@@ -58,7 +59,8 @@ function Comentarios(props) {
           horizontal: 'right',
         }}
       >
-        <Typography sx={{ p: 2 }}>{props.comentario}</Typography>
+        <div className={ styles['comentario-header'] }>Comentário:</div>
+        <Typography sx={{ p: 1.5 }}>{props.comentario}</Typography>
       </Popover>
     </div>
     // <div ref={ref}>
