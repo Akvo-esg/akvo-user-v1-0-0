@@ -172,11 +172,11 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
         setSearchDescricao('')
         cancelEditDB()
 
-        if (showMore) {
-            $("#inventoryTable").addClass("inventoryTable")
-        } else {
-            $("#inventoryTable").removeClass("inventoryTable")
-        }
+        // if (showMore) {
+        //     $("#inventoryTable").addClass("inventoryTable")
+        // } else {
+        //     $("#inventoryTable").removeClass("inventoryTable")
+        // }
     }
 
     const fixBugClass = !showMore &&  showMoreInfo;
@@ -211,7 +211,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                 <div className="fadeItem">
                     < ShowMoreButtons unidName={states.unidName} anoInventario={states.anoInventario} showMoreInfo={showMoreInfo}
                      handleClick={ () => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }} />
-                    <div className={`table-responsive inventoryTable ${fixBugClass ? 'showMore' : '' }`} >
+                    <div className={`table-responsive ${showMore ? 'inventoryTable' : ''} ${fixBugClass ? 'showMore' : '' }`} >
                             <small>
                                 <small>
                                     <table className="table table-striped table-sm scrollBarTable scrollit">
