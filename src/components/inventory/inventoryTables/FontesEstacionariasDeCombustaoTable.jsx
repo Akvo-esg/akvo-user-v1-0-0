@@ -209,8 +209,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                 <div className="fadeItem">
                     < ShowMoreButtons unidName={states.unidName} anoInventario={states.anoInventario} showMoreInfo={showMoreInfo}
                      handleClick={ () => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }} />
-                    <div className="table-responsive">
-                        <div id="inventoryTable">
+                    <div className="table-responsive inventoryTable">
                             <small>
                                 <small>
                                     <table className="table table-striped table-sm scrollBarTable scrollit">
@@ -495,7 +494,6 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                     </table>
                                 </small>
                             </small>
-                        </div>
 
                     </div>
                     {inventoryLength > 5 && (

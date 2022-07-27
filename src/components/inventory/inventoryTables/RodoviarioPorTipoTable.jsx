@@ -279,10 +279,10 @@ export default function RodoviarioPorTipoTable(props) {
                     < ShowMoreButtons unidName={states.unidName} anoInventario={states.anoInventario} showMoreInfo={showMoreInfo}
                      handleClick={ () => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }} />
 
-                    <div className="table-responsive">
+                    <div className="table-responsive inventoryTable">
                         <small>
                             <small>
-                            <table className="table table-striped table-sm scrollBarTable scrollit ">
+                            <table className="table table-striped table-sm">
                                 <thead>
                                     <tr>
                                         <th className="text-center akvo-text-escopo1">Código</th>

@@ -1012,25 +1012,25 @@ table td {
   color: var(--escopo3_color) !important;
 }
 
-.scrollit {
-  overflow:scroll;
-  height:200px;
-}
+// .scrollit {
+//   overflow:scroll;
+//   height:200px;
+// }
 
 
-.scrollBarTable th {
-  position: sticky;
-  top: 0px;
-  // border: 2px solid #152738  !important;
+// .scrollBarTable th {
+//   position: sticky;
+//   top: 0px;
+//   // border: 2px solid #152738  !important;
   
-  background-color: #fff !important;
-}
+//   background-color: #fff !important;
+// }
 
 
 
 .inventoryTable {
   height: 500px;
-  overflow: scroll;
+  overflow-x: auto;
 }
 
 .inventoryTable thead {
@@ -1038,26 +1038,42 @@ table td {
   background-color: #fff !important;
 }
 
-.inventoryTable th:nth-child(1),
-.inventoryTable td:nth-child(1) {
-  z-index: 2;
+// .inventoryTable th:nth-child(1),
+// .inventoryTable td:nth-child(1),
+// .inventoryTable th:nth-child(2),
+// .inventoryTable td:nth-child(2) {
+//   z-index: 2;
+//   position: sticky;
+//   left: 0px;
+// }
+
+
+
+.inventoryTable tr>th:first-child,
+.inventoryTable tr>td:first-child {
   position: sticky;
   left: 0;
+  z-index: 10;
+  background-color: #fff;
 }
 
-.inventoryTable th:nth-child(2),
-.inventoryTable td:nth-child(2) {
-  z-index: 2;
-  position: sticky;
-  left: 60px !important;
+.inventoryTable thead tr th div {
+  z-index: 1;
 }
 
-.inventoryTable th:nth-child(3),
-.inventoryTable td:nth-child(3) {
-  z-index: 2;
-  position: sticky;
-  left: 168px !important;
-}
+// .inventoryTable th:nth-child(2),
+// .inventoryTable td:nth-child(2) {
+//   z-index: 2;
+//   position: sticky;
+//   left: 60px !important;
+// }
+
+// .inventoryTable th:nth-child(3),
+// .inventoryTable td:nth-child(3) {
+//   z-index: 2;
+//   position: sticky;
+//   left: 168px !important;
+// }
 
 .inventoryTable td:nth-child(1),
 .inventoryTable td:nth-child(2),
