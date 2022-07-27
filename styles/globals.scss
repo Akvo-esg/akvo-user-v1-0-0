@@ -1047,19 +1047,48 @@ table td {
 //   left: 0px;
 // }
 
+// .inventoryTable thead:nth-child(2) {
+//   position: sticky;
+// }
+
+.inventoryTable thead tr {
+  z-index: 2;
+  background-color: #fff;
+  border-bottom-width: 0;
+}
+
+.inventoryTable thead tr:nth-child(2) {
+  top: 0;
+  position: sticky;
+}
 
 
 .inventoryTable tr>th:first-child,
 .inventoryTable tr>td:first-child {
   position: sticky;
   left: 0;
-  z-index: 10;
+  z-index: 1;
   background-color: #fff;
 }
 
-.inventoryTable thead tr th div {
+.inventoryTable tr>th:nth-child(2),
+.inventoryTable tr>td:nth-child(2) {
+  position: sticky;
+  left: 3.35rem;
   z-index: 1;
 }
+
+.inventoryTable tr>th:nth-child(3),
+.inventoryTable tr>td:nth-child(3) {
+  position: sticky;
+  left: 10.09rem;
+  z-index: 1;
+}
+
+
+// .inventoryTable thead tr th div {
+//   z-index: 1;
+// }
 
 // .inventoryTable th:nth-child(2),
 // .inventoryTable td:nth-child(2) {
