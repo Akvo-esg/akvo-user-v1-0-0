@@ -84,10 +84,6 @@ export default function RodoviarioPorCombustivel() {
     const [deleteManyArray, setDeleteManyArray] = useState([])
 
     useEffect(() => {
-        handleCode()
-    }, [, list, inventory])
-
-    useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
         for (var i = 0; i < boxes.length; i++) {
             boxes[i].checked = false
@@ -121,12 +117,6 @@ export default function RodoviarioPorCombustivel() {
         }
     }, [editConsumoAnual])
 
-
-    const handleCode = (oldCode) => {
-        const code = inventoryCode(list, inventory, states.fonteEmissao, oldCode)
-        setCode(code)
-        return code
-    }
 
     const multiplosValores = (elem) => {
         const array = elem.split(",")
@@ -222,7 +212,6 @@ export default function RodoviarioPorCombustivel() {
             $('#periodoConsumoSelect').each(function () {
                 this.value = ''
             })
-            handleCode()
         } else {
             return
         }

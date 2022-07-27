@@ -87,9 +87,6 @@ export default function TransporteAereo() {
   const [editComentario, setEditComentario] = useState(null);
   const [deleteManyArray, setDeleteManyArray] = useState([]);
 
-  useEffect(() => {
-    handleCode();
-  }, [, list, inventory]);
 
   useEffect(() => {
     let boxes = document.getElementsByClassName("listElement");
@@ -124,11 +121,6 @@ export default function TransporteAereo() {
     }
   }, [editConsumoAnual]);
 
-  const handleCode = (oldCode) => {
-    const code = inventoryCode(list, inventory, states.fonteEmissao, oldCode);
-    setCode(code);
-    return code;
-  };
 
   const multiplosValores = (elem) => {
     const array = elem.split(",");
@@ -230,7 +222,6 @@ export default function TransporteAereo() {
       $("#periodoConsumoSelect").each(function () {
         this.value = "";
       });
-      handleCode();
     } else {
       return;
     }

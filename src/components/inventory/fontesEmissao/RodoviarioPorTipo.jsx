@@ -86,9 +86,6 @@ export default function RodoviarioPorTipo() {
     const [editComentario, setEditComentario] = useState(null)
     const [deleteManyArray, setDeleteManyArray] = useState([])
 
-    useEffect(() => {
-        handleCode()
-    }, [, list, inventory])
 
     useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
@@ -124,12 +121,6 @@ export default function RodoviarioPorTipo() {
         }
     }, [editConsumoAnual])
 
-
-    const handleCode = (oldCode) => {
-        const code = inventoryCode(list, inventory, states.fonteEmissao, oldCode)
-        setCode(code)
-        return code
-    }
 
     const multiplosValores = (elem) => {
         const array = elem.split(",")
@@ -233,7 +224,6 @@ export default function RodoviarioPorTipo() {
             $('#periodoConsumoSelect').each(function () {
                 this.value = ''
             })
-            handleCode()
         } else {
             return
         }

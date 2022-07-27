@@ -82,10 +82,6 @@ export default function FontesEstacionariasDeCombustao(props) {
     const [deleteManyArray, setDeleteManyArray] = useState([])
 
     useEffect(() => {
-        handleCode()
-    }, [, list, props.inventario])
-
-    useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
         for (var i = 0; i < boxes.length; i++) {
             boxes[i].checked = false
@@ -118,14 +114,6 @@ export default function FontesEstacionariasDeCombustao(props) {
             })
         }
     }, [editConsumoAnual])
-
-
-    const handleCode = (oldCode) => {
-        const code = inventoryCode(list, props.inventario, props.data.fonteEmissao, "TED", oldCode)
-        setCode(code)
-        return code
-    }
-
 
     const multiplosValores = (elem) => {
         const array = elem.split(",")
@@ -228,7 +216,6 @@ export default function FontesEstacionariasDeCombustao(props) {
             $('#periodoConsumoSelect').each(function () {
                 this.value = ''
             })
-            handleCode()
         } else {
             return
         }

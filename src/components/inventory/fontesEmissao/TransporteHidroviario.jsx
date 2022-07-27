@@ -88,10 +88,6 @@ export default function TransporteHidroviario() {
   const [deleteManyArray, setDeleteManyArray] = useState([]);
 
   useEffect(() => {
-    handleCode();
-  }, [, list, inventory]);
-
-  useEffect(() => {
     let boxes = document.getElementsByClassName("listElement");
     let selectAllBox = document.getElementsByClassName("selectAll");
     selectAllBox[0].checked = false;
@@ -126,12 +122,6 @@ export default function TransporteHidroviario() {
       });
     }
   }, [editConsumoAnual]);
-
-  const handleCode = (oldCode) => {
-    const code = inventoryCode(list, inventory, states.fonteEmissao, oldCode);
-    setCode(code);
-    return code;
-  };
 
   const multiplosValores = (elem) => {
     const array = elem.split(",");
@@ -233,7 +223,6 @@ export default function TransporteHidroviario() {
       $("#periodoConsumoSelect").each(function () {
         this.value = "";
       });
-      handleCode();
     } else {
       return;
     }

@@ -72,11 +72,6 @@ export default function EnergiaEletricaSIN(props) {
     const [editComentario, setEditComentario] = useState(null)
     const [deleteManyArray, setDeleteManyArray] = useState([])
 
-
-    useEffect(() => {
-        handleCode()
-    }, [, list, props.inventario])
-
     useEffect(() => {
         let boxes = document.getElementsByClassName('listElement')
         for (var i = 0; i < boxes.length; i++) {
@@ -110,13 +105,6 @@ export default function EnergiaEletricaSIN(props) {
             })
         }
     }, [editConsumoAnual])
-
-
-    const handleCode = (oldCode) => {
-        const code = inventoryCode(list, props.inventario, props.data.fonteEmissao, "EES", oldCode)
-        setCode(code)
-        return code
-    }
 
     const handleSubmit = () => {
 
@@ -209,7 +197,6 @@ export default function EnergiaEletricaSIN(props) {
             $('#periodoConsumoSelect').each(function () {
                 this.value = ''
             })
-            handleCode(data.code)
         } else {
             return
         }
