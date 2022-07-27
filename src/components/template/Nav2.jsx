@@ -112,7 +112,7 @@ export default function Nav({ children }) {
             <span
                 className="font-weight-bold btn-toggle"
                 type='button' onClick={decoratedOnClick}
-                collapsed={isCurrentEventKey ? "true" : 'false'}
+                collapsed={isCurrentEventKey ? "true" : "false"}
             >
                 <div className="row align-items-center">
                     {children}
