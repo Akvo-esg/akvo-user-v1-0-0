@@ -179,6 +179,8 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
         }
     }
 
+    const fixBugClass = !showMore &&  showMoreInfo;
+
     const renderInventoryTable = (list) => {
 
         let inventoryList = []
@@ -209,7 +211,7 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                 <div className="fadeItem">
                     < ShowMoreButtons unidName={states.unidName} anoInventario={states.anoInventario} showMoreInfo={showMoreInfo}
                      handleClick={ () => { setShowMoreInfo(!showMoreInfo); cancelEditDB() }} />
-                    <div className="table-responsive inventoryTable">
+                    <div className={`table-responsive inventoryTable ${fixBugClass ? 'showMore' : '' }`} >
                             <small>
                                 <small>
                                     <table className="table table-striped table-sm scrollBarTable scrollit">
@@ -499,12 +501,12 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                     {inventoryLength > 5 && (
                         <>
                             {showMore ?
-                                <div className="d-flex justify-content-center">
+                                <div className="d-flex justify-content-center showLessBtn">
                                     <button type="button" className="btn btn-secondary btn-circle btn-lg"
                                         onClick={() => { handleShowMore(false) }}><FontAwesomeIcon icon={faMinus} /></button>
                                 </div>
                                 :
-                                <div className="d-flex justify-content-center">
+                                <div className="d-flex justify-content-center showMoreBtn">
                                     <button type="button" className="btn btn-secondary btn-circle btn-lg"
                                         onClick={() => { handleShowMore(true) }}><FontAwesomeIcon icon={faPlus} /></button>
                                 </div>
