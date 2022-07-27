@@ -268,8 +268,8 @@ export default function FontesEstacionariasDeCombustaoTable(props) {
                                                         <th className="text-center akvo-text-escopo1">Data de cadastro/Atualização</th>
                                                     </>
                                                 )}
-                                                <th className="text-center akvo-text-escopo1 bg-light" style={{ "zIndex": "999" }}></th>
-                                                <th className="text-center akvo-text-escopo1" style={{ "zIndex": "999" }}></th>
+                                                <th className="text-center akvo-text-escopo1"></th>
+                                                <th className="text-center akvo-text-escopo1"></th>
                                             </tr>
                                         </thead>
                                         <tbody>

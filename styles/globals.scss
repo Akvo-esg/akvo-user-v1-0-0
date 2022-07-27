@@ -443,7 +443,7 @@ textarea:focus {
   transform-origin: 0.25em 50%;
 }
 
-.btn-toggle[collapsed="true"] .toggleIcon {
+.btn-toggle[aria-expanded="true"] .toggleIcon {
   transform: rotate(90deg);
 }
 
@@ -1076,6 +1076,7 @@ table td {
   position: sticky;
   left: 3.35rem;
   z-index: 1;
+  background-color: #fff;
 }
 
 .inventoryTable tr>th:nth-child(3),
@@ -1083,26 +1084,14 @@ table td {
   position: sticky;
   left: 10.09rem;
   z-index: 1;
+  background-color: #fff;
 }
 
 
-// .inventoryTable thead tr th div {
-//   z-index: 1;
-// }
-
-// .inventoryTable th:nth-child(2),
-// .inventoryTable td:nth-child(2) {
-//   z-index: 2;
-//   position: sticky;
-//   left: 60px !important;
-// }
-
-// .inventoryTable th:nth-child(3),
-// .inventoryTable td:nth-child(3) {
-//   z-index: 2;
-//   position: sticky;
-//   left: 168px !important;
-// }
+.inventoryTable thead tr th div {
+  z-index: 1;
+  background-color: #fff;
+}
 
 .inventoryTable td:nth-child(1),
 .inventoryTable td:nth-child(2),
