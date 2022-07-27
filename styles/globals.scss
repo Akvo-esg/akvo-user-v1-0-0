@@ -443,7 +443,7 @@ textarea:focus {
   transform-origin: 0.25em 50%;
 }
 
-.btn-toggle[aria-expanded="true"] .toggleIcon {
+.btn-toggle[collapsed="true"] .toggleIcon {
   transform: rotate(90deg);
 }
 

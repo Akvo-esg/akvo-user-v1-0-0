@@ -107,14 +107,14 @@ export default function Home() {
 
 
 
-      <div class="position-fixed bottom-0 end-0 p-3" style={{ "z-index": "11" }}>
+      <div className="position-fixed bottom-0 end-0 p-3" style={{ "z-index": "11" }}>
 
 
         {perfilNot && (
-          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
+          <div className="toast my-1" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
               <strong className="me-auto h5_modal">Bem vindo!</strong>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div className="toast-body">
               Clique <Link href={`/editProfile/${token.sub}`}>aqui</Link> para completar os dados do seu perfil.
@@ -122,7 +122,7 @@ export default function Home() {
           </div>
         )}
         {cadastroInstNot && (
-          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+          <div className="toast my-1 fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
             <div className="toast-header">
 
               <strong className="me-auto h5_modal">Adicione sua instituição!</strong>
@@ -135,7 +135,7 @@ export default function Home() {
           </div>
         )}
         {!cadastroInstNot && firstUnityNot && (
-          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+          <div className="toast my-1 fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
             <div className="toast-header">
 
               <strong className="me-auto h5_modal">Cadastre suas unidades</strong>
@@ -147,7 +147,7 @@ export default function Home() {
           </div>
         )}
         {tutorialNot && (
-          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+          <div className="toast my-1 fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
             <div className="toast-header">
 
               <strong className="me-auto h5_modal">Tutoriais</strong>
@@ -159,7 +159,7 @@ export default function Home() {
           </div>
         )}
         {dateFreeAcoount && (
-          <div className="toast fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
+          <div className="toast my-1 fadeItem" role="alert" aria-live="assertive" aria-atomic="true">
             <div className="toast-header">
 
               <strong className="me-auto h5_modal">Restam {dateFreeAcoount} dias para acabar sua licença gratuita.</strong>
@@ -171,12 +171,6 @@ export default function Home() {
           </div>
         )}
       </div>
-
-
-
-
-
-
     </div>
   )
 }

@@ -688,12 +688,12 @@ export default function RodoviarioPorDistanciaTable(props) {
                             {showMore ?
                                 <div className="d-flex justify-content-center">
                                     <button type="button" className="btn btn-secondary btn-circle btn-lg"
-                                        onClick={() => { setShowMore(false) }}><i class="fa fa-minus"></i></button>
+                                        onClick={() => { setShowMore(false) }}><i className="fa fa-minus"></i></button>
                                 </div>
                                 :
                                 <div className="d-flex justify-content-center">
                                     <button type="button" className="btn btn-secondary btn-circle btn-lg"
-                                        onClick={() => { setShowMore(true) }}><i class="fa fa-plus"></i></button>
+                                        onClick={() => { setShowMore(true) }}><i className="fa fa-plus"></i></button>
                                 </div>
                             }
                         </>
