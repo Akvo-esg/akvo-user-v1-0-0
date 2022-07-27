@@ -696,7 +696,7 @@ export default function RodoviarioPorDistancia() {
                                                 <td scopo="row">
                                                     <div className="custom-control custom-checkbox">
                                                         <input type="checkbox" className="custom-control-input listElement" id={elem.code} value={elem.code} onChange={e => deleteItemSelect(e.target.checked, e.target.value)} />
-                                                        <label class="custom-control-label" htmlFor={elem.code}></label>
+                                                        <label className="custom-control-label" htmlFor={elem.code}></label>
                                                     </div>
                                                 </td>
                                                 <td>
