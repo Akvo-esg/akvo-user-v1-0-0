@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import Title from '../src/components/title/Title'
+import Title from '../src/components/title/Title2'
 import Cookie from 'js-cookie'
 import jwt from 'jsonwebtoken'
 import Link from 'next/link'
@@ -86,13 +86,11 @@ export default function Home() {
   return (
 
     <div>
-      <Title title={`Olá, ${token.firstName}!`} subtitle={'Qual sua meta de sustentabilidade para hoje?'} />
-
-      <h5>{token.userConfig}</h5>
+      <Title title={`Olá, ${token.firstName}!`} subtitle={'Qual sua meta de sustentabilidade para hoje?'} className="lalalalala" />
 
 
 
-
+      <object type="text/html" data="https://spark.bootlab.io/dashboard-default.html?theme=modern" className='outerPage'></object>
 
 
 
